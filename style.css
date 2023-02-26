@@ -1,0 +1,242 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: rgb(255, 255, 255);
+    margin: 25px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+#home {
+    /* height: 100vh; */
+    display: flex;
+    /* align-items: center; */
+    /* justify-content: space-between; */
+    /* color: white; */
+}
+
+.nav {
+    left: 5%;
+    top: 25%;
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    position: fixed;
+    z-index: 3;
+}
+
+.nav-item {
+    width: fit-content;
+    color: rgb(0, 0, 0);
+    font-size: xx-large;
+    /* font-weight: bold; */
+    display: block;
+    padding: 20%;
+    transition: .2s;
+    background-image: linear-gradient(90deg, rgb(113, 113, 113), rgb(0, 0, 0));
+    background-position: 0% 0%; 
+    background-clip: text;
+    -webkit-background-clip: text;
+    /* color: transparent; */
+}
+
+.active {
+    border-bottom: 1px solid black;
+    transition: .15s;
+}
+
+.nav:hover .nav-item {
+    opacity: .25;
+    transform: scale(1.1, 1.1);
+}
+
+
+
+.nav:hover .nav-item:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+
+.indicator { 
+    height: 100vh;
+    width: 100vw;
+    /* background-image: linear-gradient(90deg, gray, black); */
+    /* background-position: 50% 50%;  */
+    /* background-size: vmin 1vmin; */
+    position: absolute;
+    /* z-index: 1; */
+    transition: .2s;
+}
+
+.nav:hover ~ .indicator {
+    opacity: .5;
+    background-size: 2vmin 2vmin;
+}
+
+.contentainer {
+    transition: .25s;
+}
+
+.content {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .2s;
+    width: 1100px;
+    margin-left: 10%;
+}
+
+.prof-pic {
+    height: auto;
+    width: auto;
+    transform: scale(.85,.85);
+    opacity: 1;
+    z-index: 2;
+    transition: .2s;
+    border-radius: 3%;
+}
+
+.prof-para {
+    height: 300px;
+    color: rgb(0, 0, 0);
+    transition: .2s;
+    font-size: large;
+    display: flex;
+    /* flex-wrap: wrap; */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.prof-button {
+    /* background-color: rgb(252, 248, 248); */
+    background-image: linear-gradient(to right, transparent 50%, rgb(227, 227, 227) 50%);
+    padding: 2%;
+    border: 1px solid black;
+    box-shadow: 3px 4px 4px;
+    /* border-radius: 15px; */
+    display: flex;
+    z-index: 2;
+    transition: .5s;
+    color: rgb(0, 0, 0);
+    font-size: large;
+    opacity: .55;
+    text-transform: uppercase;
+    background-size: 200%;
+    background-position: 0%;
+}
+
+.prof-button:hover {
+    background-position: 100%;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    opacity: 1;
+    box-shadow: 0px 1px;
+    /* background-color: wheat; */
+}
+
+#about-para {
+    width: 800px;
+    font-size: large;
+}
+
+.about-nav {
+    width: 800px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.about-nav a {
+    color: black;
+    z-index: 2;
+    /* cursor: default; */
+}
+
+.botitem {
+    color: black;
+    cursor: pointer;
+}
+
+.bot-icon {
+    cursor: default;
+}
+
+.botitem:hover {
+    opacity: .5;
+}
+
+.nav:hover ~ .contentainer {
+    opacity: .5;
+    transform: scale(.975, .975);
+}
+
+.nav:hover ~ .prof-para {
+    opacity: .5;
+    transform: scale(.975, .975);
+}
+
+
+.grid {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    align-items: center;
+    justify-content: center;
+}
+
+.card {
+    width: 300px;
+    /* gap: 25px; */
+    height: 300px;
+    /* border: 1px solid black; */
+    border-radius: 10px;
+    box-shadow: 6px 6px 6px rgb(80, 80, 80);
+    /* opacity: ; */
+    transition: .4s;
+    transition: transform .65s ease-in-out;
+    transform-style: preserve-3d;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.card p {
+    font-size: small;
+}
+.card:hover {
+    box-shadow: 0px 2px 2px rgb(80,80,80);
+    opacity: 1;
+}
+
+.crd-cont:hover > .card {
+    transform: rotateY(180deg);
+}
+
+.proj-img {
+    box-sizing: border-box;
+    width: 100%;
+    height: 300px;
+    border-radius: 10px;
+}
+
+.front, .back {
+    position: absolute;
+    backface-visibility: hidden;
+}
+
+.back {
+    transform:rotateY(180deg);
+}
