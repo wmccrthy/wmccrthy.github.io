@@ -10,7 +10,10 @@
     <script src="control.js"></script>
     <script>
         window.onload = function () {
-            highlightCurrent();
+            let cards = document.querySelectorAll(".card");
+            for (const card of cards) {
+                card.addEventListener("click", rotateOnClick(card));
+            }
         }
     </script>
 

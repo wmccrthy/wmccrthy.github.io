@@ -217,9 +217,9 @@ a {
     opacity: 1;
 }
 
-.crd-cont:hover > .card {
+/* .crd-cont:hover > .card {
     transform: rotateY(180deg);
-}
+} */
 
 .proj-img {
     box-sizing: border-box;
