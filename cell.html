@@ -9,7 +9,7 @@
     <script src="cellular-automataa.js"></script>
     <script>
         window.onload = function() {
-            const rule = prompt("Give me a rule!");
+            const rule = prompt("Give me a rule between 0 and 255");
             while (Number(rule) > 255 || Number(rule) < 0 ) {
                 rule = prompt("Give me a rule!");
             }
