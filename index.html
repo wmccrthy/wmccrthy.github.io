@@ -14,7 +14,26 @@
             for (const card of cards) {
                 card.addEventListener("click", rotateOnClick(card));
             }
-        }
+            const observeAbt = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        let fades = document.querySelectorAll(".fade");
+                        fades[0].classList.add("fadeIn");
+                    }
+                })
+            })
+            observeAbt.observe(document.querySelector(".testFade"));
+
+            const observeP = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        let fades = document.querySelectorAll(".fade");
+                        fades[1].classList.add("fadeIn");
+                    }
+                })
+            })
+            observeP.observe(document.querySelector(".grid"));
+        }  
     </script>
 
 </head>
@@ -39,8 +58,8 @@
                 </div>
             </div>
 
-            <div class="content" id="about">
-                <div class="prof-para">
+            <div class="content fade" id="about">
+                <div class="prof-para testFade">
                     <p>Hi. My name is Wyatt McCarthy and I'm currently a student at Amherst College in the class of 2024. I am a Computer Science major with extensive coursework in Economics, in which I may double major. At Amherst, I am a member of the men's varsity soccer team. I have played soccer since I was a toddler and probably committed more time to playing than any other activity in my life. In highschool I played in the Development Academy where I spent time with Metropolitan Oval and NYCFC.</p> 
                     <p>In my coursework at Amherst College, I have focused largely on computer science and economics. Throughout, I have completed several courses relevant to software engineering, quantitative problem-solving, and data analysis including data structures, algorithms, artificial intelligence, microeconomics, macroeconomics, and industrial organization, and I will soon (as of Spring 2023) have completed computer systems and algorithm visualization. I have also worked on several projects that have given me practical experience in developing and implementing software solutions. In particular, I have advanced experience programming in Java and Python, as well as experience with HTML, CSS, JavaScript, and C. I have used these skills to develop projects such as a pathfinding algorithm visualizer, a checkers game with a minimax AI that plays against the user, various artificial intelligence agents for Pacman, and a personal website. 
                     </p>
@@ -91,7 +110,7 @@
                 </div>
             </div>
 
-            <div class="content" id="projects">
+            <div class="content fade" id="projects">
                 <div class="prof-para">
                     <div class="grid">
                         <div class="crd-cont">
