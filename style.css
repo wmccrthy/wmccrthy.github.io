@@ -40,6 +40,7 @@ a {
     width: fit-content;
     color: rgb(0, 0, 0);
     font-size: xx-large;
+    font-size: 30px;
     /* font-weight: bold; */
     /* display: block; */
     padding: 20%;
@@ -53,8 +54,9 @@ a {
 }
 
 .indic {
-    width: 5px;
-    height: 25px;
+    width: 3px;
+    height: 30px;
+    /* height: ; */
     /* top: 50%; */
     background-color: black;
     align-self: center;
