@@ -14,25 +14,54 @@
             for (const card of cards) {
                 card.addEventListener("click", rotateOnClick(card));
             }
+        
+            const observeH = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        let indicH = document.querySelectorAll(".indic")[0];
+                        indicH.style.opacity = "1";
+                    }
+                    else {
+                        let indicH = document.querySelectorAll(".indic")[0];
+                        indicH.style.opacity = "0";
+                    }
+                })
+            })
+            observeH.observe(document.querySelector(".hP"));
+
             const observeAbt = new IntersectionObserver(entries => {
+                
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         let fades = document.querySelectorAll(".fade");
                         fades[0].classList.add("fadeIn");
+                        let indic = document.querySelectorAll(".indic")[1];
+                        indic.style.opacity = "1";
+                    }
+                    else {
+                        let indic = document.querySelectorAll(".indic")[1];
+                        indic.style.opacity = "0";
                     }
                 })
             })
             observeAbt.observe(document.querySelector(".testFade"));
+            
 
             const observeP = new IntersectionObserver(entries => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         let fades = document.querySelectorAll(".fade");
                         fades[1].classList.add("fadeIn");
+                        let indicP = document.querySelectorAll(".indic")[2];
+                        indicP.style.opacity = "1";
+                    }
+                    else {
+                        let indicP = document.querySelectorAll(".indic")[2];
+                        indicP.style.opacity = "0";
                     }
                 })
             })
-            observeP.observe(document.querySelector(".grid"));
+            observeP.observe(document.querySelector(".bot"));
         }  
     </script>
 
@@ -40,9 +69,9 @@
 <body>
      <div id="home">
         <div class="nav">
-            <a class="nav-item" href="#home">Home</a>
-            <a class="nav-item" href="#about">About</a>
-            <a class="nav-item" href="#projects">Projects</a>
+            <a class="nav-item" href="#home"> <div class="indic"> </div> <div>Home</div></a>
+            <a class="nav-item" href="#about"><div class="indic"> </div> <div>About</div></a>
+            <a class="nav-item" href="#projects"><div class="indic"> </div> <div>Projects</div></a>
             <a class="nav-item">More</a>
         </div>
    
@@ -52,16 +81,16 @@
                 <div class="prof-pic">
                     <img src="prof.png">
                 </div>
-                <div class="prof-para">
+                <div class="prof-para hP">
                     <p>I'm Wyatt, a Junior Computer Science major at Amherst College primarily interested in software engineering and development. I am passionate about math and quantitative problem-solving and have found programming to be a truly gratifying means of creatively pursuing that passion.</p>
                     <a class="prof-button" href="mailto: wmccarthy24@amherst.edu">Contact Me</a>
                 </div>
             </div>
 
             <div class="content fade" id="about">
-                <div class="prof-para testFade">
+                <div class="prof-para">
                     <p>Hi. My name is Wyatt McCarthy and I'm currently a student at Amherst College in the class of 2024. I am a Computer Science major with extensive coursework in Economics, in which I may double major. At Amherst, I am a member of the men's varsity soccer team. I have played soccer since I was a toddler and probably committed more time to playing than any other activity in my life. In highschool I played in the Development Academy where I spent time with Metropolitan Oval and NYCFC.</p> 
-                    <p>In my coursework at Amherst College, I have focused largely on computer science and economics. Throughout, I have completed several courses relevant to software engineering, quantitative problem-solving, and data analysis including data structures, algorithms, artificial intelligence, microeconomics, macroeconomics, and industrial organization, and I will soon (as of Spring 2023) have completed computer systems and algorithm visualization. I have also worked on several projects that have given me practical experience in developing and implementing software solutions. In particular, I have advanced experience programming in Java and Python, as well as experience with HTML, CSS, JavaScript, and C. I have used these skills to develop projects such as a pathfinding algorithm visualizer, a checkers game with a minimax AI that plays against the user, various artificial intelligence agents for Pacman, and a personal website. 
+                    <p class="testFade">In my coursework at Amherst College, I have focused largely on computer science and economics. Throughout, I have completed several courses relevant to software engineering, quantitative problem-solving, and data analysis including data structures, algorithms, artificial intelligence, microeconomics, macroeconomics, and industrial organization, and I will soon (as of Spring 2023) have completed computer systems and algorithm visualization. I have also worked on several projects that have given me practical experience in developing and implementing software solutions. In particular, I have advanced experience programming in Java and Python, as well as experience with HTML, CSS, JavaScript, and C. I have used these skills to develop projects such as a pathfinding algorithm visualizer, a checkers game with a minimax AI that plays against the user, various artificial intelligence agents for Pacman, and a personal website. 
                     </p>
                     <p> In the medium term, I hope to use the education I've recieved at Amherst alongside a passion I've gained for coding to become a software engineer. In the long run, I hope to somehow align my interest in programming with my passions for fitness, sport and entrepreneurship.</p>
                     <div class="about-nav">                
@@ -159,7 +188,7 @@
                         </div>
                         <div class="crd-cont">
                             <div class="card">
-                                <div class="front">
+                                <div class="front bot">
                                     <img class ="proj-img" src="cellular.png"> 
                                 </div>
                                 <div class="back">
