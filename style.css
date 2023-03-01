@@ -59,7 +59,7 @@ a {
     background-color: black;
     align-self: center;
     opacity: 0;
-    transition: .5s ease-in, .2s ease-out;
+    transition: all .5s ease-in;
 }
 
 .active {
