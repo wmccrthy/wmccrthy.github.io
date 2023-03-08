@@ -194,6 +194,7 @@ a {
 .botitem {
     color: black;
     cursor: pointer;
+    transition: .35s ease;
 }
 
 .bot-icon {
@@ -201,7 +202,8 @@ a {
 }
 
 .botitem:hover {
-    opacity: .5;
+    opacity: .75;
+    transform: scale(1.1);
 }
 
 .nav:hover ~ .contentainer {
@@ -246,6 +248,7 @@ a {
     opacity: 1;
 }
 
+
 /* .crd-cont:hover > .card {
     transform: rotateY(180deg);
 } */
@@ -260,6 +263,11 @@ a {
 .front, .back {
     position: absolute;
     backface-visibility: hidden;
+    transition: .25s ease;
+}
+
+.front:hover {
+    transform: scale(1.05);
 }
 
 .back {
