@@ -273,3 +273,71 @@ a {
 .back {
     transform:rotateY(180deg);
 }
+
+
+#more {
+    /* background-color: black;	 */
+    /* z-index: 2; */
+}
+
+.vid {
+    color: #000;
+    background-color: black;
+    border: 1px solid black;
+    width: 95%;
+    height: 85%;
+}
+
+
+@media (max-width: 500px) {
+    body {
+        overflow: scroll;
+    }
+
+    #home, #about, #projects {
+        width: 75vw;
+    }
+
+    .prof-pic {
+        display: none;
+    }
+
+    
+    .nav {
+        display: none;
+    }
+
+    #about-para {
+        width: 75vw;
+    }
+
+    .about-nav {
+        display: block;
+        width: 75vw;
+    }
+
+    .bot-icon, .botitem {
+        padding: 5px;
+    }
+
+    .content {
+        height: 100vh;
+        width: 75vw;
+    }
+
+    .prof-para {
+        font-size: small;
+    }
+
+   .card {
+       width: 150px;
+       height: 150px;
+   }
+
+
+   .grid {
+        position: relative;
+       display: block;
+       gap: 50px;
+   }
+}

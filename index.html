@@ -62,6 +62,22 @@
                 })
             })
             observeP.observe(document.querySelector(".bot"));
+
+            const observeM = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        let fades = document.querySelectorAll(".fade");
+                        fades[2].classList.add("fadeIn");
+                        let indicM = document.querySelectorAll(".indic")[3];
+                        indicM.style.opacity = "1";
+                    }
+                    else {
+                        let indicM = document.querySelectorAll(".indic")[3];
+                        indicM.style.opacity = "0";
+                    }
+                })
+            })
+            observeM.observe(document.querySelector(".vid"));
         }  
     </script>
 
@@ -72,7 +88,7 @@
             <a class="nav-item" href="#home"> <div class="indic"> </div> <div>Home</div></a>
             <a class="nav-item" href="#about"><div class="indic"> </div> <div>About</div></a>
             <a class="nav-item" href="#projects"><div class="indic"> </div> <div>Projects</div></a>
-            <a class="nav-item">More</a>
+            <a class="nav-item" href="#more"><div class="indic"> </div> <div></div>More</a>
         </div>
    
         <div class="contentainer">
@@ -194,17 +210,19 @@
                             <div class="crd-cont">
                                 <div class="card">
                                     <div class="front bot">
-                                        <img class ="proj-img" src="cellular.png"> 
+                                        <img class ="proj-img" src="Cellular/cellular.png"> 
                                     </div>
                                     <div class="back">
                                         <h5>Cellular Automata</h5>
                                         <p>Basic webpage that prompts for user to input a rule and outputs cellular automata simulation of that rule.</p>
-                                        <a class="botitem" href="cell.html">
+                                        <a class="botitem" href="Cellular/cell.html">
                                             <i class="fa-brands fa-github fa-xl"> </i>
                                         </a>
                                     </div>
                                 </div>
-                            </div><div class="crd-cont">
+
+                            </div>
+                            <div class="crd-cont">
                                 <div class="card">
                                     <div class="front">
                                         <img class ="proj-img" src="nescac.png"> 
@@ -218,7 +236,31 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="crd-cont">
+                                <div class="card">
+                                    <div class="front">
+                                        <img class ="proj-img" src="GrahamScan/cv.png"> 
+                                    </div>
+                                    <div class="back">
+                                        <h5>Graham Scan Visualizer</h5>
+                                        <p>A program to visualize the finding of convex hulls via the Graham scan algorithm; allows user to place points manually, randomly and visualize various steps of the algorithm.</p>
+                                        <a class="botitem" href="GrahamScan/cv.html">
+                                            <i class="fa-brands fa-github fa-xl"> </i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
+                    </div>
+                </div>
+
+                <div class="content fade" id="more">
+                    <div class="prof-para">
+                    	  <div class="vid"> 
+                              <p>ahhhhhhhhhh ahhhhhhhhhh ahhhhhhhhhh ahhhhhhhhhh ahhhhhhhhhh ahhhhhhhhhh ahhhhhhhhhh</p>
+                          </div>
                     </div>
                 </div>
             </section>

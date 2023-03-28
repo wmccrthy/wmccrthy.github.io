@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Convex Hull</title>
+    <link rel="stylesheet" href="cv.css" type="text/css"/>
+    <script src="convex-hull.js" defer>
+    
+    </script>
+    <script>
+      // go();
+    </script>
+    <!-- uncomment this line to test your program: -->
+    <!-- <script src="ch-tester.js" defer></script> -->
+  </head>
+  <body>
+    <div id="root">
+      <div class="menu">
+        <h3>Graham Scan Simulation to Find Convex Hulls</h3>
+        <p>Click anywhere on the canvas to create points or generate random points. When ready, press start to enable other buttons, then step to take one step of Graham's scan, animate to visualize the entire algorithm, or output to see only the convex hull. Use the slider to change animation speed, but note, the animation speed already scales with the number of points. For the purpose of coherently following the visualization, use low speed when the number of points is very high and default or high speeds when the number of points is low.</p>
+        <div class="buttons">
+          <button id="start">
+            Start
+          </button>
+          <button id="step">
+            Step
+          </button>
+          <button id="animate">
+            Animate
+          </button>
+          <button id="connect">
+            Output Convex Hull
+          </button>
+          <button id="rN">Remove All Points</button>
+          <button id="rand">Add Ten Random Points</button>
+          <button id="rst">Reset Visualization</button>
+          <div class="inp">
+            <input type="range" id="spd" min=".5" max="2" step=".25">
+            <label for="spd">Animation Speed</label>
+          </div>
+        </div>
+      </div>
+      <svg id="convex-hull-box" xmlns="http://www.w3.org/2000/svg" >
+      </svg>
+    </div>
+  </body>
+</html>

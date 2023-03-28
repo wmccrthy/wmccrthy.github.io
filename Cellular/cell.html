@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="cell.css">
+    <script src="cellular-automataa.js"></script>
+    <script>
+        window.onload = function() {
+            const rule = prompt("Give me a rule!");
+            while (Number(rule) > 255 || Number(rule) < 0 ) {
+                rule = prompt("Give me a rule!");
+            }
+            fillInitialConfig(Number(rule));
+            const head = document.querySelector(".header");
+            head.textContent = "Rule " + rule;
+        
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+
+        </div>
+        <div class="grid">
+            
+        </div>
+    </div>
+</body>
+</html>
