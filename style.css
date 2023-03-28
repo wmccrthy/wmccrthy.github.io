@@ -195,6 +195,7 @@ a {
     color: black;
     cursor: pointer;
     transition: .35s ease;
+    margin: 3px;
 }
 
 .bot-icon {
@@ -202,7 +203,7 @@ a {
 }
 
 .botitem:hover {
-    opacity: .75;
+    opacity: .55;
     transform: scale(1.1);
 }
 
@@ -275,10 +276,10 @@ a {
 }
 
 
-#more {
+/* #more {
     /* background-color: black;	 */
     /* z-index: 2; */
-}
+/* }  */
 
 .vid {
     color: #000;
