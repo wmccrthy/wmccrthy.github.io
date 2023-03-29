@@ -188,8 +188,12 @@ function ConvexHullViewer (svg=document.querySelector("svg"), ps=PointSet()) {
     }
 
     // function to generate random points for testing 
-    this.genRandom = function (numP) {
-        for (let i = 0; i < 10; i ++) {
+    this.genRandom = function (numP = 0) {
+        let nm = document.querySelector("#num");
+        if (nm.value != null) {
+            numP = nm.value;
+        }
+        for (let i = 0; i < numP; i ++) {
             let h = window.innerHeight;
             let w = window.innerWidth;
             let x = Math.random()*(.90*w);
@@ -216,12 +220,13 @@ function ConvexHull (ps, viewer) {
 	this.strt = false;
 
     this.updateSpeed = function () {
-        let rng = document.querySelector("input");
+        let rng = document.querySelector("#spd");
         this.spd = rng.value;
     }
 
     this.resetVis = function () {
         let svg = document.querySelector("svg");
+        this.conceal();
         for(let i= 0; i < svg.children.length; i ++) {
             if (svg.children[i].tagName === "line" | svg.children[i].getAttribute("fill") !=  "black") {
                 if ( ! svg.children[i].classList.contains("curCheck")) {
@@ -586,14 +591,19 @@ function go() {
                     }
             }
     });
-
+    // let cntr = 0;
     let rnd = document.querySelector("#rand");
     rnd.addEventListener("click", function () {
         test.genRandom();
     })
+    rnd.addEventListener("mouseleave", function () {
+        let get = document.querySelector("#num");
+        get.value = 0;
+    })
 
     let rst = document.querySelector("#rst");
     rst.addEventListener('click', function () {
+        clearInterval(refID);
         alg.resetVis();
     })
 }
@@ -601,8 +611,8 @@ function go() {
 go();
 
 
-// exports.PointSet = PointSet;
-// exports.ConvexHull = ConvexHull;
+exports.PointSet = PointSet;
+exports.ConvexHull = ConvexHull;
 
 //think about getting animation to smoothly transform rather than snap through steps; perhaps try using circle 
 // technique will showed w dfs visualization where circle representing the node being currently checked is drawn at start 
