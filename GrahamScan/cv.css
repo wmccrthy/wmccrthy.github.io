@@ -90,3 +90,7 @@ circle {
     align-items: center;
     justify-content: center;
 }
+
+#num {
+    width: 50px;
+}
