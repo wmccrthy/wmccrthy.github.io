@@ -283,10 +283,12 @@ a {
 
 .vid {
     color: #000;
-    background-color: black;
-    border: 1px solid black;
+    background-color: rgb(255, 255, 255);
+    /* border: 1px solid black; */
     width: 95%;
     height: 85%;
+    font-size: larger;
+    text-align: center;
 }
 
 
