@@ -11,9 +11,9 @@
     <script defer>
         window.onload = function () {
             let cards = document.querySelectorAll(".card");
-            for (const card of cards) {
-                card.addEventListener("click", rotateOnClick(card));
-            }
+//             for (const card of cards) {
+//                 card.addEventListener("click", rotateOnClick(card));
+//             }
         
             const observeH = new IntersectionObserver(entries => {
                 entries.forEach(entry => {
