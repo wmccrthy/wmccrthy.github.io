@@ -381,6 +381,9 @@ a {
     text-align: center;
 }
 
+#mob-head {
+    display: none;
+}
 
 @media (max-width: 600px) {
     body {
@@ -466,5 +469,10 @@ a {
 
    .fack {
        opacity: 1;
+   }
+
+   #mob-head {
+       display: flex;
+       transform: translateY(200px);
    }
 }

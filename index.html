@@ -11,9 +11,9 @@
     <script defer>
         window.onload = function () {
             let cards = document.querySelectorAll(".card");
-//             for (const card of cards) {
-//                 card.addEventListener("click", rotateOnClick(card));
-//             }
+            // for (const card of cards) {
+            //     card.addEventListener("click", rotateOnClick(card));
+            // }
         
             const observeH = new IntersectionObserver(entries => {
                 entries.forEach(entry => {
@@ -244,6 +244,7 @@
             <section>
                 <div class="content fade" id="projects">
                     <div class="prof-para">
+                        <h3 id="mob-head">Projects</h3>
                         <div class="grid">
                             <div class="crd-cont">
                                 <div class="card fade">
