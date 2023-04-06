@@ -403,7 +403,6 @@ a {
         /* width: 150px;
         height: 100px; */
         transform: scale(.65);
-
     }
 
     
@@ -453,14 +452,14 @@ a {
    .grid {
        position: relative;
        display: block;
-       transform: translateY(200px);
+       transform: translateY(500px);
    }
 
    .card {
        width: 75vw;
        /* padding-top: 50px; */
        margin-bottom: 50px;
-       height: 20vh;
+       height: 35vh;
    }
 
    .proj-img {
@@ -478,6 +477,6 @@ a {
 
    #mob-head {
        display: flex;
-       transform: translateY(175px);
+       transform: translateY(475px);
    }
 }
