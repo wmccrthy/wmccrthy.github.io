@@ -391,7 +391,7 @@ a {
     }
 
     #home, #about, #projects {
-        width: 75vw;
+        width: 95vw;
     }
 
     #home {
@@ -436,7 +436,7 @@ a {
 
     .content {
         height: 100vh;
-        width: 75vw;
+        width: 85vw;
         margin-bottom: 100px;
     }
 
@@ -460,6 +460,7 @@ a {
        width: 75vw;
        /* padding-top: 50px; */
        margin-bottom: 50px;
+       height: 20vh;
    }
 
    .proj-img {
@@ -469,10 +470,14 @@ a {
 
    .fack {
        opacity: 1;
+       display: flex;
+       flex-direction: column;
+       justify-content: center;
+       align-items: center;
    }
 
    #mob-head {
        display: flex;
-       transform: translateY(200px);
+       transform: translateY(175px);
    }
 }
