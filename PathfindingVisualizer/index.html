@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siuu</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/8181716bf5.js" crossorigin="anonymous"></script>
+    <script src="pathfind.js" defer></script>
+    <script>
+        window.onload = function() {
+            drawGrid();
+        }
+    </script>
+</head>
+<body>
+    <div class="custom-cursor">
+        <!-- <i class="fa-solid fa-l fa-play"></i> -->
+    </div>
+    <div class="popup">
+        <h3>Pathfinding Visualizer</h3>
+        <ul>
+            <li>Welcome to the pathfinding visualizer! To use, please first set a starting and target node. From there, you can add weights and walls to certain nodes in the grid</li>
+            <li>When adding or removing walls, click and drag your mouse around to add/remove. When changing weights, click on a node to increment/decrement it's weight</li>
+            <li>When you're ready, use any of the algorithms to find a path from the start to target. Feel free to play around with different grid configurations and algorithms. Enjoy!</li>
+        </ul>
+        <button id="exit-popup">Visualize!</button>
+    </div>
+    <div class="header">
+        <!-- eventually want to replace text in these buttons w symbols for ~aesthetics~ -->
+        <!-- <h2>Pathfinding Visualizer</h2> -->
+        <div class="legend">
+            <div class="key-item">
+                <i class="fa-solid fa-xl fa-play align"></i> Start Node
+            </div>
+            <div class="key-item">
+                <i class="fa-solid fa-xl fa-bullseye align"></i> Target Node
+            </div>
+            <div class="key-item">
+                <div id="visited"></div>
+                Visited Node
+            </div>
+            <div class="key-item">
+                <div id="queued"></div>
+                Queued Node
+            </div>
+            <div class="key-item">
+                <div id="path"></div>
+                Path Node
+            </div>
+        </div>
+        <div class="buttons">
+            Set Nodes
+            <button id="start">Start</button> 
+            <button id="target">Target</button>
+            <button id="random-start">Randomize</button>
+        </div>
+        <div class="buttons">
+            Modify Walls
+            <button id="walls">Add Walls</button>
+            <button id="rem-walls">Remove Walls</button>
+            <button id="rand-walls">Random Walls</button>
+            <button id="clear-walls">Clear Walls</button>
+        </div>
+        <div class="buttons">
+            Modify Weights
+            <button id="weight">Weight</button>
+            <button id="unweight">Decrease Weight</button>
+            <button id="rand-weight">Randomize Weights</button>
+            <button id="clear-weights">Clear Weights</button>
+        </div>
+        <div class="algorithms">
+            Search
+            <button id="DFS">DFS</button>
+            <button id="BFS">BFS</button>
+            <button id="Astar">A*</button>
+            <button id="dijkstra">UCF</button>
+            <button id="clear">Clear Search</button>
+        </div>
+        <div class="buttons">
+            Utilities
+            <button id="reset">Reset</button>
+            <button id="instructions">Instructions</button>
+        </div>
+        <div class="resTab">
+            Results
+            <div class="result">
+
+            </div>
+        </div>
+    </div>
+    <div class="grid">
+
+    </div>
+</body>
+</html>
