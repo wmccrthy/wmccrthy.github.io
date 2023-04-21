@@ -96,6 +96,7 @@ str.addEventListener("click", function () {
     toggleWalls = false;
     toggleWeight = false;
     toggle(str);
+
     // update cursor 
     cust.innerHTML = `<i class="fa-solid fa-play"></i>`;
     cust.style.backgroundColor = "transparent";
@@ -294,10 +295,10 @@ function toggle(cur) {
                     gridArr[cellY][cellX].wall = true;
                     gridArr[cellY][cellX].div.style.backgroundColor = "black";
                     gridArr[cellY][cellX].div.style.border = "1px solid black";
-                    gridArr[cellY][cellX].div.style.transform = "scale(2)";
+                    gridArr[cellY][cellX].div.style.transform = "scale(1.35)";
                     setTimeout(function () {
                         gridArr[cellY][cellX].div.style.transform = "";
-                    }, 100);
+                    }, 200);
                     
                 } 
                 if (remove && gridArr[cellY][cellX].wall) {
@@ -474,7 +475,7 @@ dfsButton.addEventListener("click", function () {
         timer = Date.now();
         refID = setInterval(function () {
             DFS(frontier, target, refID, false, false);
-        }, 10);
+        }, 5);
     }
 })
 var bfsButton = document.querySelector("#BFS");
@@ -492,7 +493,7 @@ bfsButton.addEventListener("click", function () {
         timer = Date.now();
         refID = setInterval(function () {
             DFS(frontier, target, refID, true, false);
-        }, 10);
+        }, 5);
     }
 })
 
@@ -512,7 +513,7 @@ aStarButton.addEventListener("click", function () {
         timer = Date.now();
         refID = setInterval(function () {
             DFS(frontier, target, refID, true, true);
-        }, 10);
+        }, 5);
     }
 })
 
@@ -533,7 +534,7 @@ dijkButton.addEventListener("click", function () {
         refID = setInterval(function () {
             mult += 1;
             Dijkstras(frontier, target, refID, mult);
-        }, 15);
+        }, 5);
     }
 })
 
@@ -555,13 +556,13 @@ function DFS(frontier, target, refID, isBFS, isA) {
         cur.div.style.backgroundColor = "blue";
         cur.div.style.border = "1px solid blue";
         // want to animate this somehow 
-        cur.div.style.opacity = ".3";
-        cur.div.style.transform = "scale(.35)";
+        cur.div.style.opacity = ".1";
+        // cur.div.style.transform = "scale(.35)";
         let scopeHm = cur;
         setTimeout(function () {
-                scopeHm.div.style.transform  = "";
                 scopeHm.div.style.opacity = "1";
-        }, 150)
+                // scopeHm.div.style.transform  = "";
+        }, 500)
         if (cur == target) {
             console.log("found");
             clearInterval(refID);
@@ -607,12 +608,12 @@ function DFS(frontier, target, refID, isBFS, isA) {
                 }
                 n.div.style.backgroundColor = "rgb(200,200, 250)";
                 n.div.style.border = "1px solid rgb(200,200,250)";
-                n.div.style.opacity = ".3";
-                n.div.style.transform = "scale(.35)"
+                // n.div.style.opacity = ".3";
+                n.div.style.transform = "scale(1.25)"
                 setTimeout(function () {
+                    // n.div.style.opacity = "1";
                     n.div.style.transform = "";
-                    n.div.style.opacity = "1";
-                }, 300)
+                }, 250)
                 frontier.push(n);
             }
         }
@@ -627,13 +628,13 @@ function Dijkstras(frontier, target, refID, mult) {
         cur.div.style.backgroundColor = "blue";
         // want to animate this somehow 
         cur.div.style.border = "1px solid blue";
-        cur.div.style.opacity = ".3";
-        cur.div.style.transform = "scale(.35)"
+        cur.div.style.opacity = ".1";
+        // cur.div.style.transform = "scale(.35)"
         let scopeHm = cur;
         setTimeout(function () {
                 scopeHm.div.style.opacity = "1";
-                scopeHm.div.style.transform = "";
-        }, 150)
+                // scopeHm.div.style.transform = "";
+        }, 500)
 
         if (cur == target) {
             console.log("found");
@@ -681,15 +682,15 @@ function Dijkstras(frontier, target, refID, mult) {
                 }
                 n.div.style.border = "1px solid rgb(200,200, 250)";
                 n.div.style.backgroundColor = "rgb(200,200, 250)";
-                n.div.style.opacity = ".3";
-                n.div.style.transform = "scale(.35)";
+                // n.div.style.opacity = ".1";
+                n.div.style.transform = "scale(1.25)";
                 // n.div.style.borderRadius = "10px";
                 setTimeout(function () {
-                    n.div.style.opacity = "1";
-                    // n.div.style.borderRadius = "";
+                    // n.div.style.opacity = "1";
+                    // n.div.style.borderRadius = "0px";
                     n.div.style.transform = "";
                     
-                },300)
+                },250)
                 if (!frontier.includes(n)) {
                     frontier.push(n);}
                 }
