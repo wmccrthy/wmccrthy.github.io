@@ -105,7 +105,7 @@
                 crd.addEventListener("mousemove", function (e) {
 
                     // control for card
-                        crd.style.transition = "none";
+                        // crd.style.transition = "translate";
                         let cont = crd.getBoundingClientRect();
                         let cX = (cont.left + cont.right)/2;
                         let cY = (cont.top + cont.bottom)/2;
@@ -116,12 +116,15 @@
                         let offsetY = cY - e.clientY;
                         // need center of crd
                         // crd.style.overflow = "visible";
-                        crd.style.boxShadow = `${offsetX/6}px ${offsetY/6}px 40px rgba(${100+offsetY/2},${100+(offsetX+offsetY)/4},${100+offsetX/2}, .5)`;
-                        crd.style.transform = `rotateY(${offsetX/4}deg) rotateX(${offsetY/8}deg)`;
+                        crd.style.boxShadow = `${offsetX/8}px ${offsetY/8}px ${(Math.abs(offsetY)+Math.abs(offsetX))/3}px rgba(${100+offsetY/2},${100+(offsetX+offsetY)/4},${100+offsetX/2}, .5)`;
+                        // crd.style.boxShadow = `${0}px ${6}px ${(Math.abs(offsetY)+Math.abs(offsetX))/3}px rgba(100,100,100, .5)`;
+                        crd.style.translate = "0px -35px";
+                        crd.style.transform = `rotateY(${offsetX/6}deg) rotateX(${offsetY/12}deg)`;
                       
                 });
                 crd.addEventListener("mouseover", function() {
                     // crd.style.transform = `translateY(-25px)`;
+                    crd.style.transition = "translate .4s ease"
                     // control for child elements 
                     let fack = crd.querySelector(".fack");
                     fack.style.transform = "scale(.85) translateZ(100px)";
@@ -133,6 +136,7 @@
                     // clearInterval(refID)
                     let fack = crd.querySelector(".fack");
                     fack.style.transform = "translateZ(0px)";
+                    crd.style.translate = "0px 0px";
                     // crd.style.overflow = "hidden";
                     crd.style.transition = "all .4s ease";
                     crd.style.boxShadow = `1px 0px 0px rgb(0,0,0)`;
