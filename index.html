@@ -114,9 +114,10 @@
                         // console.log(cY - e.clientY);
                         let offsetX = cX - e.clientX;
                         let offsetY = cY - e.clientY;
+                        let topsetY = cont.bottom - e.clientY;
                         // need center of crd
                         // crd.style.overflow = "visible";
-                        crd.style.boxShadow = `${offsetX/8}px ${offsetY/8}px ${(Math.abs(offsetY)+Math.abs(offsetX))/3}px rgba(${100+offsetY/2},${100+(offsetX+offsetY)/4},${100+offsetX/2}, .5)`;
+                        crd.style.boxShadow = `${0}px ${topsetY/6}px ${50}px rgba(100,100,100, .5)`;
                         // crd.style.boxShadow = `${0}px ${6}px ${(Math.abs(offsetY)+Math.abs(offsetX))/3}px rgba(100,100,100, .5)`;
                         crd.style.translate = "0px -35px";
                         crd.style.transform = `rotateY(${offsetX/6}deg) rotateX(${offsetY/12}deg)`;
