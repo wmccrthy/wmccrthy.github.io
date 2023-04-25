@@ -12,8 +12,11 @@ var toggleStart = false;
 var toggleTarget = false;
 var toggleWeight = false; 
 var canSearch = true;
+var pathFound = false;
+var chosenAlg = null;
 var start = null; //need to set these at each toggle and reset if start/target set again such that there are no repeats 
 var target = null;
+
 
 // basic hover effect for cells such that user knows location of mouse if not displayed and where clicking 
 let cells = document.querySelectorAll(".cell");
@@ -27,6 +30,8 @@ for (let cell of cells) {
 if (document.querySelector(".popup").style.display != "none") {
     grid.style.pointerEvents = "none";
     document.querySelector(".header").style.pointerEvents = "none";
+    grid.style.opacity = ".25"; 
+    document.querySelector(".header").style.opacity = ".25";
 }
 // if the pop up is being displayed, disable pointer events on the grid and header (components of normal interface) such that 
 // user has to close popup first 
@@ -37,6 +42,8 @@ closePopup.addEventListener("click", function () {
     grid.style.pointerEvents = "";
     document.querySelector(".header").style.pointerEvents = "";
     console.log(document.querySelector(".header"));
+    grid.style.opacity = "1"; 
+    document.querySelector(".header").style.opacity = "1";
 })
 // event listener for closing pop-up; enables pointer events for header and grid such that upon closing, program functions as intended 
 
@@ -45,6 +52,8 @@ instruc.addEventListener("click", function () {
     document.querySelector(".popup").style.display = "";
     grid.style.pointerEvents = "none";
     document.querySelector(".header").style.pointerEvents = "none";
+    grid.style.opacity = ".25"; 
+    document.querySelector(".header").style.opacity = ".25";
 })
 // event listener for instructions pop-up such that users can revisit if they forgot how to use program;
 // disables appropriate pointer events 
@@ -108,11 +117,12 @@ str.addEventListener("click", function () {
     toggleTarget = false;
     toggleWalls = false;
     toggleWeight = false;
-    // ^ think i'm gonna wrap these in a function to keep this section of code cleaner 
+    // ^ think i'm gonna wrap these in a function to keep this section of code cleaner !!!
     toggle(str);
 
     // update cursor to represent start symbol
     cust.innerHTML = `<i class="fa-solid fa-play"></i>`;
+    // cust.innerHTML = "S";
     cust.style.backgroundColor = "transparent";
 });
 // start button programmed such that upon click, users can set start node; this ability will be toggled until user selects another 
@@ -129,13 +139,17 @@ randStart.addEventListener("click", function () {
             start.div.innerHTML = "";
             start.start = false;
         }
+          
+        
         // fill innerHTML of start w start symbol element 
         gridArr[startY][startX].div.innerHTML = `<i class="fa-solid fa-xl fa-play"></i>`;
+        // gridArr[startY][startX].div.innerHTML = "s";
         gridArr[startY][startX].div.querySelector("i").style.opacity = "0";
         setTimeout(function () {
             gridArr[startY][startX].div.querySelector("i").style.opacity = "1";
             gridArr[startY][startX].div.querySelector("i").classList.add("fa-bounce");
         }, 200)
+
         setTimeout(function () {
             gridArr[startY][startX].div.querySelector("i").classList.remove("fa-bounce");
         }, 1000)
@@ -151,7 +165,7 @@ randStart.addEventListener("click", function () {
         }
         // fill innerHTML of target w target symbol element 
         gridArr[targY][targX].div.innerHTML = `<i class="fa-solid fa-xl fa-bullseye"></i>`;
-
+        // gridArr[targY][targX].div.innerHTML = "t";
         gridArr[targY][targX].div.querySelector("i").style.opacity = "0";
         setTimeout(function () {
             gridArr[targY][targX].div.querySelector("i").style.opacity = "1";
@@ -213,6 +227,7 @@ trgt.addEventListener("click", function () {
 
     // update cursor to bullseye symbol
     cust.innerHTML = `<i class="fa-solid fa-bullseye"></i>`;
+    // cust.innerHTML = "S";
     cust.style.backgroundColor = "transparent";
 });
 // upon click of target button users can select node to place target; button is toggled until another is selected 
@@ -273,7 +288,7 @@ function toggle(cur) {
     if (toggleStart | toggleTarget ) {
         // if booleans for setting start/target are toggled, when mouse is pressed on grid
         grid.onmousedown = function (e) {
-            if (canSearch) {
+            if (canSearch | pathFound) {
                 let rect = grid.getBoundingClientRect();
                 let denomX = (rect.left + rect.right)/50
                 let cellX = Math.floor(e.clientX/denomX)
@@ -300,7 +315,8 @@ function toggle(cur) {
                     //add animation for selected start node such that symbol bounces in 
                     gridArr[cellY][cellX].start = true; //set start cells.start value to true; this boolean is used within algos
                     start = gridArr[cellY][cellX]; //set global variable start (holds start node) to the selected node
-                } else { //if toggleTarget    
+                } else { //if toggleTarget  
+
                     if (target) { //reset old target if it exists 
                         target.div.innerHTML = "";
                         target.target = false;
@@ -320,7 +336,44 @@ function toggle(cur) {
                     gridArr[cellY][cellX].target = true;
                     target = gridArr[cellY][cellX]; 
                 }
-                } else {//if current search going on (canSearch will b false), indicate to user they cannot modify start/target
+
+                //TESTING
+                if (pathFound) {
+                    // recompute currently displayed algorithm based on change of start/target nodes post visualization; 
+                    // this feature alllows users to change the target/start node upon the conclusion of a visualization 
+                    // and the program will atuomatically display the algorithm output for the new target/start node
+                    //  (new path, new visited nodes, queued nodes, etc)
+                    clear();
+                    frontier = [];
+                    start.cost = 0;
+                    frontier.push(start);
+                    timer = Date.now();
+                    canSearch = false;
+                    refID = setInterval(function () {
+                        var done = "";
+                        if (chosenAlg == 0) {
+                            while (done != "done") { 
+                                done = DFS(frontier, target, refID, false, false, true);
+                            }
+                        } 
+                        if (chosenAlg == 1) {
+                            while (done != "done") {
+                                done = DFS(frontier, target, refID, true, false, true);
+                            }
+                        }
+                        if (chosenAlg == 2) {
+                            while (done != "done") {
+                                done = DFS(frontier, target, refID, true, true, true);
+                            }
+                        }
+                        if (chosenAlg == 3) {
+                            while (done != "done") {
+                                done = Dijkstras(frontier, target, refID, true);
+                            }
+                        }
+                    }, 0);
+                }
+            } else {//if current search going on (canSearch will b false), indicate to user they cannot modify start/target
                     result.innerHTML = "Cannot set start or target while searching"
                 }
             }
@@ -423,6 +476,7 @@ var innerREF2 = [];
 
 function reset() {
     //reset relevant variables and each cell in the grid; clear refID of whatever algorithm may have been running to ensure no carryover to next call
+    pathFound = false;
     canSearch = true;
     start = null;
     target = null;
@@ -435,6 +489,7 @@ function reset() {
 function clear() {
     // clear refID of algorithm that was running, clear each timeout incurred by the path animation for that animation, reset innerREF arrays 
     // clear each cell in the grid (only resets visual components added for being 'visited',  'queued', or 'path' node)
+    pathFound = false;
     console.log(innerREF);
     clearInterval(refID);
     innerREF.forEach(timeout => {
@@ -500,13 +555,13 @@ function randomizeWalls() {
         for (let j = 0; j < 50; j ++) {
             let chance = Math.random();
             if (chance > .71) {
-                if (!gridArr[i][j].start & !gridArr[i][j].wall & !gridArr[i][j].target) {
+                if (!gridArr[i][j].start & gridArr[i][j].weight == 0 & !gridArr[i][j].target) {
                     gridArr[i][j].div.style.backgroundColor = `black`;
                     gridArr[i][j].div.style.border = "1px solid black";
-                    gridArr[i][j].div.style.transform = "scale(1.08)";
+                    gridArr[i][j].div.style.transform = "scale(1.25)";
                 setTimeout(function () {
                     gridArr[i][j].div.style.transform = "";
-                }, 100);
+                }, 250);
                     gridArr[i][j].wall = true;
                 }
             } else {
@@ -551,6 +606,7 @@ dfsButton.addEventListener("click", function () {
     } else {
         //otherwise, initialize frontier and push start cell, clear results display, update run timer, and call algorithm step
         // iteratively separated by 5 ms 
+        chosenAlg = 0;
         canSearch = false;
         result.innerHTML = "";
         frontier = [];
@@ -569,6 +625,7 @@ bfsButton.addEventListener("click", function () {
     } else if (!canSearch) {
         result.innerHTML = "Please clear search before searching again"
     } else {
+        chosenAlg = 1;
         canSearch = false;
         result.innerHTML = "";
         frontier = [];
@@ -589,6 +646,7 @@ aStarButton.addEventListener("click", function () {
     } else if (!canSearch) {
         result.innerHTML = "Please clear search before searching again"
     } else {
+        chosenAlg = 2;
         canSearch = false;
         result.innerHTML = "";
         frontier = [];
@@ -608,19 +666,20 @@ dijkButton.addEventListener("click", function () {
     } else if (!canSearch) {
         result.innerHTML = "Please clear search before searching again"
     } else {
+        chosenAlg = 3;
         canSearch = false;
         result.innerHTML = "";
         frontier = [];
         start.cost = 0;
         frontier.push(start);
         timer = Date.now();
-        mult = 0;
         refID = setInterval(function () {
-            mult += 1;
-            Dijkstras(frontier, target, refID, mult);
+            Dijkstras(frontier, target, refID);
         }, 5);
     }
 })
+
+
 
 
 let result = document.querySelector(".result"); //grab dom element for displaying results and info 
@@ -630,7 +689,7 @@ let result = document.querySelector(".result"); //grab dom element for displayin
 // if you implement them normally (so full algorihtm runs once, rather than algorihtm steps being repeatedly called), the program
 // will only display the end result and not actually visualize the process 
 
-function DFS(frontier, target, refID, isBFS, isA) {
+function DFS(frontier, target, refID, isBFS, isA, isRecompute = false) {
     // want each algorithm to be implemented as a single iteration (rather than full while loop), such that we can call it 
     // w setInterval within event listeners for appropriate button 
     // as BFS, DFS, and A* are very similar structurally, we use the same function for each of them and have variables controlling the differing factors
@@ -656,13 +715,15 @@ function DFS(frontier, target, refID, isBFS, isA) {
         cur.div.style.backgroundColor = "blue";
         cur.div.style.border = "1px solid blue";
         // want to animate this somehow 
-        cur.div.style.opacity = ".1";
-        // cur.div.style.transform = "scale(.35)";
-        let scopeHm = cur;
-        setTimeout(function () {
-                scopeHm.div.style.opacity = "1";
-                // scopeHm.div.style.transform  = "";
-        }, 500)
+        if (!isRecompute) {
+            cur.div.style.opacity = ".1";
+            // cur.div.style.transform = "scale(.35)";
+            let scopeHm = cur;
+            setTimeout(function () {
+                    scopeHm.div.style.opacity = "1";
+                    // scopeHm.div.style.transform  = "";
+            }, 500)
+        }
         
         //if we've found target, clearInterval so no further steps of algorithm are called
         if (cur == target) {
@@ -685,16 +746,16 @@ function DFS(frontier, target, refID, isBFS, isA) {
                     let scopeTest = cur;
                     console.log(scopeTest);
                     innerREF.push(setTimeout(function () {
-                        if (!canSearch) {
+                        
                             scopeTest.div.style.backgroundColor = "red";
                             scopeTest.div.style.border = "1px solid red";
                             scopeTest.div.style.transform = "scale(1.5) rotate(360deg)";
-                        } 
+                         
                     }, 30 * i))
                     innerREF2.push(setTimeout(function () {
-                        if (!canSearch) {
+                        
                             scopeTest.div.style.transform = "rotate(360deg)";
-                        }
+                        
                     }, 40 * i))
                     // set animations for each cell in traced path such that they animate incrementally based on their position; creates a smooth trace
                 }
@@ -705,7 +766,8 @@ function DFS(frontier, target, refID, isBFS, isA) {
             }
             //having traced path, display the result of algorithm search
             result.innerHTML = `Path Length: ${pathLength} Path Cost: ${pathCost} Runtime: ${Date.now()-timer}ms`;
-            return 
+            pathFound = true;
+            return "done"
         }
 
         //for each neighbor of our current node
@@ -729,11 +791,20 @@ function DFS(frontier, target, refID, isBFS, isA) {
                 n.div.style.backgroundColor = "rgb(200,200, 250)";
                 n.div.style.border = "1px solid rgb(200,200,250)";
                 // n.div.style.opacity = ".3";
-                n.div.style.transform = "scale(1.25)"
-                setTimeout(function () {
-                    // n.div.style.opacity = "1";
-                    n.div.style.transform = "";
-                }, 250)
+                if (!isRecompute) {
+                    n.div.style.transform = "scale(.45)";
+                    // n.div.style.borderRadius = "10px";
+                    setTimeout(function () {
+                        // n.div.style.opacity = "1";
+                        // n.div.style.borderRadius = "10px";
+                        n.div.style.transform = "scale(1.5)";
+                    },250)
+                    setTimeout(function () {
+                        // n.div.style.opacity = "1";
+                        // n.div.style.borderRadius = "0px";
+                        n.div.style.transform = "";
+                    },450)
+                }
                 //update visual components 
 
                 frontier.push(n);
@@ -743,7 +814,7 @@ function DFS(frontier, target, refID, isBFS, isA) {
     }
 }
 
-function Dijkstras(frontier, target, refID, mult) {
+function Dijkstras(frontier, target, refID, isRecompute = false) {
     if (frontier.length > 0) {
         // sort frontier based on cost (considers weights) such that it functions like priority queue 
 
@@ -753,13 +824,15 @@ function Dijkstras(frontier, target, refID, mult) {
         cur.div.style.backgroundColor = "blue";
         // want to animate this somehow 
         cur.div.style.border = "1px solid blue";
-        cur.div.style.opacity = ".1";
-        // cur.div.style.transform = "scale(.35)"
-        let scopeHm = cur;
-        setTimeout(function () {
-                scopeHm.div.style.opacity = "1";
-                // scopeHm.div.style.transform = "";
-        }, 500)
+        if (!isRecompute) {
+            cur.div.style.opacity = ".1";
+            // cur.div.style.transform = "scale(.35)"
+            let scopeHm = cur;
+            setTimeout(function () {
+                    scopeHm.div.style.opacity = "1";
+                    // scopeHm.div.style.transform = "";
+            }, 500)
+        }
 
         if (cur == target) {
             console.log("found");
@@ -776,16 +849,16 @@ function Dijkstras(frontier, target, refID, mult) {
                     let scopeTest = cur;
                     console.log(scopeTest);
                     innerREF.push(setTimeout(function () {
-                        if (!canSearch) {
+                        
                             scopeTest.div.style.backgroundColor = "red";
                             scopeTest.div.style.border = "1px solid red";
                             scopeTest.div.style.transform = "scale(1.5) rotate(360deg)";
-                        }
+                        
                     }, 30 * i))
                     innerREF2.push(setTimeout(function () {
-                        if (!canSearch) {
+            
                             scopeTest.div.style.transform = "rotate(360deg)";
-                        }
+                        
                     }, 40 * i))
                 }
                 i += 1;
@@ -799,7 +872,8 @@ function Dijkstras(frontier, target, refID, mult) {
 
             //add html element displaying path found with cost: 
             result.innerHTML = `Path Length: ${pathLength} Path Cost: ${pathCost} Runtime: ${Date.now()-timer}ms`;
-            return 
+            pathFound = true;
+            return "done"
         }
         for (let n of cur.getNeighbors()) {
             if (!n.queued) {
@@ -813,13 +887,21 @@ function Dijkstras(frontier, target, refID, mult) {
                 n.div.style.border = "1px solid rgb(200,200, 250)";
                 n.div.style.backgroundColor = "rgb(200,200, 250)";
                 // n.div.style.opacity = ".1";
-                n.div.style.transform = "scale(1.25)";
-                // n.div.style.borderRadius = "10px";
-                setTimeout(function () {
-                    // n.div.style.opacity = "1";
-                    // n.div.style.borderRadius = "0px";
-                    n.div.style.transform = "";
-                },250)
+                if (!isRecompute) {
+                    n.div.style.transform = "scale(.45)";
+                    // n.div.style.borderRadius = "10px";
+                    setTimeout(function () {
+                        // n.div.style.opacity = "1";
+                        // n.div.style.borderRadius = "25px";
+                        n.div.style.transform = "scale(1.5)";
+                    },250)
+                    setTimeout(function () {
+                        // n.div.style.opacity = "1";
+                        // n.div.style.borderRadius = "0px";
+                        n.div.style.transform = "";
+                    },450)
+
+                }
                 //update visual components of queued cell
                 if (!frontier.includes(n)) {
                     //push it to frontier 
@@ -909,20 +991,21 @@ function Cell(column, row, element) {
     }
 
     this.clearWeight = function () {
-        if (this.weight > 0) {
-            this.weight = 0;
+        this.weight = 0;
+        if (! this.wall) {
             this.div.style.backgroundColor = "white";
-            this.div.innerHTML = "";
         }
+        this.div.innerHTML = "";
         // removes weight from cell
     }
+
 
     this.neighbors = [];
     //cells array of neighbors (above, below, left, right)
 
     this.getNeighbors = function () {
         //neighbors will be cells directly above,below, and to left/right of cell
-        //neighbors are valid if they are not walls 
+        //neighbors are only valid if they are not walls 
         neighbs = [];
         if (this.x != 0) { //add left neighbor (cell at (this.x-1, this.y))
             if ( !gridArr[this.y][this.x-1].wall) {
@@ -988,6 +1071,18 @@ function Cell(column, row, element) {
 //commented code w brief explanations 
 
 
+//Goals 4/24/23 
+// -  have it so if you change target / start node when visualition over, it automically recomputes 
+// -  maze generation 
+// as of today (in class 2:45), have implemented some automatic recomputation but it redoes the entire visualization, only want it to display
+//  new result, might need to create new functions for this that do algos without timeouts (apart from traced path)
+//  FUCK YEA! (in class 3:20) figured it out, ugly code for now but works; will continue to develop in coming days 
+//  now allows for picking new start/target upon visualization finishing and recomputed animation is a lot smoother as per 
+//  disabling the graphical transformation within algorithm when called for recomputation made a lot smoother 
+
+// New Dev Goals:
+//  - maze generation 
+//  - make animation for visited and queued nodes cooler 
 
 
 
