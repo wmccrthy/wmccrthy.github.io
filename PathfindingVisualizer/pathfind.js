@@ -537,12 +537,17 @@ function randomizeWeights() {
                     if (rand != 0) {
                         gridArr[i][j].div.innerHTML = `${rand}`;
                     }
-                    gridArr[i][j].div.style.backgroundColor = `rgb(${250-5*gridArr[i][j].weight}, ${250-5*gridArr[i][j].weight}, ${250-5*gridArr[i][j].weight})`;
+                    if (!gridArr[i][j].visited & !gridArr[i][j].queued) {
+                        gridArr[i][j].div.style.backgroundColor = `rgb(${250-5*gridArr[i][j].weight}, ${250-5*gridArr[i][j].weight}, ${250-5*gridArr[i][j].weight})`;
+                    }
+                    
                 }
             } else {
                 if (!gridArr[i][j].start & !gridArr[i][j].wall & !gridArr[i][j].target) {
                     gridArr[i][j].weight = 0; gridArr[i][j].div.innerHTML = '';
-                    gridArr[i][j].div.style.backgroundColor = "white";
+                    if (!gridArr[i][j].visited  & !gridArr[i][j].queued)  { 
+                        gridArr[i][j].div.style.backgroundColor = "white";
+                    }
                 }
             }
         }
@@ -765,7 +770,19 @@ function DFS(frontier, target, refID, isBFS, isA, isRecompute = false) {
                 cur = cur.parent; //until we reach start, set cur to parent node
             }
             //having traced path, display the result of algorithm search
-            result.innerHTML = `Path Length: ${pathLength} Path Cost: ${pathCost} Runtime: ${Date.now()-timer}ms`;
+            if (chosenAlg == 0) {
+                result.innerHTML = "Breadth First Search\n"
+            } 
+            if (chosenAlg == 1) {
+                result.innerHTML = "Depth First Search\n"
+            }
+            if (chosenAlg == 2) {
+                result.innerHTML = "A*\n"
+            }
+            if (chosenAlg == 3) {
+                result.innerHTML = "UCF\n"
+            }
+            result.innerHTML += `Path Length: ${pathLength} Path Cost: ${pathCost} Runtime: ${Date.now()-timer}ms`;
             pathFound = true;
             return "done"
         }
@@ -871,7 +888,19 @@ function Dijkstras(frontier, target, refID, isRecompute = false) {
             }
 
             //add html element displaying path found with cost: 
-            result.innerHTML = `Path Length: ${pathLength} Path Cost: ${pathCost} Runtime: ${Date.now()-timer}ms`;
+            if (chosenAlg == 0) {
+                result.innerHTML = "Breadth First Search\n"
+            } 
+            if (chosenAlg == 1) {
+                result.innerHTML = "Depth First Search\n"
+            }
+            if (chosenAlg == 2) {
+                result.innerHTML = "A*\n"
+            }
+            if (chosenAlg == 3) {
+                result.innerHTML = "UCF\n"
+            }
+            result.innerHTML += `Path Length: ${pathLength} Path Cost: ${pathCost} Runtime: ${Date.now()-timer}ms`;
             pathFound = true;
             return "done"
         }
@@ -910,14 +939,168 @@ function Dijkstras(frontier, target, refID, isRecompute = false) {
                 }
             }
         }
+}
+
+// TESTING
+var wallList = []
+
+function mazeGenStart() {
+// want grid to start as disconnected cells; so for every other column and row, make that full column/row walls 
+    for (let column = 0; column < 50; column ++) {
+        if (column % 2 != 0) {
+            for (let r = 0; r < 25; r ++) {
+                wallList.push(gridArr[r][column]);
+                // console.log(gridArr[r][column]);
+                gridArr[r][column].wall = true;
+                gridArr[r][column].div.style.backgroundColor = "black";
+                gridArr[r][column].div.style.border = "1px solid black";
+            }
+        }
     }
+    for (let row = 0; row < 25; row ++) {
+        if (row % 2 != 0) {
+            for (let c = 0; c < 50; c ++) {
+                wallList.push(gridArr[row][c]);
+                gridArr[row][c].wall = true;
+                gridArr[row][c].div.style.backgroundColor = "black";
+                gridArr[row][c].div.style.border = "1px solid black";
+            }
+        }
+    }
+    // console.log(wallList);
+}
+
+// need to keep track of:
+//      - each cell needs to have a 'group', (cells its connected to) 
+//          - bc cells in the same group will all have the same .group variable, when checking if removing a wall connects two separate regions, 
+//            i can simply compare the groups of the cells on either side of that wall
+//      - also need to keep track of all walls (thats easy though, just create list and add each cell modified in mazeStart alg to list)
+let test = false;
+function mazeGen(mazeID, i) {
+    // select random wall to remove
+    // if cells on either side of that wall (wall.getNeighbors), have different .groups, remove the wall and update the .groups of cells 
+    // repeat until all cells have the same group
+
+    // enhance animations of this 
+    if (!mazeGenTermTest()) {
+        // select random wall
+        let randWall = wallList[Math.floor(Math.random() * wallList.length)];
+        // animations to highlight this wall
+        // setTimeout(function () {
+        //     randWall.div.style.border = "1px solid yellow"
+        //     randWall.div.style.transform = "scale(1.25)";
+        // }, 1 * i)
+        // setTimeout(function () {
+        //     if (randWall.wall) {
+        //         randWall.div.style.border = "1px solid black";
+        //     } else {
+        //         randWall.div.style.border = "1px solid rgb(238, 250, 255)";
+        //     }
+        //     randWall.div.style.transform = "";
+        // }, 2 * i)
+
+
+
+        // if removing wall connects unconnected neighbors of randWall, remove it and update groups of neighbors,
+        // else, keep wall, repeat
+        let neighbs = randWall.getNeighbors();
+        // to see if neighbors unconnected, compare their groups 
+        if (neighbs.length > 0) {
+            // check if neighbors unconnected 
+            let cntrlG = neighbs[0].group;
+            let keepWall = true;
+            for (let n = 1; n < neighbs.length; n ++) {
+                if (neighbs[n].group != cntrlG) {
+                    // console.log("cap")
+                    // console.log(neighbs[n].group);
+                    // console.log(cntrlG);
+                    keepWall = false;
+                    break;
+                }
+            }
+
+            // if neighbs disconnected, remove wall 
+            if (!keepWall) {
+                randWall.wall = false;
+                setTimeout(function () {
+                    randWall.div.style.backgroundColor = "white";
+                    randWall.div.style.border = "rgb(238, 250, 255)";
+                }, 2 * i)
+                wallList.splice(wallList.indexOf(randWall), 1);
+                // if wall is removed, need to connect groups of neighbors, by that, create combined group list
+                // first add cell of wall being removed 
+                // then add each neighbros group to that list
+                // then for each cell in the combined group, set its group = combinedgroup, since they are now all connected 
+                var combinedGroup = []
+                combinedGroup.push(randWall)
+                for (let n of neighbs) {
+                   combinedGroup = combinedGroup.concat(n.group);
+                }
+                for (let n of combinedGroup) {
+                    n.group = combinedGroup;
+                }
+            }
+            // wallList.splice(wallList.indexOf(randWall), 1);
+        }
+    } else {
+        clearInterval(mazeID);
+        clearGroups();
+        wallList = []
+    }
+}
+
+function mazeGenTermTest() {
+    let compR = Math.floor(Math.random() * 25);
+    let compC = Math.floor(Math.random() * 50);
+    while (gridArr[compR][compC].wall) {
+        compR = Math.floor(Math.random() * 25);
+        compC = Math.floor(Math.random() * 50);
+    }
+    let controlGroup = gridArr[compR][compC].group; 
+    for (let r = 0; r < 25; r ++) {
+        for (let c = 0; c < 50; c ++) {
+            if (!gridArr[r][c].wall) {
+                if (gridArr[r][c].group != controlGroup) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
+function clearGroups() {
+    for (let r = 0; r < 25; r ++) {
+        for (let c = 0; c < 50; c ++) {
+            gridArr[r][c].group = [gridArr[r][c]]
+    }}
+}
+
+// Kruskal's algorithm: This algorithm starts with a grid of disconnected cells and repeatedly selects a random wall to remove. 
+// If removing the wall connects two separate regions of the maze, the wall is removed and the regions are merged. This algorithm 
+// can create mazes with many interconnected paths and loops.
+
+
+let maze = document.querySelector("#maze")
+maze.addEventListener("click", function () {
+    mazeGenStart();
+    let i = 0;
+    let mazeID = setInterval(function () {
+        mazeGen(mazeID, i);
+        i += 1;
+    }, 10);
+});
+// mazeGenStart();
 
 
 //function for comparing manhattan distance from 2 diff cells to target; used within A*
 function compareDistTarget(cell1, cell2) {
+    //want to make it use hybrid of manhattan and euclidian distance 
     var dist1 = Math.abs(target.x - cell1.x) + Math.abs(target.y-cell1.y);
     var dist2 = Math.abs(target.x - cell2.x) + Math.abs(target.y - cell2.y);
-    return (dist1+cell1.cost) - (dist2+cell2.cost);
+    var euclidDist1 = Math.sqrt((target.x-cell1.x)**2 + (target.y-cell1.y)**2);
+    var euclidDist2 = Math.sqrt((target.x-cell2.x)**2 + (target.y-cell2.y)**2);
+    return (euclidDist1 + dist1 + cell1.cost) - (euclidDist2 + dist2 + cell2.cost);
 }
 //function for comparing costs of 2 cells; used within UCF/dijkstras
 function compareCost(cell1, cell2) {
@@ -942,6 +1125,9 @@ function Cell(column, row, element) {
     
     // values for retracing path upon algorithm completion
     this.parent = null;
+
+    //value for maze gen kruskals 
+    this.group = [this];
 
     this.reset = function () {
         this.div.style.backgroundColor = "white";
@@ -992,10 +1178,13 @@ function Cell(column, row, element) {
 
     this.clearWeight = function () {
         this.weight = 0;
-        if (! this.wall) {
-            this.div.style.backgroundColor = "white";
+        if (! this.wall & !this.start & !this.target) {
+            if (!this.visited & !this.queued) 
+            {this.div.style.backgroundColor = "white";}
+
+            this.div.innerHTML = "";
         }
-        this.div.innerHTML = "";
+        
         // removes weight from cell
     }
 
@@ -1026,6 +1215,33 @@ function Cell(column, row, element) {
         if (this.y != 24) { //add below neighbor (cell at (this.x, this.y+1))
             if (!gridArr[this.y+1][this.x].wall) {
                 neighbs.push(gridArr[this.y+1][this.x]);
+            }
+        }
+        return neighbs;
+    }
+
+    this.getNeighborsMaze = function () {
+        // for maze logic is diff so neighbors need to b cells that r 2 steps away from this 
+        //otherwise exact same as normal neighbors func
+        neighbs = [];
+        if (this.x != 1) { //add left neighbor (cell at (this.x-1, this.y))
+            if ( !gridArr[this.y][this.x-2].wall) {
+                neighbs.push(gridArr[this.y][this.x-2]);
+            }
+        }
+        if (this.x != 49) { //add right neighbor (cell at (this.x+1, this.y))
+            if (!gridArr[this.y][this.x+2].wall) {
+                neighbs.push(gridArr[this.y][this.x+2]);
+            }
+        }
+        if (this.y != 0) { //add above neighbor (cell at (this.x, this.y-1))
+            if (!gridArr[this.y-2][this.x].wall) {
+                neighbs.push(gridArr[this.y-2][this.x]);
+            }
+        }
+        if (this.y != 24) { //add below neighbor (cell at (this.x, this.y+1))
+            if (!gridArr[this.y+2][this.x].wall) {
+                neighbs.push(gridArr[this.y+2][this.x]);
             }
         }
         return neighbs;
@@ -1084,5 +1300,12 @@ function Cell(column, row, element) {
 //  - maze generation 
 //  - make animation for visited and queued nodes cooler 
 
+
+// Updates 4/29/23 
+
+// implemented maze generation via variation of kruskals algorithm; 
+// new goal is to enhance animations of maze gen to exhibit specific wall being evaluated by alg 
+// visually will highlight (change border color) and upscale 
+// 
 
 
