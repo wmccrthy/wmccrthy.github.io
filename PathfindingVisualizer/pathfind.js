@@ -1088,7 +1088,7 @@ maze.addEventListener("click", function () {
     let mazeID = setInterval(function () {
         mazeGen(mazeID, i);
         i += 1;
-    }, 10);
+    }, 1);
 });
 // mazeGenStart();
 
