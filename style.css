@@ -266,6 +266,7 @@ a {
 }
 
 .card {
+    position: relative;
     width: 250px;
     height: 250px;
     border-radius: 6px;
@@ -281,6 +282,18 @@ a {
     text-align: center;
     overflow:hidden;
 }
+
+/* this will be used to add new visual effect */
+.card::before {
+    content: "";
+    width: 250px;
+    height: 250px;
+    position: absolute;
+    background: radial-gradient(250px circle at var(--mouse-x) var(--mouse-y), rgb(51, 57, 65),rgb(27,31,36) );
+
+}
+
+
 .card p {
     font-size: 11px;
 }
@@ -292,7 +305,7 @@ a {
 }
 
 .card:hover .proj-img {
-    opacity: .1;
+    opacity: .02;
     transform: scale(1);
 }
 

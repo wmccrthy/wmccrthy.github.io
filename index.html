@@ -115,6 +115,10 @@
                         let offsetX = cX - e.clientX;
                         let offsetY = cY - e.clientY;
                         let topsetY = cont.bottom - e.clientY;
+                        let bX = e.clientX - cont.left;
+                        let bY = e.clientY - cont.top;
+                        crd.style.setProperty("--mouse-x", `${bX}px`);
+                        crd.style.setProperty("--mouse-y", `${bY}px`);
                         // need center of crd
                         // crd.style.overflow = "visible";
                         crd.style.boxShadow = `${0}px ${topsetY/6}px ${50}px rgba(100,100,100, .5)`;
@@ -158,10 +162,14 @@
                     cntct.style.transition = "all .5s ease";
                     cntct.style.boxShadow = "0px 6px 6px";
                 }); 
+
+                // select card before psuedo element 
+                // add event listener such that position of before element follows mouse 
+
             }
 
             // 
-        }  
+        } 
     </script>
 
 </head>
