@@ -71,7 +71,7 @@ a {
     width: 100vw;
     /* height: 80vh; */
     min-height: 80vh;
-    background-color: rgb(200,200,200);
+    background-color: rgb(255, 255, 255);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -83,7 +83,7 @@ a {
     width: 100vw;
     display: flex;
     justify-content: center;
-    /* align-items: center; */
+    align-items: center;
     align-self: center;
 }
 
@@ -124,6 +124,15 @@ select {
     align-items: center;
     justify-content: center;
     opacity: 0;
+}
+
+.courses a {
+    transition: all .25s ease;
+}
+
+.courses a:hover {
+    scale: 1.01;
+    font-weight: 400;
 }
 
 li {
