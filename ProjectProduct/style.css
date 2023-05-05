@@ -67,6 +67,7 @@ a {
 }
 
 .content {
+    margin: 0;
     width: 100vw;
     /* height: 80vh; */
     min-height: 80vh;
@@ -74,14 +75,14 @@ a {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-around;
 }
 
 .outline {
     top: 0;
     width: 100vw;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     /* align-items: center; */
     align-self: center;
 }
@@ -89,7 +90,7 @@ a {
 .section {
     /* height: 55vh; */
     min-height: fit-content;
-    width: 35vw;
+    width: 32vw;
     /* border: 1px solid black; */
     display: flex;
     flex-direction: column;
@@ -98,7 +99,7 @@ a {
 }
 
 h3 {
-    font-weight: lighter;
+    font-weight: 500;
 }
 
 .selector {
@@ -114,6 +115,7 @@ select {
 
 .courses {
     /* border: 1px solid black; */
+    transition: all .25s ease;
     margin-top: 2vh;
     margin-bottom: 2vh;
     width: 20vw;
@@ -121,12 +123,17 @@ select {
     display: flex;
     align-items: center;
     justify-content: center;
+    opacity: 0;
 }
 
 li {
     list-style:none;
-    font-weight: 300;
     font-size: medium;
+    font-weight: 400;
+}
+
+li p {
+    font-weight: lighter;
 }
 
 ul {
@@ -138,4 +145,10 @@ ul {
     text-align: center;
     align-items: center;
     align-self:flex-end;
+}
+
+.inner {
+    list-style:disc;
+    align-self: baseline;
+    font-weight: 100;
 }
