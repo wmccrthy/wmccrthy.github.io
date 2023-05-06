@@ -15,7 +15,7 @@ window.addEventListener("resize", function (e) {
     console.log(this.innerWidth)
     if (windowWidth != this.innerWidth) {
         console.log("working")
-        windowWidth = this.width;
+        windowWidth = this.innerWidth;
         reset();
         //clear relevant intervals and timeouts to ensure no errors 
         if(window.matchMedia("(max-width: 600px)").matches & cellW == "2vw") {
