@@ -8,25 +8,34 @@ var windowRs = 25;
 var windowCs = 50;
 //for this to work comprehensively, need to update all uses of "50" and "25" (for cols and rows) to be 
 // set to windowRs and windowCs
+let windowWidth = window.innerWidth
 window.addEventListener("resize", function (e) {
-    reset();
-    //clear relevant intervals and timeouts to ensure no errors 
-    if(window.matchMedia("(max-width: 600px)").matches & cellW == "2vw") {
-        cellW = "4vw";
-        cellH = "2vh";
-        windowRs = 25;
-        windowCs = 25;
-        // need function for removing all cell divs 
-        emptyGrid();
-        drawGrid(25, 25);
-    } else if (!window.matchMedia("(max-width: 600px)").matches) {
-        cellW = "2vw";
-        cellH = "3vh";
-        windowRs = 25;
-        windowCs = 50;
-        emptyGrid();
-        drawGrid();
+    //only do the following on width changes bc mobile resizes height on scroll
+    console.log(windowWidth)
+    console.log(this.innerWidth)
+    if (windowWidth != this.innerWidth) {
+        console.log("working")
+        windowWidth = this.width;
+        reset();
+        //clear relevant intervals and timeouts to ensure no errors 
+        if(window.matchMedia("(max-width: 600px)").matches & cellW == "2vw") {
+            cellW = "4vw";
+            cellH = "2vh";
+            windowRs = 25;
+            windowCs = 25;
+            // need function for removing all cell divs 
+            emptyGrid();
+            drawGrid(25, 25);
+        } else if (!window.matchMedia("(max-width: 600px)").matches) {
+            cellW = "2vw";
+            cellH = "3vh";
+            windowRs = 25;
+            windowCs = 50;
+            emptyGrid();
+            drawGrid();
+        }
     }
+    
 });
 
 
