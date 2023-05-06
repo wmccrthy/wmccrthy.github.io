@@ -4,16 +4,32 @@
 
 var cellW = "2vw";
 var cellH = "3vh";
-window.onresize = function () {
+var windowRs = 25;
+var windowCs = 50;
+//for this to work comprehensively, need to update all uses of "50" and "25" (for cols and rows) to be 
+// set to windowRs and windowCs
+window.addEventListener("resize", function () {
     if(window.matchMedia("(max-width: 600px)").matches) {
-        cellW = "3vw";
+        cellW = "4vw";
         cellH = "2vh";
+        windowRs = 25;
+        windowCs = 25;
+        // need function for removing all cell divs 
+        emptyGrid();
+        drawGrid(25, 25);
+    } else {
+        cellW = "2vw";
+        cellH = "3vh";
+        windowRs = 25;
+        windowCs = 50;
+        emptyGrid();
+        drawGrid();
     }
-}
+});
 
 
 const grid = document.querySelector(".grid");
-const gridArr = [];
+var gridArr = [];
 var toggleWalls = false;
 var remove = false;
 var unweight = false;
@@ -101,11 +117,11 @@ speed.onchange = function () {
     algInterval = Math.floor(100/speed.value);
 }
 
-function drawGrid() {
+function drawGrid(rows=25, cols=50) {
     // creates grid and relevant dom elements;
-    for (let i = 0; i < 25; i ++) {
+    for (let i = 0; i < rows; i ++) {
         gridArr[i] = [];
-        for (let j = 0; j < 50; j ++) {
+        for (let j = 0; j < cols; j ++) {
             let cell = document.createElement("div");
             cell.style.boxSizing = "border-box";
             cell.style.width = cellW;
@@ -120,7 +136,12 @@ function drawGrid() {
 }
 // function called upon window load to draw the grid; only called once to create grid as it would be wildly inconvenient to preset 
 // thousands of divs within html 
-
+function emptyGrid() {
+    gridArr = []
+    while (grid.lastChild) {
+        grid.removeChild(grid.lastChild);
+    }
+}
 
 // add event listeners for buttons 
 let str = document.querySelector("#start"); 
@@ -146,16 +167,16 @@ let randStart = document.querySelector("#random-start")
 randStart.addEventListener("click", function () {
     // this condition ensures that users cannot re-select start/target node during a search (doing so is prone to bugs)
     if (canSearch)  {
-        let startX = Math.floor(Math.random() * 50);
-        let startY = Math.floor(Math.random() * 25);
+        let startX = Math.floor(Math.random() *windowCs);
+        let startY = Math.floor(Math.random() *windowRs);
         if (start) { //reset old start 
             start.div.innerHTML = "";
             start.start = false;
         }
         //ensure randomized cells are not walls
         while (gridArr[startY][startX].wall) {
-            startX = Math.floor(Math.random() * 50);
-            startY = Math.floor(Math.random() * 25);
+            startX = Math.floor(Math.random() *windowCs);
+            startY = Math.floor(Math.random() *windowRs);
         }
           
         
@@ -175,15 +196,15 @@ randStart.addEventListener("click", function () {
         gridArr[startY][startX].start = true;
         start = gridArr[startY][startX];
 
-        let targX =  Math.floor(Math.random() * 50);
-        let targY = Math.floor(Math.random() * 25);
+        let targX =  Math.floor(Math.random() *windowCs);
+        let targY = Math.floor(Math.random() *windowRs);
         if (target) { //reset old target if it exists; keeps bugs away
             target.div.innerHTML = "";
             target.target = false;
         }
         while (gridArr[targY][targX].wall) {
-            targX = Math.floor(Math.random() * 50);
-            targY = Math.floor(Math.random() * 25);
+            targX = Math.floor(Math.random() *windowCs);
+            targY = Math.floor(Math.random() *windowRs);
         }
         
         // fill innerHTML of target w target symbol element 
@@ -301,7 +322,7 @@ grid.addEventListener("mouseleave", function () {
 
 //toggle function that implements functionality for adding start, target, walls, weight, and removing walls/weights
 // relevant booleans are set upon button press that determine what functionality toggle enables 
-function toggle(cur) {
+function toggle(cur, rows=windowRs, cols=windowCs) {
     cur.style.backgroundColor = "rgb(220,220,220)";
     for (let btn of document.querySelectorAll("button")) {
         if (btn != cur) {
@@ -313,9 +334,9 @@ function toggle(cur) {
         grid.onmousedown = function (e) {
             if (canSearch | pathFound) {
                 let rect = grid.getBoundingClientRect();
-                let denomX = (rect.left + rect.right)/50
+                let denomX = (rect.left + rect.right)/windowCs
                 let cellX = Math.floor(e.clientX/denomX)
-                let denomY = (rect.bottom-rect.top)/25;
+                let denomY = (rect.bottom-rect.top)/windowRs;
                 let cellY = Math.floor((e.clientY - rect.top)/denomY)
                 // retrieve grid coordinates (x,y) of cell that mouse is over 
                 
@@ -408,9 +429,9 @@ function toggle(cur) {
             grid.onmousemove = function (e) {
                 // adding a grid.onmousemove function dependent on grid.onmousedown occurance creates a click, hold, and drag effect
                 let rect = grid.getBoundingClientRect();
-                let denomX = (rect.left + rect.right)/50
+                let denomX = (rect.left + rect.right)/windowCs
                 let cellX = Math.floor(e.clientX/denomX)
-                let denomY = (rect.bottom-rect.top)/25;
+                let denomY = (rect.bottom-rect.top)/windowRs;
                 let cellY = Math.floor((e.clientY - rect.top)/denomY)
                 // compute cell over which mouse is 
 
@@ -445,9 +466,9 @@ function toggle(cur) {
         grid.onmousedown = function (e) {
             // upon mouse click
             let rect = grid.getBoundingClientRect();
-            let denomX = (rect.left + rect.right)/50
+            let denomX = (rect.left + rect.right)/windowCs
             let cellX = Math.floor(e.clientX/denomX)
-            let denomY = (rect.bottom-rect.top)/25;
+            let denomY = (rect.bottom-rect.top)/windowRs;
             let cellY = Math.floor((e.clientY - rect.top)/denomY)
             // compute cell over which mouse is clicked 
 
@@ -508,8 +529,8 @@ function reset() {
     target = null;
     clearInterval(refID);
     clearInterval(mazeID);
-    for (let i = 0; i < 25; i ++) {
-        for (let j = 0; j < 50; j ++) {
+    for (let i = 0; i < windowRs; i ++) {
+        for (let j = 0; j < windowCs; j ++) {
             gridArr[i][j].reset();
         }}}
 
@@ -530,23 +551,23 @@ function clear() {
     innerREF = []
     innerREF2 = []
     canSearch = true;
-    for (let i = 0; i < 25; i ++) {
-        for (let j = 0; j < 50; j ++) {
+    for (let i = 0; i < windowRs; i ++) {
+        for (let j = 0; j < windowCs; j ++) {
             gridArr[i][j].clear();
         }}}
 
 
 function clearWalls() {
     //clear all walls in grid
-    for (let i = 0; i < 25; i ++) {
-        for (let j = 0; j < 50; j ++) {
+    for (let i = 0; i < windowRs; i ++) {
+        for (let j = 0; j < windowCs; j ++) {
             gridArr[i][j].clearWall();
         }}}
 
 function clearWeights() {
     //clear all weights in grid
-    for (let i = 0; i < 25; i ++) {
-        for (let j = 0; j < 50; j ++) {
+    for (let i = 0; i < windowRs; i ++) {
+        for (let j = 0; j < windowCs; j ++) {
             gridArr[i][j].clearWeight();
         }}}
 
@@ -554,8 +575,8 @@ function clearWeights() {
 
 function randomizeWeights() {
     //iterate though all cells and add random weight to cells 35% of time 
-    for (let i = 0; i < 25; i ++) {
-        for (let j = 0; j < 50; j ++) {
+    for (let i = 0; i < windowRs; i ++) {
+        for (let j = 0; j < windowCs; j ++) {
             let rand = Math.floor(Math.random()*25);
             let chance = Math.random();
             if (chance > .65) {
@@ -583,8 +604,8 @@ function randomizeWeights() {
 
 function randomizeWalls() {
     //iterate through cells and add walls to cell 29% of time 
-    for (let i = 0; i < 25; i ++) {
-        for (let j = 0; j < 50; j ++) {
+    for (let i = 0; i < windowRs; i ++) {
+        for (let j = 0; j < windowCs; j ++) {
             let chance = Math.random();
             if (chance > .71) {
                 if (!gridArr[i][j].start & gridArr[i][j].weight == 0 & !gridArr[i][j].target) {
@@ -973,9 +994,9 @@ var wallList = []
 
 function mazeGenStart() {
 // want grid to start as disconnected cells; so for every other column and row, make that full column/row walls 
-    for (let column = 0; column < 50; column ++) {
+    for (let column = 0; column < windowCs; column ++) {
         if (column % 2 != 0) {
-            for (let r = 0; r < 25; r ++) {
+            for (let r = 0; r < windowRs; r ++) {
                 wallList.push(gridArr[r][column]);
                 // console.log(gridArr[r][column]);
                 gridArr[r][column].wall = true;
@@ -984,9 +1005,9 @@ function mazeGenStart() {
             }
         }
     }
-    for (let row = 0; row < 25; row ++) {
+    for (let row = 0; row < windowRs; row ++) {
         if (row % 2 != 0) {
-            for (let c = 0; c < 50; c ++) {
+            for (let c = 0; c < windowCs; c ++) {
                 wallList.push(gridArr[row][c]);
                 gridArr[row][c].wall = true;
                 gridArr[row][c].div.style.backgroundColor = "black";
@@ -1078,15 +1099,15 @@ function mazeGen(mazeID, i) {
 }
 
 function mazeGenTermTest() {
-    let compR = Math.floor(Math.random() * 25);
-    let compC = Math.floor(Math.random() * 50);
+    let compR = Math.floor(Math.random() *windowRs);
+    let compC = Math.floor(Math.random() *windowCs);
     while (gridArr[compR][compC].wall) {
-        compR = Math.floor(Math.random() * 25);
-        compC = Math.floor(Math.random() * 50);
+        compR = Math.floor(Math.random() *windowRs);
+        compC = Math.floor(Math.random() *windowCs);
     }
     let controlGroup = gridArr[compR][compC].group; 
-    for (let r = 0; r < 25; r ++) {
-        for (let c = 0; c < 50; c ++) {
+    for (let r = 0; r < windowRs; r ++) {
+        for (let c = 0; c < windowCs; c ++) {
             if (!gridArr[r][c].wall) {
                 if (gridArr[r][c].group != controlGroup) {
                     return false;
@@ -1098,8 +1119,8 @@ function mazeGenTermTest() {
 }
 
 function clearGroups() {
-    for (let r = 0; r < 25; r ++) {
-        for (let c = 0; c < 50; c ++) {
+    for (let r = 0; r < windowRs; r ++) {
+        for (let c = 0; c < windowCs; c ++) {
             gridArr[r][c].group = [gridArr[r][c]]
     }}
 }
@@ -1236,7 +1257,7 @@ function Cell(column, row, element) {
             }
             
         }
-        if (this.x != 49) { //add right neighbor (cell at (this.x+1, this.y))
+        if (this.x != windowCs-1) { //add right neighbor (cell at (this.x+1, this.y))
             if (!gridArr[this.y][this.x+1].wall) {
                 neighbs.push(gridArr[this.y][this.x+1]);
             }
@@ -1246,7 +1267,7 @@ function Cell(column, row, element) {
                 neighbs.push(gridArr[this.y-1][this.x]);
             }
         }
-        if (this.y != 24) { //add below neighbor (cell at (this.x, this.y+1))
+        if (this.y != windowRs-1) { //add below neighbor (cell at (this.x, this.y+1))
             if (!gridArr[this.y+1][this.x].wall) {
                 neighbs.push(gridArr[this.y+1][this.x]);
             }
@@ -1263,7 +1284,7 @@ function Cell(column, row, element) {
                 neighbs.push(gridArr[this.y][this.x-2]);
             }
         }
-        if (this.x != 49) { //add right neighbor (cell at (this.x+1, this.y))
+        if (this.x != windowCs-1) { //add right neighbor (cell at (this.x+1, this.y))
             if (!gridArr[this.y][this.x+2].wall) {
                 neighbs.push(gridArr[this.y][this.x+2]);
             }
@@ -1273,7 +1294,7 @@ function Cell(column, row, element) {
                 neighbs.push(gridArr[this.y-2][this.x]);
             }
         }
-        if (this.y != 24) { //add below neighbor (cell at (this.x, this.y+1))
+        if (this.y != windowRs-1) { //add below neighbor (cell at (this.x, this.y+1))
             if (!gridArr[this.y+2][this.x].wall) {
                 neighbs.push(gridArr[this.y+2][this.x]);
             }
