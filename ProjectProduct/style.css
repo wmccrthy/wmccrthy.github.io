@@ -22,9 +22,11 @@ a {
 }
 
 .header {
-    /* position: fixed; */
+    position: fixed;
+    top: 0;
     width: 100vw;
     height: 20vh;
+    transition: all .2s ease;
     /* top: 0; */
     padding-left: 1vw;
     background-color: rgb(93,60,133);
@@ -33,6 +35,7 @@ a {
     align-items: center;
     justify-content: space-between;
     color: white;
+    z-index: 5;
 }
 
 .nav {
@@ -80,6 +83,10 @@ a {
 .logo img {
     width: 150px;
     height: 150px;
+}
+
+#home {
+    margin-top: 20vh;
 }
 
 .content {

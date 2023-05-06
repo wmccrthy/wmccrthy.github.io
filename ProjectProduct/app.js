@@ -12,5 +12,17 @@ searchProf.addEventListener("click", function () {
     // select.innerHTML = '<select name="" id="department"><option selected disabled>Select a Professor</option><option value="DemoDepartment">John Doe</option></select>';
 }) 
 
+var header = document.querySelector(".header");
+window.onscroll = function () {
+    if (window.scrollY > 50) {
+        header.style.transform = "scaleY(.75) scaleX(.95) translateY(-4vh)";
+        header.style.opacity = ".9";
+       
+    } else {
+        header.style.transform = "";
+        header.style.opacity = "1";
+    }
+}
+
 
 
