@@ -116,6 +116,7 @@ p {
     height: 3vh;
     background-color: red;
 }
+
 .buttons {
     margin: 10px;
     justify-self: center;
@@ -199,7 +200,7 @@ button:active {
     /* border: 1px solid black; */
     display: flex;
     flex-wrap: wrap;
-    bottom: 0%;
+    bottom: 0;
 }
 
 .cell {
@@ -227,4 +228,38 @@ button:active {
 i {
     transition: all .5s ease;
     transform: scale(.9);
+}
+
+.speed-slider {
+    display: flex;
+    flex-direction: column;
+    font-size: small;
+}
+
+
+@media (max-width: 600px) {
+
+    body {
+        height: 200vh;
+    }
+
+    .grid {
+        position: fixed;
+        bottom: 0;
+    }
+
+    .header {
+        flex-wrap: wrap;
+        position: absolute;
+        top: 0;
+    }
+
+    i {
+        transform: scale(.5);
+    }
+
+    .cell {
+        font-size: xx-small;
+    }
+
 }

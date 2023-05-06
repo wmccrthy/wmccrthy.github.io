@@ -1,8 +1,17 @@
 //planning: 
 //      - should create cell class/object that holds relevant variables to be modified throughout pathfinding processes 
 //      - 
-const cellW = "2vw";
-const cellH = "3vh";
+
+var cellW = "2vw";
+var cellH = "3vh";
+window.onresize = function () {
+    if(window.matchMedia("(max-width: 600px)").matches) {
+        cellW = "3vw";
+        cellH = "2vh";
+    }
+}
+
+
 const grid = document.querySelector(".grid");
 const gridArr = [];
 var toggleWalls = false;
@@ -85,8 +94,12 @@ grid.addEventListener("click", function () {
 // adds subtle visual effects for the custom cursor; most notably, will bounce when weighting nodes so it looks almost as if 
 // the user is dropping a weight on that cell
 
-
-
+// eventlistener for custom speed slider (upon changing value, change interval at which algorithms are iteratively called)
+var algInterval = 1;
+let speed = document.querySelector("input");
+speed.onchange = function () {
+    algInterval = Math.floor(100/speed.value);
+}
 
 function drawGrid() {
     // creates grid and relevant dom elements;
@@ -139,6 +152,11 @@ randStart.addEventListener("click", function () {
             start.div.innerHTML = "";
             start.start = false;
         }
+        //ensure randomized cells are not walls
+        while (gridArr[startY][startX].wall) {
+            startX = Math.floor(Math.random() * 50);
+            startY = Math.floor(Math.random() * 25);
+        }
           
         
         // fill innerHTML of start w start symbol element 
@@ -163,6 +181,11 @@ randStart.addEventListener("click", function () {
             target.div.innerHTML = "";
             target.target = false;
         }
+        while (gridArr[targY][targX].wall) {
+            targX = Math.floor(Math.random() * 50);
+            targY = Math.floor(Math.random() * 25);
+        }
+        
         // fill innerHTML of target w target symbol element 
         gridArr[targY][targX].div.innerHTML = `<i class="fa-solid fa-xl fa-bullseye"></i>`;
         // gridArr[targY][targX].div.innerHTML = "t";
@@ -329,7 +352,9 @@ function toggle(cur) {
                         gridArr[cellY][cellX].div.querySelector("i").classList.add("fa-bounce");
                     }, 200)
                     setTimeout(function () {
-                        gridArr[cellY][cellX].div.querySelector("i").classList.remove("fa-bounce");
+                        if (gridArr[cellY][cellX].div != null) {
+                            gridArr[cellY][cellX].div.querySelector("i").classList.remove("fa-bounce");
+                        }
                     }, 1000)
                     // animation such that symbol bounces into view
 
@@ -470,6 +495,7 @@ grid.addEventListener("mouseup", function () {
 
 //functions for resetting grid, clearing search and randomizing weight/wall configurations 
 var refID = null; //refID for intervals in which algorithms are called 
+var mazeID = null;
 var innerREF = []; //arrays of refIDs for the timeouts used to animate path drawing 
 var innerREF2 = []; 
 // need to keep track of these such that they can be cleared when relevant as otherwise visual bugs can occur
@@ -481,6 +507,7 @@ function reset() {
     start = null;
     target = null;
     clearInterval(refID);
+    clearInterval(mazeID);
     for (let i = 0; i < 25; i ++) {
         for (let j = 0; j < 50; j ++) {
             gridArr[i][j].reset();
@@ -620,7 +647,7 @@ dfsButton.addEventListener("click", function () {
         timer = Date.now();
         refID = setInterval(function () {
             DFS(frontier, target, refID, false, false);
-        }, 5);
+        }, algInterval);
     }
 })
 var bfsButton = document.querySelector("#BFS");
@@ -639,7 +666,7 @@ bfsButton.addEventListener("click", function () {
         timer = Date.now();
         refID = setInterval(function () {
             DFS(frontier, target, refID, true, false);
-        }, 5);
+        }, algInterval);
     }
 })
 
@@ -660,7 +687,7 @@ aStarButton.addEventListener("click", function () {
         timer = Date.now();
         refID = setInterval(function () {
             DFS(frontier, target, refID, true, true);
-        }, 5);
+        }, algInterval);
     }
 })
 
@@ -680,7 +707,7 @@ dijkButton.addEventListener("click", function () {
         timer = Date.now();
         refID = setInterval(function () {
             Dijkstras(frontier, target, refID);
-        }, 5);
+        }, algInterval);
     }
 })
 
@@ -771,10 +798,10 @@ function DFS(frontier, target, refID, isBFS, isA, isRecompute = false) {
             }
             //having traced path, display the result of algorithm search
             if (chosenAlg == 0) {
-                result.innerHTML = "Breadth First Search\n"
+                result.innerHTML = "Depth First Search\n"
             } 
             if (chosenAlg == 1) {
-                result.innerHTML = "Depth First Search\n"
+                result.innerHTML = "Breadth First Search\n"
             }
             if (chosenAlg == 2) {
                 result.innerHTML = "A*\n"
@@ -1046,6 +1073,7 @@ function mazeGen(mazeID, i) {
         clearInterval(mazeID);
         clearGroups();
         wallList = []
+        canSearch = true;
     }
 }
 
@@ -1083,12 +1111,18 @@ function clearGroups() {
 
 let maze = document.querySelector("#maze")
 maze.addEventListener("click", function () {
-    mazeGenStart();
-    let i = 0;
-    let mazeID = setInterval(function () {
-        mazeGen(mazeID, i);
-        i += 1;
-    }, 1);
+    if (canSearch) {
+        reset();
+        mazeGenStart();
+        let i = 0;
+        canSearch = false;
+        mazeID = setInterval(function () {
+            mazeGen(mazeID, i);
+            i += 1;
+        }, 1);
+    } else {
+        result.innerHTML = "Cannot generate maze until search is complete"
+    }
 });
 // mazeGenStart();
 
@@ -1306,6 +1340,18 @@ function Cell(column, row, element) {
 // implemented maze generation via variation of kruskals algorithm; 
 // new goal is to enhance animations of maze gen to exhibit specific wall being evaluated by alg 
 // visually will highlight (change border color) and upscale 
-// 
+// hmmm, algorithm should practically be quite fast but animating it makes no sense then...
+// what else to add????
 
 
+// Notes 5/2 
+//      extra page with information on algorithms / more instructions
+//      small bug fixes so buttons cant be pressed while running alg or generating maze
+//      ask him in OH for suggestions 
+//      add speed option 
+
+
+// Notes 5/4 
+//      maybe add to a* star visualization to include the calculated cost (including weight, distance from start, and distance to target)
+//      could do the same for dijkstras 
+//      
