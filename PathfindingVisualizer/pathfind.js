@@ -361,11 +361,15 @@ function toggle(cur, rows=windowRs, cols=windowCs) {
                     gridArr[cellY][cellX].div.innerHTML = `<i class="fa-solid fa-xl fa-play"></i>`;
                     gridArr[cellY][cellX].div.querySelector("i").style.opacity = "0";
                     setTimeout(function () {
-                        gridArr[cellY][cellX].div.querySelector("i").style.opacity = "1";
-                        gridArr[cellY][cellX].div.querySelector("i").classList.add("fa-bounce");
+                        if (gridArr[cellY][cellX].div != null) { 
+                            gridArr[cellY][cellX].div.querySelector("i").style.opacity = "1";
+                            gridArr[cellY][cellX].div.querySelector("i").classList.add("fa-bounce");
+                        }
                     }, 200)
                     setTimeout(function () {
-                        gridArr[cellY][cellX].div.querySelector("i").classList.remove("fa-bounce");
+                        if (gridArr[cellY][cellX].div != null) {
+                            gridArr[cellY][cellX].div.querySelector("i").classList.remove("fa-bounce");
+                        }
                     }, 1000)
                     //add animation for selected start node such that symbol bounces in 
                     gridArr[cellY][cellX].start = true; //set start cells.start value to true; this boolean is used within algos
@@ -380,8 +384,10 @@ function toggle(cur, rows=windowRs, cols=windowCs) {
                     gridArr[cellY][cellX].div.innerHTML = `<i class="fa-solid fa-xl fa-bullseye"></i>`;
                     gridArr[cellY][cellX].div.querySelector("i").style.opacity = "0";
                     setTimeout(function () {
-                        gridArr[cellY][cellX].div.querySelector("i").style.opacity = "1";
-                        gridArr[cellY][cellX].div.querySelector("i").classList.add("fa-bounce");
+                        if (gridArr[cellY][cellX].div != null) {
+                            gridArr[cellY][cellX].div.querySelector("i").style.opacity = "1";
+                            gridArr[cellY][cellX].div.querySelector("i").classList.add("fa-bounce");
+                        }
                     }, 200)
                     setTimeout(function () {
                         if (gridArr[cellY][cellX].div != null) {
