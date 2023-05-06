@@ -8,7 +8,7 @@ var windowRs = 25;
 var windowCs = 50;
 //for this to work comprehensively, need to update all uses of "50" and "25" (for cols and rows) to be 
 // set to windowRs and windowCs
-window.addEventListener("resize", function () {
+window.addEventListener("resize", function (e) {
     if(window.matchMedia("(max-width: 600px)").matches & cellW == "2vw") {
         cellW = "4vw";
         cellH = "2vh";
@@ -17,7 +17,7 @@ window.addEventListener("resize", function () {
         // need function for removing all cell divs 
         emptyGrid();
         drawGrid(25, 25);
-    } else {
+    } else if (!window.matchMedia("(max-width: 600px)").matches) {
         cellW = "2vw";
         cellH = "3vh";
         windowRs = 25;

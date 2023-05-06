@@ -10,7 +10,14 @@
     <script src="pathfind.js" defer></script>
     <script>
         window.onload = function() {
-            drawGrid();
+            if (window.matchMedia("(max-width: 600px)").matches) {
+                cellW = '4vw';
+                cellH = '2vh';
+                drawGrid(25, 25);
+            } else {
+                drawGrid();
+            }
+            
         }
     </script>
 </head>
