@@ -9,7 +9,7 @@ var windowCs = 50;
 //for this to work comprehensively, need to update all uses of "50" and "25" (for cols and rows) to be 
 // set to windowRs and windowCs
 window.addEventListener("resize", function () {
-    if(window.matchMedia("(max-width: 600px)").matches) {
+    if(window.matchMedia("(max-width: 600px)").matches & cellW == "2vw") {
         cellW = "4vw";
         cellH = "2vh";
         windowRs = 25;
