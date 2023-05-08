@@ -85,10 +85,9 @@ a {
     height: 150px;
 }
 
-#home {
+#home, #dhome {
     margin-top: 20vh;
 }
-
 .content {
     margin: 0;
     width: 100vw;
@@ -212,4 +211,25 @@ ul {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+}
+
+.internal-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    text-align: center;
+    /* height: fit-content; */
+    font-weight: bold;
+    transition: all .3s ease;
+}
+
+.internal-link:hover {
+    opacity: .5;
+}
+
+
+
+p {
+    display: flex;
 }
