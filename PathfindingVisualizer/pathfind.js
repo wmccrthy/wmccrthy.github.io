@@ -867,8 +867,8 @@ function DFS(frontier, target, refID, isBFS, isA, isRecompute = false) {
                         
                             scopeTest.div.style.backgroundColor = "red";
                             scopeTest.div.style.border = "1px solid red";
-                            scopeTest.div.style.transform = "scale(.25) rotate(360deg)";
-                            scopeTest.div.style.opacity = ".5";
+                            scopeTest.div.style.transform = "scale(1.5) rotate(360deg)";
+                            scopeTest.div.style.opacity = ".25";
                          
                     }, 30 * i))
                     innerREF2.push(setTimeout(function () {
@@ -983,8 +983,8 @@ function Dijkstras(frontier, target, refID, isRecompute = false) {
                         
                             scopeTest.div.style.backgroundColor = "red";
                             scopeTest.div.style.border = "1px solid red";
-                            scopeTest.div.style.transform = "scale(.25) rotate(360deg)";
-                            scopeTest.div.style.opacity = ".5";
+                            scopeTest.div.style.transform = "scale(1.5) rotate(360deg)";
+                            scopeTest.div.style.opacity = ".25";
                         
                     }, 30 * i))
                     innerREF2.push(setTimeout(function () {

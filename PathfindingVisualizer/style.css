@@ -266,7 +266,10 @@ i {
     .grid {
         position: fixed;
         bottom: 0;
+        margin: 0;
+        padding: 0;
     }
+
 
     .header {
         flex-wrap: wrap;
@@ -277,7 +280,6 @@ i {
     ul {
         gap: 2px;
         width: 90vw;
-
     }
 
     li {
