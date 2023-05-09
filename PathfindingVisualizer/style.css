@@ -22,14 +22,14 @@ body {
     opacity: .65;
 }
 
-.popup {
+.popup, .popup-big {
     position: fixed;
     width: 500px;
     height: 500px;
     background-color: white;
     border: 1px solid black;
     z-index: 5;
-    top: 15%;
+    top: 10%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -37,11 +37,25 @@ body {
     border-radius: 10px;
 }
 
+.popup-big {
+    transition: all 1s ease;
+    width: 95vw;
+    height: 95vh;
+    display: flex;
+    flex-wrap: wrap;
+    top: 2.5%;
+    /* opacity: 0; */
+    /* display: none; */
+}
+
+
+
 ul {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    width: 350px;
+    gap: 5px;
+    width: 400px;
+    line-height: 1;
 }
 
 p {
@@ -226,7 +240,7 @@ button:active {
 }
 
 i {
-    transition: all .5s ease;
+    transition: transform .5s ease;
     transform: scale(.9);
 }
 
@@ -255,11 +269,26 @@ i {
     }
 
     i {
-        transform: scale(.5);
+        transform: scale(.75);
     }
 
     .cell {
         font-size: xx-small;
     }
 
+}
+
+li {
+    margin: 0;
+    padding: 0;
+}
+li p {
+    margin: 0;
+    width: 500px;
+    font-size: x-small;
+    font-weight: lighter;
+}
+
+.algs p {
+    font-size: x-small;
 }

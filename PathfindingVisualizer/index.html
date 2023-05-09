@@ -30,11 +30,40 @@
     <div class="popup">
         <h3>Pathfinding Visualizer</h3>
         <ul>
+            <li>This project was inspired by various pathfinding visualizer demonstrations on youtube; Wyatt had also previously implemented a much less robust visualizer in Python and wanted to extend it with this project.</li>
             <li>To use, please first set a starting and target node, clicking on either button will enable you to place the respective node. From there, you can add weights and walls to certain nodes in the grid.</li>
             <li>When adding or removing walls, click and drag your mouse around to add/remove. When changing weights, click on a node to increment/decrement it's weight</li>
             <li>When you're ready, use any of the algorithms to find a path from the start to target. Feel free to play around with different grid configurations and algorithms. Enjoy!</li>
         </ul>
         <button id="exit-popup">Visualize!</button>
+    </div>
+    <div id ="info" class="popup-big">
+        <h3>Instructions and Info</h3>
+        <ul>
+            <li>Pressing start or target will toggle the placement of the respective node. Click on the desired cell to assign start/target node.</li>
+            <li>Pressing add walls will toggle the placement of walls. Click, hold, and drag mouse around grid to place walls. Pressing add weight will toggle weighting. Click on desired node to increment its weight by 1.</li>
+            <li>Pressing maze will generate a maze. Clear walls/weights/search do as they say. Reset empties the entire grid.</li>
+        </ul>
+        <ul class="algs">
+            <h3>Algorithms</h3>
+            <li><p>Each algorithm in our program is implemented in a "step" manner; by that, rather than iterating until the algorithms termination condition, each algorithm performs only one step of its conventional purpose and is called intermittently. This was done in order to create an animated visualization, as if the algorithms were to compute their final result upon a single call, the visual output would only show that outcome, not each step of the process.</p></li>
+            <li><h4>BFS</h4>
+                <p>Breadth-First Search is an algorithm that starts at the root node and explores all the nodes at the present depth before moving on to the next depth level. It uses a queue to keep track of the nodes to be explored next.</p>
+            </li>
+            <li><h4>DFS</h4>
+                <p>Depth-First Search is an algorithm that starts at the root node and explores as far as possible along each branch before backtracking. It uses a stack to keep track of the nodes to be explored next.</p>
+            </li>
+            <li><h4>A*</h4>
+                <p>A* search is an informed search algorithm that uses heuristic estimates to guide the search towards the goal. It combines the advantages of both BFS and DFS by using a priority queue to explore nodes with lower estimated cost first. The estimated cost of each node is the sum of the cost of the path from the start node to the current node and a heuristic estimate of the cost from the current node to the target node.</p>
+            </li>
+            <li><h4>UCS</h4>
+                <p>Uniform Cost Search is a variant of A* search that uses only the cost of the path from the start node to the current node to guide the search. It also uses a priority queue to explore nodes with lower cost first. It is like Dijkstras algorithm but it terminates upon finding the target node, rather than computing shortest distance to every node in the graph.</p>
+            </li>
+            <li><h4>Maze Generation</h4>
+                <p>Our maze generation uses a variation of kruskals algorithm to create a perfect maze (only single path from any given starting point to given ending point). The algorithm runs on a configuration of the grid where each non-wall is disconnected (every other row and column is fully walls); from here, the algorithm repeatedly selects a random wall to remove. If removing the wall connects two separate regions (the cells on either side of the wall have different groups) of the maze, the wall is removed and the regions are merged. The algorithm runs until all cells are connected (all cells have the same group, with a cells group representing the cells that can be reached from that cell).</p>
+            </li>
+        </ul>
+        <button id="exit-popup">Close</button>
     </div>
     <div class="header">
         <!-- eventually want to replace text in these buttons w symbols for ~aesthetics~ -->
@@ -67,16 +96,16 @@
         </div>
         <div class="buttons">
             Modify Walls
-            <button id="walls">Add Walls</button>
-            <button id="rem-walls">Remove Walls</button>
-            <button id="rand-walls">Random Walls</button>
+            <button id="walls">Add</button>
+            <button id="rem-walls">Remove</button>
+            <button id="rand-walls">Randomize</button>
             <button id="clear-walls">Clear Walls</button>
         </div>
         <div class="buttons">
             Modify Weights
-            <button id="weight">Weight</button>
-            <button id="unweight">Decrease Weight</button>
-            <button id="rand-weight">Randomize Weights</button>
+            <button id="weight">Increment</button>
+            <button id="unweight">Decrease</button>
+            <button id="rand-weight">Randomize</button>
             <button id="clear-weights">Clear Weights</button>
         </div>
         <div class="algorithms">
@@ -84,7 +113,7 @@
             <button id="DFS">DFS</button>
             <button id="BFS">BFS</button>
             <button id="Astar">A*</button>
-            <button id="dijkstra">UCF</button>
+            <button id="dijkstra">UCS</button>
             <button id="clear">Clear Search</button>
         </div>
         <div class="buttons">
@@ -92,7 +121,7 @@
             <button id="reset">Reset</button>
             <button id="instructions">Instructions</button>
             <button id="maze">Maze</button>
-            <div class="speed-slider">Algorithm Speed<input type="range" name="Speed" min=".25" max="10.25" step="1.25"></div>
+            <div class="speed-slider">Algorithm Speed<input type="range" name="Speed" min=".25" max="10.25" step="2.5"></div>
         </div>
         <div class="resTab">
             Results

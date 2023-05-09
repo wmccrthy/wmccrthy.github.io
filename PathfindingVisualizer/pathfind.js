@@ -63,7 +63,13 @@ for (let cell of cells) {
 }
 
 // event listener for closing and managing the instructions pop up
+
+let info = document.querySelector(".popup-big");
+
 if (document.querySelector(".popup").style.display != "none") {
+    // info.style.display = "none";
+    info.style.opacity = "0";
+    info.style.pointerEvents = "none";
     grid.style.pointerEvents = "none";
     document.querySelector(".header").style.pointerEvents = "none";
     grid.style.opacity = ".25"; 
@@ -72,20 +78,28 @@ if (document.querySelector(".popup").style.display != "none") {
 // if the pop up is being displayed, disable pointer events on the grid and header (components of normal interface) such that 
 // user has to close popup first 
 
-let closePopup = document.querySelector("#exit-popup");
-closePopup.addEventListener("click", function () {
-    document.querySelector(".popup").style.display = "none";
+let closePopup = document.querySelectorAll("#exit-popup");
+closePopup.forEach(element => element.addEventListener("click", function () {
+    element.parentElement.style.opacity = "0"
+    element.parentElement.style.pointerEvents = "none";
+    // document.querySelector(".popup").style.display = "none";
     grid.style.pointerEvents = "";
     document.querySelector(".header").style.pointerEvents = "";
     console.log(document.querySelector(".header"));
     grid.style.opacity = "1"; 
     document.querySelector(".header").style.opacity = "1";
-})
+}))
 // event listener for closing pop-up; enables pointer events for header and grid such that upon closing, program functions as intended 
 
 let instruc = document.querySelector("#instructions");
+
 instruc.addEventListener("click", function () {
-    document.querySelector(".popup").style.display = "";
+    // document.querySelector(".popup").style.display = "";
+    // info.style.display = "";
+    info.style.pointerEvents = "";
+    info.style.opacity = "1";
+    console.log(info);
+    // info.style.zIndex = "6";
     grid.style.pointerEvents = "none";
     document.querySelector(".header").style.pointerEvents = "none";
     grid.style.opacity = ".25"; 
@@ -185,7 +199,7 @@ randStart.addEventListener("click", function () {
             start.start = false;
         }
         //ensure randomized cells are not walls
-        while (gridArr[startY][startX].wall) {
+        while (gridArr[startY][startX].wall | gridArr[startY][startX].weight != 0) {
             startX = Math.floor(Math.random() *windowCs);
             startY = Math.floor(Math.random() *windowRs);
         }
@@ -196,12 +210,16 @@ randStart.addEventListener("click", function () {
         // gridArr[startY][startX].div.innerHTML = "s";
         gridArr[startY][startX].div.querySelector("i").style.opacity = "0";
         setTimeout(function () {
-            gridArr[startY][startX].div.querySelector("i").style.opacity = "1";
-            gridArr[startY][startX].div.querySelector("i").classList.add("fa-bounce");
+            if (gridArr[startY][startX] != null) {
+                gridArr[startY][startX].div.querySelector("i").style.opacity = "1";
+                gridArr[startY][startX].div.querySelector("i").classList.add("fa-bounce");
+            }
         }, 200)
 
         setTimeout(function () {
-            gridArr[startY][startX].div.querySelector("i").classList.remove("fa-bounce");
+            if (gridArr[startY][startX].div.querySelector("i") != null) {
+                gridArr[startY][startX].div.querySelector("i").classList.remove("fa-bounce");
+            }
         }, 1000)
         // animate start symbol such that it bounces into the randomly chosen cell
         gridArr[startY][startX].start = true;
@@ -213,7 +231,7 @@ randStart.addEventListener("click", function () {
             target.div.innerHTML = "";
             target.target = false;
         }
-        while (gridArr[targY][targX].wall) {
+        while (gridArr[targY][targX].wall  | gridArr[targY][targX].weight != 0) {
             targX = Math.floor(Math.random() *windowCs);
             targY = Math.floor(Math.random() *windowRs);
         }
@@ -223,15 +241,21 @@ randStart.addEventListener("click", function () {
         // gridArr[targY][targX].div.innerHTML = "t";
         gridArr[targY][targX].div.querySelector("i").style.opacity = "0";
         setTimeout(function () {
-            gridArr[targY][targX].div.querySelector("i").style.opacity = "1";
-            gridArr[targY][targX].div.querySelector("i").classList.add("fa-bounce");
+            if (gridArr[targY][targX] != null) { 
+                gridArr[targY][targX].div.querySelector("i").style.opacity = "1";
+                gridArr[targY][targX].div.querySelector("i").classList.add("fa-bounce");
+            }
         }, 200)
         setTimeout(function () {
-            gridArr[targY][targX].div.querySelector("i").classList.remove("fa-bounce");
+            if (gridArr[targY][targX].div.querySelector("i") != null) {
+                gridArr[targY][targX].div.querySelector("i").classList.remove("fa-bounce");
+            }
         }, 1000)
         // control animation of symbol such that it bounces into the cell 
         gridArr[targY][targX].target = true;
         target = gridArr[targY][targX];
+    } else {
+        result.innerHTML = "Cannot randomize start/target node while generating maze/searching"
     }
 })
 // functionality for random start button, essentially automates what the user has control over in toggling start; randomly selects 
@@ -497,7 +521,7 @@ function toggle(cur, rows=windowRs, cols=windowCs) {
                         gridArr[cellY][cellX].div.innerHTML = Number(gridArr[cellY][cellX].div.innerHTML) + 1; 
                         gridArr[cellY][cellX].weight += 1;
                         gridArr[cellY][cellX].div.style.transform = "scale(1.35)";
-                    } else {
+                    } else if (gridArr[cellY][cellX].weight > 0) {
                         gridArr[cellY][cellX].div.innerHTML = Number(gridArr[cellY][cellX].div.innerHTML) - 1;
                         gridArr[cellY][cellX].weight -= 1;
                         gridArr[cellY][cellX].div.style.transform = "scale(.65)";
@@ -508,11 +532,7 @@ function toggle(cur, rows=windowRs, cols=windowCs) {
                         gridArr[cellY][cellX].div.innerHTML = 1;
                         gridArr[cellY][cellX].weight += 1;
                         gridArr[cellY][cellX].div.style.transform = "scale(1.35)";
-                    } else {
-                        gridArr[cellY][cellX].div.innerHTML = -1;
-                        gridArr[cellY][cellX].weight -= 1;
-                        gridArr[cellY][cellX].div.style.transform = "scale(.65)";
-                    }
+                    } 
                 }
                 gridArr[cellY][cellX].div.style.backgroundColor = `rgb(${250-5*(gridArr[cellY][cellX].div.innerHTML)}, ${250-5*(gridArr[cellY][cellX].div.innerHTML)}, ${250-5*(gridArr[cellY][cellX].div.innerHTML)})`
                 gridArr[cellY][cellX].div.style.color = `rgb(${3*(gridArr[cellY][cellX].div.innerHTML)}, ${3*(gridArr[cellY][cellX].div.innerHTML)}, ${3*(gridArr[cellY][cellX].div.innerHTML)})`
@@ -546,6 +566,8 @@ function reset() {
     target = null;
     clearInterval(refID);
     clearInterval(mazeID);
+    clearGroups();
+    wallList = [];
     for (let i = 0; i < windowRs; i ++) {
         for (let j = 0; j < windowCs; j ++) {
             gridArr[i][j].reset();
@@ -554,96 +576,122 @@ function reset() {
 function clear() {
     // clear refID of algorithm that was running, clear each timeout incurred by the path animation for that animation, reset innerREF arrays 
     // clear each cell in the grid (only resets visual components added for being 'visited',  'queued', or 'path' node)
-    pathFound = false;
-    console.log(innerREF);
-    clearInterval(refID);
-    innerREF.forEach(timeout => {
-        clearTimeout(timeout);
-        // innerREF.splice(innerREF.indexOf(timeout), 1);
-    });
-    innerREF2.forEach(timeout => {
-        clearTimeout(timeout);
-        // innerREF2.splice(innerREF2.indexOf(timeout), 1);
-    });
-    innerREF = []
-    innerREF2 = []
-    canSearch = true;
-    for (let i = 0; i < windowRs; i ++) {
-        for (let j = 0; j < windowCs; j ++) {
-            gridArr[i][j].clear();
-        }}}
+    
+        pathFound = false;
+        console.log(innerREF);
+        clearInterval(refID);
+        innerREF.forEach(timeout => {
+            clearTimeout(timeout);
+            // innerREF.splice(innerREF.indexOf(timeout), 1);
+        });
+        innerREF2.forEach(timeout => {
+            clearTimeout(timeout);
+            // innerREF2.splice(innerREF2.indexOf(timeout), 1);
+        });
+        innerREF = []
+        innerREF2 = []
+        canSearch = true;
+        for (let i = 0; i < windowRs; i ++) {
+            for (let j = 0; j < windowCs; j ++) {
+                gridArr[i][j].clear();
+            }}
+}
 
 
 function clearWalls() {
     //clear all walls in grid
-    for (let i = 0; i < windowRs; i ++) {
-        for (let j = 0; j < windowCs; j ++) {
-            gridArr[i][j].clearWall();
-        }}}
+    if (canSearch) {
+        clearInterval(mazeID);
+        clearGroups();
+        wallList = []
+        for (let i = 0; i < windowRs; i ++) {
+            for (let j = 0; j < windowCs; j ++) {
+                gridArr[i][j].clearWall();
+        }}
+    } else {
+        result.innerHTML = "Cannot clear while generating maze/searching"
+    }
+}
 
 function clearWeights() {
     //clear all weights in grid
-    for (let i = 0; i < windowRs; i ++) {
-        for (let j = 0; j < windowCs; j ++) {
-            gridArr[i][j].clearWeight();
-        }}}
+    if (canSearch) {
+        for (let i = 0; i < windowRs; i ++) {
+            for (let j = 0; j < windowCs; j ++) {
+                gridArr[i][j].clearWeight();
+            }}
+    } else {
+        result.innerHTML = "Cannot clear while generating maze/searching"
+    }
+    
+}
 
 
 
 function randomizeWeights() {
-    //iterate though all cells and add random weight to cells 35% of time 
-    for (let i = 0; i < windowRs; i ++) {
-        for (let j = 0; j < windowCs; j ++) {
-            let rand = Math.floor(Math.random()*25);
-            let chance = Math.random();
-            if (chance > .65) {
-                if (!gridArr[i][j].start & !gridArr[i][j].wall & !gridArr[i][j].target) {
-                    gridArr[i][j].weight = rand; 
-                    if (rand != 0) {
-                        gridArr[i][j].div.innerHTML = `${rand}`;
+    //iterate though all cells and add random weight to cells 35% of time (if canSearch)
+
+    if (canSearch) {
+        for (let i = 0; i < windowRs; i ++) {
+            for (let j = 0; j < windowCs; j ++) {
+                let rand = Math.floor(Math.random()*25 + 5);
+                let chance = Math.random();
+                if (chance > .65) {
+                    if (!gridArr[i][j].start & !gridArr[i][j].wall & !gridArr[i][j].target) {
+                        gridArr[i][j].weight = rand; 
+                        if (rand != 0) {
+                            gridArr[i][j].div.innerHTML = `${rand}`;
+                        }
+                        if (!gridArr[i][j].visited & !gridArr[i][j].queued) {
+                            gridArr[i][j].div.style.backgroundColor = `rgb(${250-5*gridArr[i][j].weight}, ${250-5*gridArr[i][j].weight}, ${250-5*gridArr[i][j].weight})`;
+                        }
+                        
                     }
-                    if (!gridArr[i][j].visited & !gridArr[i][j].queued) {
-                        gridArr[i][j].div.style.backgroundColor = `rgb(${250-5*gridArr[i][j].weight}, ${250-5*gridArr[i][j].weight}, ${250-5*gridArr[i][j].weight})`;
-                    }
-                    
-                }
-            } else {
-                if (!gridArr[i][j].start & !gridArr[i][j].wall & !gridArr[i][j].target) {
-                    gridArr[i][j].weight = 0; gridArr[i][j].div.innerHTML = '';
-                    if (!gridArr[i][j].visited  & !gridArr[i][j].queued)  { 
-                        gridArr[i][j].div.style.backgroundColor = "white";
+                } else {
+                    if (!gridArr[i][j].start & !gridArr[i][j].wall & !gridArr[i][j].target) {
+                        gridArr[i][j].weight = 0; gridArr[i][j].div.innerHTML = '';
+                        if (!gridArr[i][j].visited  & !gridArr[i][j].queued)  { 
+                            gridArr[i][j].div.style.backgroundColor = "white";
+                        }
                     }
                 }
             }
         }
+    } else {
+        result.innerHTML = "Please let algorithm finish or clear search"
     }
 }
 
 function randomizeWalls() {
-    //iterate through cells and add walls to cell 29% of time 
-    for (let i = 0; i < windowRs; i ++) {
-        for (let j = 0; j < windowCs; j ++) {
-            let chance = Math.random();
-            if (chance > .71) {
-                if (!gridArr[i][j].start & gridArr[i][j].weight == 0 & !gridArr[i][j].target) {
-                    gridArr[i][j].div.style.backgroundColor = `black`;
-                    gridArr[i][j].div.style.border = "1px solid black";
-                    gridArr[i][j].div.style.transform = "scale(1.25)";
-                setTimeout(function () {
-                    gridArr[i][j].div.style.transform = "";
-                }, 250);
-                    gridArr[i][j].wall = true;
-                }
-            } else {
-                    if (!gridArr[i][j].start & !gridArr[i][j].target) {
-                        gridArr[i][j].div.innerHTML = "";
-                        gridArr[i][j].div.style.backgroundColor = "white";
-                        gridArr[i][j].div.style.border = "1px solid rgb(238, 250, 255)";
-                        gridArr[i][j].wall = false;
+    //iterate through cells and add walls to cell 29% of time (if canSearch)
+
+    if (canSearch) {
+        for (let i = 0; i < windowRs; i ++) {
+            for (let j = 0; j < windowCs; j ++) {
+                let chance = Math.random();
+                if (chance > .71) {
+                    if (!gridArr[i][j].start & gridArr[i][j].weight == 0 & !gridArr[i][j].target) {
+                        gridArr[i][j].div.style.backgroundColor = `black`;
+                        gridArr[i][j].div.style.border = "1px solid black";
+                    //     gridArr[i][j].div.style.transform = "scale(1.25)";
+                    // setTimeout(function () {
+                    //     gridArr[i][j].div.style.transform = "";
+                    // }, 250);
+                        gridArr[i][j].wall = true;
                     }
+                } else {
+                        if (!gridArr[i][j].start & !gridArr[i][j].target) {
+                            gridArr[i][j].div.innerHTML = "";
+                            gridArr[i][j].div.style.backgroundColor = "white";
+                            gridArr[i][j].div.style.border = "1px solid rgb(238, 250, 255)";
+                            gridArr[i][j].wall = false;
+                        }
+                }
+                }
             }
-            }
-        }
+    } else {
+        result.innerHTML = "Please let algorithm finish or clear search"
+    }
 }
 
 
@@ -766,7 +814,7 @@ function DFS(frontier, target, refID, isBFS, isA, isRecompute = false) {
     // BFS used queue, DFS uses stack, so that is controlled by isBFS variable (if isBFS, use queue, otherwise stack)
     // A* uses priority queue, rather than implementing that DS we simply sort the array on basis of cost before each step such that 
     // the queue essentially functions as priority queue (this is controlled by isA boolean)
-
+    console.log(speed.value);
     if (frontier.length > 0) {
         // if frontier not empty 
         if (isBFS) {
@@ -786,7 +834,7 @@ function DFS(frontier, target, refID, isBFS, isA, isRecompute = false) {
         cur.div.style.border = "1px solid blue";
         // want to animate this somehow 
         if (!isRecompute) {
-            cur.div.style.opacity = ".1";
+            cur.div.style.opacity = ".25";
             // cur.div.style.transform = "scale(.35)";
             let scopeHm = cur;
             setTimeout(function () {
@@ -819,14 +867,15 @@ function DFS(frontier, target, refID, isBFS, isA, isRecompute = false) {
                         
                             scopeTest.div.style.backgroundColor = "red";
                             scopeTest.div.style.border = "1px solid red";
-                            scopeTest.div.style.transform = "scale(1.5) rotate(360deg)";
+                            scopeTest.div.style.transform = "scale(.25) rotate(360deg)";
+                            scopeTest.div.style.opacity = ".5";
                          
                     }, 30 * i))
                     innerREF2.push(setTimeout(function () {
-                        
+                            scopeTest.div.style.opacity = "1";
                             scopeTest.div.style.transform = "rotate(360deg)";
                         
-                    }, 40 * i))
+                    }, 45 * i))
                     // set animations for each cell in traced path such that they animate incrementally based on their position; creates a smooth trace
                 }
                 i += 1; //i is used to enable the proper interval separation of animations for cells in the path (see how timeouts are set for 30ms * i)
@@ -885,7 +934,7 @@ function DFS(frontier, target, refID, isBFS, isA, isRecompute = false) {
                         // n.div.style.opacity = "1";
                         // n.div.style.borderRadius = "0px";
                         n.div.style.transform = "";
-                    },450)
+                    }, 450)
                 }
                 //update visual components 
 
@@ -907,7 +956,7 @@ function Dijkstras(frontier, target, refID, isRecompute = false) {
         // want to animate this somehow 
         cur.div.style.border = "1px solid blue";
         if (!isRecompute) {
-            cur.div.style.opacity = ".1";
+            cur.div.style.opacity = ".25";
             // cur.div.style.transform = "scale(.35)"
             let scopeHm = cur;
             setTimeout(function () {
@@ -934,14 +983,15 @@ function Dijkstras(frontier, target, refID, isRecompute = false) {
                         
                             scopeTest.div.style.backgroundColor = "red";
                             scopeTest.div.style.border = "1px solid red";
-                            scopeTest.div.style.transform = "scale(1.5) rotate(360deg)";
+                            scopeTest.div.style.transform = "scale(.25) rotate(360deg)";
+                            scopeTest.div.style.opacity = ".5";
                         
                     }, 30 * i))
                     innerREF2.push(setTimeout(function () {
-            
+                            scopeTest.div.style.opacity = "1";
                             scopeTest.div.style.transform = "rotate(360deg)";
                         
-                    }, 40 * i))
+                    }, 45 * i))
                 }
                 i += 1;
                 // cur.div.style.transform = "scale(.8)"
@@ -1159,7 +1209,7 @@ maze.addEventListener("click", function () {
             i += 1;
         }, 1);
     } else {
-        result.innerHTML = "Cannot generate maze until search is complete"
+        result.innerHTML = "Cannot generate maze until search is complete and cleared"
     }
 });
 // mazeGenStart();
@@ -1393,3 +1443,11 @@ function Cell(column, row, element) {
 //      maybe add to a* star visualization to include the calculated cost (including weight, distance from start, and distance to target)
 //      could do the same for dijkstras 
 //      
+
+// Notes 5/7 
+//      have handled most small bugs 
+//      have updated program to adapt somewhat compotently to mobile dimensions 
+//      added algorithm speed option for better visualization 
+//      Need to add:
+//          - info page 
+//              - for this, change instructions button to prompt new instruction pop up 
