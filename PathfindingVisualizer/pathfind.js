@@ -564,7 +564,7 @@ function reset() {
     canSearch = true;
     start = null;
     target = null;
-    clearInterval(refID);
+    clear();
     clearInterval(mazeID);
     clearGroups();
     wallList = [];
@@ -1260,6 +1260,7 @@ function Cell(column, row, element) {
         this.wall = false;
         this.target = false;
         this.weight = 0;
+        this.cost = 99999;
         result.innerHTML = "";
         // values to be changed during pathfinding algorithms 
         this.visited = false;
