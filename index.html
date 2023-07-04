@@ -10,23 +10,8 @@
     <script src="control.js"></script>
     <script defer>
         window.onload = function () {
-            // let body = document.querySelector("body");
-            // let bnd = document.querySelector(".bckgrnd");
-            // body.onmousemove = function (e) {
-            //     let cont = body.getBoundingClientRect();
-            //     let bX = e.clientX - cont.left;
-            //     let bY = e.clientY - cont.top;
-            //     bnd.style.top = `${bY}px`;
-            //     bnd.style.left = `${bX}px`;
-            //     console.log(bnd.style.top);
-            // }
-            // body.onmousemove = function (e) {
-                // let cont = body.getBoundingClientRect();
-                // let bX = e.clientX - cont.left;
-                // let bY = e.clientY - cont.top;
-                // body.style.setProperty("--mouse-x", `${bX}px`);
-                // body.style.setProperty("--mouse-y", `${bY}px`);
-            // }
+            let clks = 0;
+            // clicks for controlling dark mode toggling 
 
             let cards = document.querySelectorAll(".card");
             // for (const card of cards) {
@@ -188,6 +173,11 @@
                 cntct.addEventListener("mouseleave", function () {
                     cntct.style.transition = "all .5s ease";
                     cntct.style.boxShadow = "0px 6px 6px";
+                    if (clks % 2 == 0) {
+                        cntct.style.color = "white"
+                    } else {
+                        cntct.style.color = dark
+                    }
                 }); 
 
                 // select card before psuedo element 
@@ -200,7 +190,7 @@
             let darkMode = document.querySelector("#darkMode")
             let light = "rgb(180,180,180)"
             let dark = "rgb(13,15,18)";
-            let clks = 0;
+            
             darkMode.addEventListener("click", function () {
                 // rotate image 
                 // 
