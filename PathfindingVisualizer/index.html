@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siuu</title>
+    <title>Pathfinding Visualizer</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/8181716bf5.js" crossorigin="anonymous"></script>
     <script src="pathfind.js" defer></script>
@@ -30,7 +30,7 @@
     <div class="popup">
         <h3>Pathfinding Visualizer</h3>
         <ul>
-            <li>This project was inspired by various pathfinding visualizer demonstrations on youtube; Wyatt had also previously implemented a much less robust visualizer in Python and wanted to extend it with this project.</li>
+            <li>This project was inspired by various pathfinding visualizer demonstrations on <a href="https://www.youtube.com/watch?v=n4t_-NjY_Sg&t=180s">youtube</a>. Wyatt had also previously implemented a much less robust visualizer in Python and wanted to extend it with this project.</li>
             <li>To use, please first set a starting and target node, clicking on either button will enable you to place the respective node. From there, you can add weights and walls to certain nodes in the grid.</li>
             <li>When adding or removing walls, click and drag your mouse around to add/remove. When changing weights, click on a node to increment/decrement it's weight</li>
             <li>When you're ready, use any of the algorithms to find a path from the start to target. Feel free to play around with different grid configurations and algorithms. Enjoy!</li>
@@ -38,7 +38,7 @@
         <h4>Cool Features</h4>
         <ul>
             <li>Program is relatively useable on mobile devices; feel free to test it in mobile layout via dev tools or on your phone.</li>
-            <li>Upon the completion of a search algorithm visualization (program will display the shortest path from start to target and visited/queued nodes), change the start or target node to automatically recompute and display output for new start/target.</li>
+            <li>Upon the completion of a search algorithm visualization, change the start or target node (without clearing search) to instantly recompute and display output for new start/target.</li>
             <li>Maze generation!</li>
         </ul>
         <button id="exit-popup">Visualize!</button>
@@ -58,19 +58,19 @@
             <h3>Algorithms</h3>
             <li><p>Each algorithm in our program is implemented in a "step" manner; by that, rather than iterating until the algorithms termination condition, each algorithm performs only one step of its conventional purpose and is called intermittently. This was done in order to create an animated visualization, as if the algorithms were to compute their final result upon a single call, the visual output would only show that outcome, not each step of the process.</p></li>
             <li><h4>BFS</h4>
-                <p>Breadth-First Search is an algorithm that starts at the root node and explores all the nodes at the present depth before moving on to the next depth level. By that, at a given node, BFS will explores each of its neighbors before preceeding to the neighbors of neighbors and so on, so forth. It uses a queue to keep track of the nodes to be explored next in a breadth-first manner.</p>
+                <p>Breadth-First Search is an unweighted search algorithm that starts at the root node and explores all the nodes at the present depth before moving on to the next depth level. By that, at a given node, BFS will explores each of its neighbors before preceeding to the neighbors of neighbors and so on, so forth. It uses a queue to keep track of the nodes to be explored next such that the algorithm processes nodes in a breadth-first manner.</p>
             </li>
             <li><h4>DFS</h4>
-                <p>Depth-First Search is an algorithm that starts at the root node and explores as far as possible along each branch before backtracking. It uses a stack to keep track of the nodes to be explored next such that the algorithm procecces in a depth-first manner. This results in the long, winding paths that DFS takes.</p>
+                <p>Depth-First Search is an unweighted search algorithm that starts at the root node and explores as far as possible along each branch before backtracking. It uses a stack to keep track of the nodes to be explored next such that the algorithm processes nodes in a depth-first manner. This results in the long, winding paths that DFS takes.</p>
             </li>
             <li><h4>A*</h4>
-                <p>A* search is an informed search algorithm that uses heuristic estimates to guide the search towards the goal. It combines the advantages of both BFS and DFS by using a priority queue to explore nodes with lower estimated cost first. The estimated cost of each node is the sum of the cost of the path from the start node to the current node and a heuristic estimate of the cost from the current node to the target node. Our A* uses a combination of the euclidian and manhattan distance from the target as its heuristic. Manhattan distance as a heuristic by itself guarantees the shortest path. The addition of euclidian distance greatly increases the speed of A* at the cost of a occasionally finding slightly suboptimal paths.</p>
+                <p>A* search is an informed, weighted search algorithm that uses heuristic estimates to guide the search towards the goal. It combines the advantages of both BFS and DFS by using a priority queue to explore nodes with lower estimated cost first. The estimated cost of each node is the sum of the cost of the path from the start node to the current node and a heuristic estimate of the cost from the current node to the target node. Our A* uses a combination of the euclidian and manhattan distance from the target as its heuristic. Manhattan distance as a heuristic by itself guarantees the shortest path. The addition of euclidian distance greatly increases the speed of A* at the cost of a occasionally finding slightly suboptimal paths.</p>
             </li>
             <li><h4>UCS</h4>
-                <p>Uniform Cost Search is an uninformed search algorithm that uses only the cost of the path from the start node to the current node to guide the search. It also uses a priority queue to explore nodes with lower cost first. It is like Dijkstras algorithm except UCS terminates upon finding the target node, rather than computing shortest distance to every node in the graph.</p>
+                <p>Uniform Cost Search is an uninformed, weighted search algorithm that uses only the cost of the path from the start node to the current node to guide the search. It also uses a priority queue to explore nodes with lower cost first. It is like Dijkstras algorithm except UCS terminates upon finding the target node, rather than computing shortest distance to every node in the graph.</p>
             </li>
             <li><h4>Maze Generation</h4>
-                <p>Our maze generation uses a variation of kruskals algorithm to create a perfect maze (only single path from any given starting point to given ending point). The algorithm runs on a configuration of the grid where each non-wall is disconnected (every other row and column is fully walls); from here, the algorithm repeatedly selects a random wall to remove. If removing the wall connects two separate regions (the cells on either side of the wall have different groups) of the maze, the wall is removed and the regions are merged. The algorithm runs until all cells are connected (all cells have the same group, with a cells group representing the cells that can be reached from that cell).</p>
+                <p>Our maze generation uses a variation of kruskals algorithm to create a perfect maze (only a single path exists from any given starting point to any given ending point). The algorithm runs on a configuration of the grid where each non-wall is disconnected (every other row and column is fully walls); from here, the algorithm repeatedly selects a random wall to remove. If removing the wall connects two separate regions (the cells on either side of the wall have different groups) of the maze, the wall is removed and the regions are merged. The algorithm runs until all cells are connected (all cells have the same group, with a cells group representing the cells that can be reached from that cell).</p>
             </li>
         </ul>
         <button id="exit-popup">Close</button>

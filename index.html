@@ -10,6 +10,24 @@
     <script src="control.js"></script>
     <script defer>
         window.onload = function () {
+            // let body = document.querySelector("body");
+            // let bnd = document.querySelector(".bckgrnd");
+            // body.onmousemove = function (e) {
+            //     let cont = body.getBoundingClientRect();
+            //     let bX = e.clientX - cont.left;
+            //     let bY = e.clientY - cont.top;
+            //     bnd.style.top = `${bY}px`;
+            //     bnd.style.left = `${bX}px`;
+            //     console.log(bnd.style.top);
+            // }
+            // body.onmousemove = function (e) {
+                // let cont = body.getBoundingClientRect();
+                // let bX = e.clientX - cont.left;
+                // let bY = e.clientY - cont.top;
+                // body.style.setProperty("--mouse-x", `${bX}px`);
+                // body.style.setProperty("--mouse-y", `${bY}px`);
+            // }
+
             let cards = document.querySelectorAll(".card");
             // for (const card of cards) {
             //     card.addEventListener("click", rotateOnClick(card));
@@ -103,7 +121,6 @@
             let refID = null;
             for (let crd of crds) {
                 crd.addEventListener("mousemove", function (e) {
-
                     // control for card
                         // crd.style.transition = "translate";
                         let cont = crd.getBoundingClientRect();
@@ -117,6 +134,8 @@
                         let topsetY = cont.bottom - e.clientY;
                         let bX = e.clientX - cont.left;
                         let bY = e.clientY - cont.top;
+                        
+
                         crd.style.setProperty("--mouse-x", `${bX}px`);
                         crd.style.setProperty("--mouse-y", `${bY}px`);
                         // need center of crd
@@ -125,22 +144,27 @@
                         // crd.style.boxShadow = `${0}px ${6}px ${(Math.abs(offsetY)+Math.abs(offsetX))/3}px rgba(100,100,100, .5)`;
                         crd.style.translate = "0px -35px";
                         crd.style.transform = `rotateY(${offsetX/6}deg) rotateX(${offsetY/12}deg)`;
-                      
                 });
+
                 crd.addEventListener("mouseover", function() {
                     // crd.style.transform = `translateY(-25px)`;
                     crd.style.transition = "translate .4s ease"
+                    
                     // control for child elements 
-                    let fack = crd.querySelector(".fack");
-                    fack.style.transform = "scale(.85) translateZ(100px)";
+                    // let fack = crd.querySelector(".fack");
+                    // fack.style.transform = "scale(.85) translateZ(100px)";
                     
                     // fack.style.opacity = "1";
                     
                 })
-                crd.addEventListener("mouseleave", function() {
+                // FUCK OFF!!!
+                crd.addEventListener("mouseleave", function(e) {
+                    console.log("mouse left");
+                    console.log(e.currentTarget);
+                    console.log(e.target);
                     // clearInterval(refID)
-                    let fack = crd.querySelector(".fack");
-                    fack.style.transform = "translateZ(0px)";
+                    // let fack = crd.querySelector(".fack");
+                    // fack.style.transform = "translateZ(0px)";
                     crd.style.translate = "0px 0px";
                     // crd.style.overflow = "hidden";
                     crd.style.transition = "all .4s ease";
@@ -149,6 +173,9 @@
                 })
 
                 let cntct = document.querySelector(".prof-button");
+                cntct.addEventListener("mouseover", function () {
+                    cntct.style.color = "black";
+                })
                 cntct.addEventListener("mousemove", function (e) {
                     cntct.style.transition = "background-position .5s ease, transform .5s ease";
                     let rect = cntct.getBoundingClientRect();
@@ -169,17 +196,81 @@
             }
 
             // 
+            // add event listener to dark/lightmode toggle 
+            let darkMode = document.querySelector("#darkMode")
+            let light = "rgb(180,180,180)"
+            let dark = "rgb(13,15,18)";
+            let clks = 0;
+            darkMode.addEventListener("click", function () {
+                // rotate image 
+                // 
+                // darkMode.classList.toggle("fa-flip-horizontal");
+                // document.body.style.backgroundColor.toggle();
+                if (clks % 2==0) {
+                    document.body.style.backgroundColor = "white";
+                    for (let el of document.querySelectorAll(".nav-item")) {
+                        el.style.color = dark;
+                    }
+                    for (let el of document.querySelectorAll(".prof-para")) {
+                        if (!Array.from(el.lastElementChild.classList).includes("grid")) {
+                            console.log(Array.from(el.lastElementChild.classList))
+                            el.style.color = dark;
+                        } 
+                    }
+                    for (let el of document.querySelectorAll(".prof-button")) {
+                        el.style.color = dark;
+                    }
+                    for (let el of document.querySelectorAll("i")) {
+                        if (!Array.from(el.parentElement.parentElement.classList).includes("fack")) {
+                            el.style.color = dark;
+                        } 
+                    }
+                    for (let el of document.querySelectorAll(".indic")) {
+                        el.style.backgroundColor = dark;
+                    }
+
+                    // i want cards to change lighting effects (box shadow becomes lighter)
+                    // 
+                    
+
+                } else {
+                    document.body.style.backgroundColor = dark
+                    for (let el of document.querySelectorAll(".nav-item")) {
+                        el.style.color = "white";
+                    }
+                    for (let el of document.querySelectorAll(".prof-para")) {
+                        el.style.color = 'white';
+                    }
+                    for (let el of document.querySelectorAll(".prof-button")) {
+                        el.style.color = 'white';
+                    }
+                    for (let el of document.querySelectorAll("i")) {
+                        el.style.color = "white";
+                    }
+                    for (let el of document.querySelectorAll(".indic")) {
+                        el.style.backgroundColor = "white";
+                    }
+                }
+                clks += 1
+                // toggle colors to be dark?
+                // set invert color property for body / root and disallow for images
+
+            })
         } 
     </script>
 
 </head>
 <body>
+    <!-- <div class="bckgrnd">
+
+    </div> -->
      <div id="cont">
         <div class="nav">
             <a class="nav-item" href="#home"> <div class="indic"> </div> <div>Home</div></a>
             <a class="nav-item" href="#about"><div class="indic"> </div> <div>About</div></a>
             <a class="nav-item" href="#projects"><div class="indic"> </div> <div>Projects</div></a>
             <a class="nav-item" href="#more"><div class="indic"> </div> <div></div>More</a>
+            <a id="darkMode" class="nav-item"><i class="fa-solid fa-circle-half-stroke"></i></a>
         </div>
    
         <div class="contentainer">

@@ -1,13 +1,15 @@
-//planning: 
-//      - should create cell class/object that holds relevant variables to be modified throughout pathfinding processes 
-//      - 
+
 
 var cellW = "2vw";
 var cellH = "3vh";
 var windowRs = 25;
 var windowCs = 50;
+
 //for this to work comprehensively, need to update all uses of "50" and "25" (for cols and rows) to be 
 // set to windowRs and windowCs
+
+//this code is used such that the grid functions as properly and resizes upon the window resizing;
+// we tried to make this as optimal as possible for mobile layout with the techniques we knew and time we had 
 let windowWidth = window.innerWidth
 window.addEventListener("resize", function (e) {
     //only do the following on width changes bc mobile resizes height on scroll
@@ -18,6 +20,8 @@ window.addEventListener("resize", function (e) {
         windowWidth = this.innerWidth;
         reset();
         //clear relevant intervals and timeouts to ensure no errors 
+
+        //if window is 600px or narrower, switch to mobile sizing format 
         if(window.matchMedia("(max-width: 600px)").matches & cellW == "2vw") {
             cellW = "4vw";
             cellH = "2vh";
@@ -40,7 +44,10 @@ window.addEventListener("resize", function (e) {
 
 
 const grid = document.querySelector(".grid");
+//dom element to hold grid
 var gridArr = [];
+//2d array to hold cells of grid
+
 var toggleWalls = false;
 var remove = false;
 var unweight = false;
@@ -49,7 +56,11 @@ var toggleTarget = false;
 var toggleWeight = false; 
 var canSearch = true;
 var pathFound = false;
+//booleans for controlling program flow and button logic 
+
 var chosenAlg = null;
+//chosenAlg variable to be used to update result display 
+
 var start = null; //need to set these at each toggle and reset if start/target set again such that there are no repeats 
 var target = null;
 
@@ -62,8 +73,7 @@ for (let cell of cells) {
     }
 }
 
-// event listener for closing and managing the instructions pop up
-
+// event listener for closing and managing the instructions and home pop up
 let info = document.querySelector(".popup-big");
 
 if (document.querySelector(".popup").style.display != "none") {
@@ -168,7 +178,9 @@ function emptyGrid() {
     }
 }
 
-// add event listeners for buttons 
+
+// EVENT LISTENERS AND FUNCTIONALITY FOR BUTTONS 
+
 let str = document.querySelector("#start"); 
 str.addEventListener("click", function () {
     remove = false;
@@ -343,7 +355,7 @@ uWght.addEventListener("click", function () {
 // upon click of unweight button, users can select node to decrease its weight by 1; button toggled until another selected 
 
 
-// event listener for displaying custom mouse over grid 
+// EVENT LISTENER FOR DISPLAYING CUSTOM CURSOR W RELEVANT ICONS 
 grid.addEventListener("mouseover", function (e) {
     cust.style.display = "";
     document.body.style.cursor = "none";
@@ -355,6 +367,8 @@ grid.addEventListener("mouseleave", function () {
 // only display custom cursor (appearance updated based on which button is toggled) when mouse is over grid; otherwise display 
 // default mouse 
 
+
+//CODE FOR THE TOGGLE FUNCTION; USED FOR TOGGLING USER ACTION BASED ON BUTTON PRESSED 
 //toggle function that implements functionality for adding start, target, walls, weight, and removing walls/weights
 // relevant booleans are set upon button press that determine what functionality toggle enables 
 function toggle(cur, rows=windowRs, cols=windowCs) {
@@ -424,7 +438,8 @@ function toggle(cur, rows=windowRs, cols=windowCs) {
                     target = gridArr[cellY][cellX]; 
                 }
 
-                //TESTING
+                //CODE SUCH THAT UPON CHANGING START OR TARGET NODE WHILE VISUALIZATION IS DISPLAYED (PATH FOUND AND CURRENTLY SHOWN ON SCREEN)
+                //PROGRAM AUTOMATICALLY REDISPLAYS RESULT FOR SEARCH W NEW START/TARGET 
                 if (pathFound) {
                     // recompute currently displayed algorithm based on change of start/target nodes post visualization; 
                     // this feature alllows users to change the target/start node upon the conclusion of a visualization 
@@ -575,8 +590,7 @@ function reset() {
 
 function clear() {
     // clear refID of algorithm that was running, clear each timeout incurred by the path animation for that animation, reset innerREF arrays 
-    // clear each cell in the grid (only resets visual components added for being 'visited',  'queued', or 'path' node)
-    
+    // clear each cell in the grid (only resets components added for being 'visited',  'queued', or 'path' node)
         pathFound = false;
         console.log(innerREF);
         clearInterval(refID);
@@ -625,8 +639,6 @@ function clearWeights() {
     }
     
 }
-
-
 
 function randomizeWeights() {
     //iterate though all cells and add random weight to cells 35% of time (if canSearch)
@@ -695,7 +707,7 @@ function randomizeWalls() {
 }
 
 
-// event listener for randomizeWeights and randomize walls btn 
+// event listener for randomizing and clearing weights/walls
 let randWalls = document.querySelector("#rand-walls");
 randWalls.addEventListener("click", randomizeWalls)
 let randomWeight = document.querySelector("#rand-weight");
@@ -710,7 +722,9 @@ wallClr.addEventListener("click", clearWalls);
 let weightClr = document.querySelector("#clear-weights");
 weightClr.addEventListener("click", clearWeights); 
 
-// algorithms and relevant event listeners are added/implemented below
+
+
+// ALGORITHMS AND RELEVANT EVENT LISTENERS ARE IMPLEMENTED BELOW 
 
 var timer = Date.now(); //initialize runtimer; this is used to calculate runtime of each algo
 
@@ -894,7 +908,7 @@ function DFS(frontier, target, refID, isBFS, isA, isRecompute = false) {
                 result.innerHTML = "A*\n"
             }
             if (chosenAlg == 3) {
-                result.innerHTML = "UCF\n"
+                result.innerHTML = "UCS\n"
             }
             result.innerHTML += `Path Length: ${pathLength} Path Cost: ${pathCost} Runtime: ${Date.now()-timer}ms`;
             pathFound = true;
@@ -945,6 +959,7 @@ function DFS(frontier, target, refID, isBFS, isA, isRecompute = false) {
     }
 }
 
+//THIS FUNCTION IS CALLED DIJKSTRAS BUT IT IMPLEMENTS UNIFORM COST SEARCH (SORRY FOR NAMING CONFUSION)
 function Dijkstras(frontier, target, refID, isRecompute = false) {
     if (frontier.length > 0) {
         // sort frontier based on cost (considers weights) such that it functions like priority queue 
@@ -1013,7 +1028,7 @@ function Dijkstras(frontier, target, refID, isRecompute = false) {
                 result.innerHTML = "A*\n"
             }
             if (chosenAlg == 3) {
-                result.innerHTML = "UCF\n"
+                result.innerHTML = "UCS\n"
             }
             result.innerHTML += `Path Length: ${pathLength} Path Cost: ${pathCost} Runtime: ${Date.now()-timer}ms`;
             pathFound = true;
@@ -1056,7 +1071,8 @@ function Dijkstras(frontier, target, refID, isRecompute = false) {
         }
 }
 
-// TESTING
+// MAZE GENERATION 
+
 var wallList = []
 
 function mazeGenStart() {
@@ -1096,7 +1112,7 @@ function mazeGen(mazeID, i) {
     // if cells on either side of that wall (wall.getNeighbors), have different .groups, remove the wall and update the .groups of cells 
     // repeat until all cells have the same group
 
-    // enhance animations of this 
+    //  maybe enhance animations of this? 
     if (!mazeGenTermTest()) {
         // select random wall
         let randWall = wallList[Math.floor(Math.random() * wallList.length)];
@@ -1113,7 +1129,6 @@ function mazeGen(mazeID, i) {
         //     }
         //     randWall.div.style.transform = "";
         // }, 2 * i)
-
 
 
         // if removing wall connects unconnected neighbors of randWall, remove it and update groups of neighbors,
@@ -1158,6 +1173,7 @@ function mazeGen(mazeID, i) {
             // wallList.splice(wallList.indexOf(randWall), 1);
         }
     } else {
+        // if maze has been generated, clear its interval such that algorithm is no longer called and reset variables used in algorithm process 
         clearInterval(mazeID);
         clearGroups();
         wallList = []
@@ -1165,6 +1181,8 @@ function mazeGen(mazeID, i) {
     }
 }
 
+//checks if each cell in the maze has the same group 
+//by selecting random cell and comparing its group w every other cell in grid 
 function mazeGenTermTest() {
     let compR = Math.floor(Math.random() *windowRs);
     let compC = Math.floor(Math.random() *windowCs);
@@ -1184,19 +1202,20 @@ function mazeGenTermTest() {
     }
     return true;
 }
-
+//clear groups utility function 
 function clearGroups() {
     for (let r = 0; r < windowRs; r ++) {
         for (let c = 0; c < windowCs; c ++) {
             gridArr[r][c].group = [gridArr[r][c]]
     }}
 }
-
+// Psuedocode description used for figuring out maze generation: 
 // Kruskal's algorithm: This algorithm starts with a grid of disconnected cells and repeatedly selects a random wall to remove. 
 // If removing the wall connects two separate regions of the maze, the wall is removed and the regions are merged. This algorithm 
 // can create mazes with many interconnected paths and loops.
 
 
+// Maze generation button event listener 
 let maze = document.querySelector("#maze")
 maze.addEventListener("click", function () {
     if (canSearch) {
@@ -1212,10 +1231,9 @@ maze.addEventListener("click", function () {
         result.innerHTML = "Cannot generate maze until search is complete and cleared"
     }
 });
-// mazeGenStart();
 
 
-//function for comparing manhattan distance from 2 diff cells to target; used within A*
+//function for comparing manhattan distance + euclidian distance from 2 diff cells to target; used within A* to mimic priority queue
 function compareDistTarget(cell1, cell2) {
     //want to make it use hybrid of manhattan and euclidian distance 
     var dist1 = Math.abs(target.x - cell1.x) + Math.abs(target.y-cell1.y);
@@ -1224,7 +1242,7 @@ function compareDistTarget(cell1, cell2) {
     var euclidDist2 = Math.sqrt((target.x-cell2.x)**2 + (target.y-cell2.y)**2);
     return (euclidDist1 + dist1 + cell1.cost) - (euclidDist2 + dist2 + cell2.cost);
 }
-//function for comparing costs of 2 cells; used within UCF/dijkstras
+//function for comparing costs of 2 cells; used within UCS/dijkstras for mimicing priority queue 
 function compareCost(cell1, cell2) {
     return cell1.cost- cell2.cost;
 }
@@ -1343,6 +1361,7 @@ function Cell(column, row, element) {
         return neighbs;
     }
 
+    //was considering using this for different types of maze generation but ended up not mattering 
     this.getNeighborsMaze = function () {
         // for maze logic is diff so neighbors need to b cells that r 2 steps away from this 
         //otherwise exact same as normal neighbors func
@@ -1373,7 +1392,7 @@ function Cell(column, row, element) {
 
 
 // Plan 4/18/23 
-// As of now have very functional visualizer working for BFS, DFS, A* and UCF (like dijkstras)
+// As of now have very functional visualizer working for BFS, DFS, A* and UCS (like dijkstras)
 // 1. have cursors change based on current toggle (be start sign when adding start, target for target, walls for walls, etc)
 // 2. improve animations (specifically on final path) 
 // dev notes (4/18/23 2:07 PM)

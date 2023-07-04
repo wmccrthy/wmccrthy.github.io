@@ -3,7 +3,9 @@ html {
 }
 
 body {
-    background-color: rgb(27,31,36);
+    /* background-color: rgb(27,31,36); */
+    /* transition: all .5s ease; */
+    background: rgb(13,15,18);
     margin: 25px;
     font-family: "Mona Sans","Mona Sans Fallback",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
     /* font-family: monospace; */
@@ -11,7 +13,18 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    transition: .65s ease-in all;
 }
+
+.lightMode {
+    background-color: rgb(189, 170, 170);
+    /* color: black; */
+}
+
+.lightText {
+    color: black;
+}
+
 
 a {
     text-decoration: none;
@@ -274,7 +287,7 @@ a {
     /* transition: all .2s ease; */
     transform-style: preserve-3d;
     perspective: 1000px;
-    cursor: pointer;
+    cursor: default;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -290,19 +303,16 @@ a {
     height: 250px;
     position: absolute;
     background: radial-gradient(250px circle at var(--mouse-x) var(--mouse-y), rgb(51, 57, 65),rgb(27,31,36) );
-
 }
 
 
 .card p {
     font-size: 11px;
 }
-.card:hover {
-    /* box-shadow: 0px 1px 1px rgb(80,80,80); */
-    /* transform: translateY(-25px); */
-    /* box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6), 0 20px 40px 15px rgba(34, 32, 59, 0.3), 0px 20px 40px 15px rgba(215, 158, 158, 0.4); */
+
+/* .card:hover {
     opacity: 1;
-}
+} */
 
 .card:hover .proj-img {
     opacity: .02;
