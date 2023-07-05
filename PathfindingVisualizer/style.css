@@ -322,6 +322,15 @@ i {
         height: 130vh;
     }
 
+    .legend {
+        font-size: x-small;
+    }
+
+    #visited, #queued, #path {
+        width: 4vw;
+        height: 2vh;
+    }
+
     .popup-big {
         flex-wrap: nowrap;
         overflow: scroll;
@@ -357,6 +366,10 @@ i {
 
     .cell {
         font-size: xx-small;
+    }
+
+    .resTab {
+        padding-top: 10px;
     }
 
     

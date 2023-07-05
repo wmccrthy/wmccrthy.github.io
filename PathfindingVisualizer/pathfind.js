@@ -230,10 +230,10 @@ for (let el of select) {
             el.scrollTop = 0;
             // dropdown automatically scroll to top 
             e.target.style.pointerEvents = "none";
-            mnu.style.pointerEvents = "None"
+            mnu.style.pointerEvents = "none"
         } else {
             mnu.style.opacity = '0'
-            mnu.style.pointerEvents = "None"
+            hd.querySelector("button").style.pointerEvents = "none";
             el.style.boxShadow = ''
             el.scrollTop = 0;
             hd.querySelector('button').querySelector('i').classList.toggle('fa-rotate-270')
