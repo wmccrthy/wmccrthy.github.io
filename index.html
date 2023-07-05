@@ -4,191 +4,456 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pathfinding Visualizer</title>
+    <title>WM</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/8181716bf5.js" crossorigin="anonymous"></script>
-    <script src="pathfind.js" defer></script>
-    <script>
-        window.onload = function() {
-            if (window.matchMedia("(max-width: 600px)").matches) {
-                cellW = '4vw';
-                cellH = '2vh';
-                windowRs = 25;
-                windowCs = 25;
-                drawGrid(25, 25);
-            } else {
-                drawGrid();
+    <script src="control.js"></script>
+    <script defer>
+        window.onload = function () {
+            let clks = 0;
+            // clicks for controlling dark mode toggling 
+
+            let cards = document.querySelectorAll(".card");
+            // for (const card of cards) {
+            //     card.addEventListener("click", rotateOnClick(card));
+            // }
+        
+            const observeH = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        let indicH = document.querySelectorAll(".indic")[0];
+                        indicH.style.opacity = "1";
+                    }
+                    else {
+                        let indicH = document.querySelectorAll(".indic")[0];
+                        indicH.style.opacity = "0";
+                    }
+                })
+            })
+            observeH.observe(document.querySelector(".hP"));
+
+            const observeAbt = new IntersectionObserver(entries => {
+                
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        let fades = document.querySelectorAll(".fade");
+                        fades[0].classList.add("fadeIn");
+                        let indic = document.querySelectorAll(".indic")[1];
+                        indic.style.opacity = "1";
+                    }
+                    else {
+                        let indic = document.querySelectorAll(".indic")[1];
+                        indic.style.opacity = "0";
+                    }
+                })
+            })
+            observeAbt.observe(document.querySelector(".testFade"));
+            
+
+            const observeP = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        let fades = document.querySelectorAll(".fade");
+                        let cards = document.querySelectorAll(".card");
+                        let mlt = .25;
+                        for (let i = cards.length-1; i >=  0; i -= 1 ) {
+                            cards[i].style.transitionDelay =  `${mlt}s`;
+                            cards[i].classList.add("fadeIn");
+                            mlt += .1;
+                        }
+                        // for (var crd of cards) {
+                        //     crd.style.transitionDelay = `${mlt}s`;
+                        //     crd.classList.add("fadeIn");
+                        //     // console.log(crd.style.transitionDelay);
+                        //     mlt += .1;
+                        // }
+                        fades[1].classList.add("fadeIn");
+                        let indicP = document.querySelectorAll(".indic")[2];
+                        indicP.style.opacity = "1";
+                    }
+                    else {
+                        let indicP = document.querySelectorAll(".indic")[2];
+                        indicP.style.opacity = "0";
+                    }
+                })
+                setTimeout(function () {
+                    let cards = document.querySelectorAll(".card");
+                    for (var crd of cards){
+                        crd.style.transitionDelay = "0s";
+                    }
+                }, 1000)
+            })
+            observeP.observe(document.querySelector(".bot"));
+
+
+            const observeM = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        let fades = document.querySelectorAll(".fade");
+                        fades[2].classList.add("fadeIn");
+                        let indicM = document.querySelectorAll(".indic")[3];
+                        indicM.style.opacity = "1";
+                    }
+                    else {
+                        let indicM = document.querySelectorAll(".indic")[3];
+                        indicM.style.opacity = "0";
+                    }
+                })
+            })
+            observeM.observe(document.querySelector(".vid"));
+
+            let crds  = document.querySelectorAll(".card");
+            let refID = null;
+            for (let crd of crds) {
+                crd.addEventListener("mousemove", function (e) {
+                    // control for card
+                        // crd.style.transition = "translate";
+                        let cont = crd.getBoundingClientRect();
+                        let cX = (cont.left + cont.right)/2;
+                        let cY = (cont.top + cont.bottom)/2;
+                        // console.log(`${cX}, ${cY}`);
+                        // console.log(cX - e.clientX);
+                        // console.log(cY - e.clientY);
+                        let offsetX = cX - e.clientX;
+                        let offsetY = cY - e.clientY;
+                        let topsetY = cont.bottom - e.clientY;
+                        let bX = e.clientX - cont.left;
+                        let bY = e.clientY - cont.top;
+                        
+
+                        crd.style.setProperty("--mouse-x", `${bX}px`);
+                        crd.style.setProperty("--mouse-y", `${bY}px`);
+                        // need center of crd
+                        // crd.style.overflow = "visible";
+                        crd.style.boxShadow = `${0}px ${topsetY/6}px ${50}px rgba(100,100,100, .5)`;
+                        // crd.style.boxShadow = `${0}px ${6}px ${(Math.abs(offsetY)+Math.abs(offsetX))/3}px rgba(100,100,100, .5)`;
+                        crd.style.translate = "0px -35px";
+                        crd.style.transform = `rotateY(${offsetX/6}deg) rotateX(${offsetY/12}deg)`;
+                });
+
+                crd.addEventListener("mouseover", function() {
+                    // crd.style.transform = `translateY(-25px)`;
+                    crd.style.transition = "translate .4s ease"
+                    
+                    // control for child elements 
+                    // let fack = crd.querySelector(".fack");
+                    // fack.style.transform = "scale(.85) translateZ(100px)";
+                    
+                    // fack.style.opacity = "1";
+                    
+                })
+                // FUCK OFF!!!
+                crd.addEventListener("mouseleave", function(e) {
+                    console.log("mouse left");
+                    console.log(e.currentTarget);
+                    console.log(e.target);
+                    // clearInterval(refID)
+                    // let fack = crd.querySelector(".fack");
+                    // fack.style.transform = "translateZ(0px)";
+                    crd.style.translate = "0px 0px";
+                    // crd.style.overflow = "hidden";
+                    crd.style.transition = "all .4s ease";
+                    crd.style.boxShadow = `1px 0px 0px rgb(0,0,0)`;
+                    crd.style.transform = `rotateY(0deg) rotateX(0deg)`;
+                })
+
+                let cntct = document.querySelector(".prof-button");
+                cntct.addEventListener("mouseover", function () {
+                    cntct.style.color = "black";
+                })
+                cntct.addEventListener("mousemove", function (e) {
+                    cntct.style.transition = "background-position .5s ease, transform .5s ease";
+                    let rect = cntct.getBoundingClientRect();
+                    let cX = (rect.left + rect.right)/2;
+                    let cY = (rect.top + rect.bottom)/2;
+                    let offsetX = cX - e.clientX;
+                    let offsetY = cY - e.clientY;
+                    cntct.style.boxShadow = `${offsetX/8}px ${offsetY/4}px 25px rgba(${100+offsetY/2},${100+(offsetX+offsetY)/4},${100+offsetX/2}, .5)`;
+                });
+                cntct.addEventListener("mouseleave", function () {
+                    cntct.style.transition = "all .5s ease";
+                    cntct.style.boxShadow = "0px 6px 6px";
+                    if (clks % 2 == 0) {
+                        cntct.style.color = "white"
+                    } else {
+                        cntct.style.color = dark
+                    }
+                }); 
+
+                // select card before psuedo element 
+                // add event listener such that position of before element follows mouse 
+
             }
-        }
+
+            // 
+            // add event listener to dark/lightmode toggle 
+            let darkMode = document.querySelector("#darkMode")
+            
+            
+            
+            darkMode.addEventListener("click", function () {
+                // rotate image 
+                // 
+                // darkMode.classList.toggle("fa-flip-horizontal");
+                // document.body.style.backgroundColor.toggle();
+                let dark = `rgb(${Math.random()*45}, ${Math.random()*45}, ${Math.random()*45})`
+                let light = `rgb(${Math.random()*45+210}, ${Math.random()*45+210}, ${Math.random()*45+210})`
+                if (clks % 2==0) {
+                    document.body.style.backgroundColor = light;
+                    for (let el of document.querySelectorAll(".nav-item")) {
+                        el.style.color = dark;
+                    }
+                    for (let el of document.querySelectorAll(".prof-para")) {
+                        if (!Array.from(el.lastElementChild.classList).includes("grid")) {
+                            console.log(Array.from(el.lastElementChild.classList))
+                            el.style.color = dark;
+                        } 
+                    }
+                    for (let el of document.querySelectorAll(".prof-button")) {
+                        el.style.color = dark;
+                    }
+                    for (let el of document.querySelectorAll("i")) {
+                        if (!Array.from(el.parentElement.parentElement.classList).includes("fack")) {
+                            el.style.color = dark;
+                        } 
+                    }
+                    for (let el of document.querySelectorAll(".indic")) {
+                        el.style.backgroundColor = dark;
+                    }
+                } else {
+                    document.body.style.backgroundColor = dark
+                    for (let el of document.querySelectorAll(".nav-item")) {
+                        el.style.color = light;
+                    }
+                    for (let el of document.querySelectorAll(".prof-para")) {
+                        el.style.color = light;
+                    }
+                    for (let el of document.querySelectorAll(".prof-button")) {
+                        el.style.color = light;
+                    }
+                    for (let el of document.querySelectorAll("i")) {
+                        el.style.color = light;
+                    }
+                    for (let el of document.querySelectorAll(".indic")) {
+                        el.style.backgroundColor = light;
+                    }
+                }
+                clks += 1
+                // toggle colors to be dark?
+                // set invert color property for body / root and disallow for images
+
+            })
+        } 
     </script>
+
 </head>
 <body>
-    <div class="custom-cursor">
-        <!-- <i class="fa-solid fa-l fa-play"></i> -->
-    </div>
-    <div class="popup">
-        <h3>Pathfinding Visualizer</h3>
-        <ul>
-            <li>This project was inspired by various pathfinding visualizer demonstrations on <a href="https://www.youtube.com/watch?v=n4t_-NjY_Sg&t=180s">youtube</a>. Wyatt had also previously implemented a much less robust visualizer in Python and wanted to extend it with this project.</li>
-            <li>To use, please first set a starting and target node, clicking on either button will enable you to place the respective node. From there, you can add weights and walls to certain nodes in the grid.</li>
-            <li>When adding or removing walls, click and drag your mouse around to add/remove. When changing weights, click on a node to increment/decrement it's weight</li>
-            <li>When you're ready, use any of the algorithms to find a path from the start to target. Feel free to play around with different grid configurations and algorithms. Enjoy!</li>
-        </ul>
-        <h4>Cool Features</h4>
-        <ul>
-            <li>Program is relatively useable on mobile devices; feel free to test it in mobile layout via dev tools or on your phone.</li>
-            <li>Upon the completion of a search algorithm visualization, change the start or target node (without clearing search) to instantly recompute and display output for new start/target.</li>
-            <li>Maze generation!</li>
-        </ul>
-        <button id="exit-popup">Visualize!</button>
-    </div>
-    <div id ="info" class="popup-big">
-        <h3>Instructions and Info</h3>
-        <ul>
-            <li>Pressing start or target will toggle the placement of the respective node. Click on the desired cell to assign start/target node.</li>
-            <li>Pressing add walls will toggle the placement of walls. Click, hold, and drag mouse around grid to place walls. Pressing add weight will toggle weighting. Click on desired node to increment its weight by 1.</li>
-            <li>Pressing maze will generate a maze. Clear walls/weights/search do as they say. Reset empties the entire grid.</li>
-        </ul>
-        <ul>
-            <h3>Implementation Challenges</h3>
-            <li><p>The greatest challenges in implementation were bug handling related to resetting the state of cells after various modifications to them incurred by adding walls, weights, running algorithms, or maze generation. As such, the Cell object was extremely useful in tracking and updating the relevant instance variables of each cell depending on the use of the program. The instance variables were rather straight forward to control but the difficult and quite buggy parts arose when having to control the animations of each cell. Because we use setTimeout and setInterval to animate components of the visualization, it was necessary to fully reset/clear the reference IDs of each of these called timeouts/intervals in order to mitigate visual and operational bugs. This was rather simple with entire algorithms, for example, upon finding a shortest path, an algorithm will clear its own interval reference ID such that it does not continue to search. However, within the algorithms, we use timeouts on many different cells in order to animate each one according to its state (visited, queued, part of the path, etc). This ended up causing a lot of bugs early on and we weren't sure where they were arising from; particularly, if you were to reset/clear a search before termination, the timeouts called for animation would remain idle and reprompt upon the call to another algorithm. This would make it so algorithms were incorrectly visualized and various ran at the same time; it was a mess. A solution ultimately came through keeping a list of all the reference IDs to timeouts called on various cells, such that upon clearing and resetting all the timeouts could be cleared. This fixed the problem we were facing but boy was it a pain to debug.</p></li>
-        </ul>
-        <ul class="algs">
-            <h3>Algorithms</h3>
-            <li><p>Each algorithm in our program is implemented in a "step" manner; by that, rather than iterating until the algorithms termination condition, each algorithm performs only one step of its conventional purpose and is called intermittently. This was done in order to create an animated visualization, as if the algorithms were to compute their final result upon a single call, the visual output would only show that outcome, not each step of the process.</p></li>
-            <li><h4>BFS</h4>
-                <p>Breadth-First Search is an unweighted search algorithm that starts at the root node and explores all the nodes at the present depth before moving on to the next depth level. By that, at a given node, BFS will explores each of its neighbors before preceeding to the neighbors of neighbors and so on, so forth. It uses a queue to keep track of the nodes to be explored next such that the algorithm processes nodes in a breadth-first manner.</p>
-            </li>
-            <li><h4>DFS</h4>
-                <p>Depth-First Search is an unweighted search algorithm that starts at the root node and explores as far as possible along each branch before backtracking. It uses a stack to keep track of the nodes to be explored next such that the algorithm processes nodes in a depth-first manner. This results in the long, winding paths that DFS takes.</p>
-            </li>
-            <li><h4>A*</h4>
-                <p>A* search is an informed, weighted search algorithm that uses heuristic estimates to guide the search towards the goal. It combines the advantages of both BFS and DFS by using a priority queue to explore nodes with lower estimated cost first. The estimated cost of each node is the sum of the cost of the path from the start node to the current node and a heuristic estimate of the cost from the current node to the target node. Our A* uses a combination of the euclidian and manhattan distance from the target as its heuristic. Manhattan distance as a heuristic by itself guarantees the shortest path. The addition of euclidian distance greatly increases the speed of A* at the cost of a occasionally finding slightly suboptimal paths.</p>
-            </li>
-            <li><h4>UCS</h4>
-                <p>Uniform Cost Search is an uninformed, weighted search algorithm that uses only the cost of the path from the start node to the current node to guide the search. It also uses a priority queue to explore nodes with lower cost first. It is like Dijkstras algorithm except UCS terminates upon finding the target node, rather than computing shortest distance to every node in the graph.</p>
-            </li>
-            <li><h4>Maze Generation</h4>
-                <p>Our maze generation uses a variation of kruskals algorithm to create a perfect maze (only a single path exists from any given starting point to any given ending point). The algorithm runs on a configuration of the grid where each non-wall is disconnected (every other row and column is fully walls); from here, the algorithm repeatedly selects a random wall to remove. If removing the wall connects two separate regions (the cells on either side of the wall have different groups) of the maze, the wall is removed and the regions are merged. The algorithm runs until all cells are connected (all cells have the same group, with a cells group representing the cells that can be reached from that cell).</p>
-            </li>
-        </ul>
-        <button id="exit-popup">Close</button>
-    </div>
-    <div class="header">
-        <!-- eventually want to replace text in these buttons w symbols for ~aesthetics~ -->
-        <!-- <h2>Pathfinding Visualizer</h2> -->
-        <div class="legend">
-            <div class="key-item">
-                <i class="fa-solid fa-xl fa-play align"></i> Start Node
-            </div>
-            <div class="key-item">
-                <i class="fa-solid fa-xl fa-bullseye align"></i> Target Node
-            </div>
-            <div class="key-item">
-                <div id="visited"></div>
-                Visited Node
-            </div>
-            <div class="key-item">
-                <div id="queued"></div>
-                Queued Node
-            </div>
-            <div class="key-item">
-                <div id="path"></div>
-                Path Node
-            </div>
+    <!-- <div class="bckgrnd">
+
+    </div> -->
+     <div id="cont">
+        <div class="nav">
+            <a class="nav-item" href="#home"> <div class="indic"> </div> <div>Home</div></a>
+            <a class="nav-item" href="#about"><div class="indic"> </div> <div>About</div></a>
+            <a class="nav-item" href="#projects"><div class="indic"> </div> <div>Projects</div></a>
+            <a class="nav-item" href="#more"><div class="indic"> </div> <div></div>More</a>
+            <a id="darkMode" class="nav-item"><i class="fa-solid fa-circle-half-stroke"></i></a>
         </div>
-        <!-- want to convert all of these to dropdown menu selector for UX purposes -->
-        <!-- assume i can just make select w options for each button; this should make t
-        the event listening component function the same as well
-        
-    
-    
+   
+        <div class="contentainer">
+
+            <section>
+                <div class="content" id="home">
+                    <div class="prof-pic">
+                        <img src="prof.png">
+                    </div>
+                    <div class="prof-para hP">
+                        <p>I'm Wyatt, a Junior Computer Science major at Amherst College primarily interested in software engineering and development. I am passionate about math and quantitative problem-solving and have found programming to be a truly gratifying means of creatively pursuing that passion.</p>
+                        <div class="btn-wrap">
+                            <a class="prof-button" href="mailto: wmccarthy24@amherst.edu">Contact Me</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="content fade" id="about">
+                    <div class="prof-para">
+                        <p>Hi. My name is Wyatt McCarthy and I'm currently a student at Amherst College in the class of 2024. I am a Computer Science major with extensive coursework in Economics, in which I may double major. At Amherst, I am a member of the men's varsity soccer team. I have played soccer since I was a toddler and probably committed more time to playing than any other activity in my life. In highschool I played in the Development Academy where I spent time with Metropolitan Oval and NYCFC.</p> 
+                        <p class="testFade">In my coursework at Amherst College, I have focused largely on computer science and economics. Throughout, I have completed several courses relevant to software engineering, quantitative problem-solving, and data analysis including data structures, algorithms, artificial intelligence, microeconomics, macroeconomics, and industrial organization, and I will soon (as of Spring 2023) have completed computer systems and algorithm visualization. I have also worked on several projects that have given me practical experience in developing and implementing software solutions. In particular, I have advanced experience programming in Java and Python, as well as experience with HTML, CSS, JavaScript, and C. I have used these skills to develop projects such as a pathfinding algorithm visualizer, a checkers game with a minimax AI that plays against the user, various artificial intelligence agents for Pacman, and a personal website. 
+                        </p>
+                        <p> In the medium term, I hope to use the education I've recieved at Amherst alongside a passion I've gained for coding to become a software engineer. In the long run, I hope to somehow align my interest in programming with my passions for fitness, sport and entrepreneurship.</p>
+                        <div class="about-nav"> 
+                            <div class="sect">
+                            Familiar Languages:
+                            <a class="bot-icon" href="">
+                                <i class="fa-brands fa-java fa-xl"> </i>
+                            </a>
+                            
+                            <a class="bot-icon" href="">
+                                <i class="fa-brands fa-python fa-xl"></i>
+                            </a>
+                    
+                            <a class="bot-icon" href="">
+                                <i class="fa-brands fa-html5 fa-xl"> </i>
+                            <a class="bot-icon" href="">
+                                    <i class="fa-brands fa-css3 fa-xl"> </i>
+                            </a>
+                    
+                            <a class="bot-icon" href="">
+                                    <i class="fa-brands fa-js fa-xl"></i>
+                            </a>
+                            <a class="bot-icon" href="">
+                                <i class="fa-solid fa-c fa-xl"></i>
+                            </a>
+                            </div>               
+                            Connect:
+                            <a class="botitem" href="https://github.com/wmccrthy">
+                                <i class="fa-brands fa-github fa-xl"> </i>
+                            </a>
+                            
+                            <a class="botitem" href="mailto: wmccarthy24@amherst.edu">
+                                <i class="fa-solid fa-envelope fa-xl"></i>
+                            </a>
+                        
+                            <a class="botitem" href="https://www.linkedin.com/in/wyatt-mccarthy-134997209/">
+                                <i class="fa-brands fa-linkedin fa-xl"> </i>
+                            </a>
+                            Resume: 
+                            <a class="botitem" href="Wyatt_McCarthy_RESUME.pdf"> 
+                                <i class="fa-solid fa-file fa-xl"> </i>
+                            </a>
+                            Transcript:
+                            <a class="botitem" href="Transcript_WMcCarthy.pdf">
+                                <i class="fa-solid fa-pencil fa-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="content fade" id="projects">
+                    <div class="prof-para">
+                        <h3 id="mob-head">Projects</h3>
+                        <div class="grid">
+                            <div class="crd-cont">
+                                <div class="card fade">
+                                    <div class="front">
+                                        <img class ="proj-img" src="path.png">
+                                        <div class="fack">
+                                            <h5>Pathfinding Visualizer</h5>
+                                            <p>My pathfinding visualizer supports breadth-first search, depth-first search, Dijkstra’s algorithm, and A* search; users can run these algorithms on variations of the initial grids, which can be modified by adding walls and weighting nodes.</p>
+                                            <a class="botitem" href="https://github.com/wmccrthy/PathfindingVisualizerPT2">
+                                                <i class="fa-brands fa-github fa-xl"> </i>
+                                            </a>
+                                            <a class="botitem" href="PathfindingVisualizer/index.html">
+                                                <i class="fa-solid fa-play fa-xl"> </i>
+                                            </a>
+                                        </div> 
+                                    </div>
+                                   
+                                </div>
+                            </div>
+
+                            <div class="crd-cont">
+                                <div class="card fade">
+                                    <div class="front">
+                                        <img class ="proj-img" src="sort.png"> 
+                                        <div class="fack">
+                                            <h5>Sorting Visualizer</h5>
+                                            <p>Simple program to visualize how various sorting algorithms sort data on an iterative and/or recursive level.</p>
+                                            <a class="botitem" href="https://github.com/wmccrthy/SortingVisualizer">
+                                                <i class="fa-brands fa-github fa-xl"> </i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        
+                            <div class="crd-cont">
+                                <div class="card fade">
+                                    <div class="front">
+                                        <img class ="proj-img" src="check.png"> 
+                                        <div class="fack">
+                                            <h5>Checkers AI</h5>
+                                            <p>A checkers game that supports 2 player or 1 player use. The CPU opponent uses the minimax or expectiminimax algorithms. I spent extensive time optimizing the minimax algorithm using various techniques such as alpha-beta pruning and transposition tables.</p>
+                                            <a class="botitem" href="https://github.com/wmccrthy/CheckersAI">
+                                                <i class="fa-brands fa-github fa-xl"> </i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+                            <div class="crd-cont">
+                                <div class="card fade">
+                                    <div class="front bot">
+                                        <img class ="proj-img" src="Cellular/cellular.png">
+                                        <div class="fack">
+                                            <h5>Cellular Automata</h5>
+                                            <p>Basic webpage that prompts for user to input a rule and outputs cellular automata simulation of that rule.</p>
+                                            <!-- <a class="botitem" href="">
+                                                <i class="fa-brands fa-github fa-xl"> </i>
+                                            </a> -->
+                                            <a class="botitem" href="Cellular/cell.html">
+                                                <i class="fa-solid fa-play fa-xl"> </i>
+                                            </a> 
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="crd-cont">
+                                <div class="card fade">
+                                    <div class="front">
+                                        <img class ="proj-img" src="nescac.png"> 
+                                        <div class="fack">
+                                            <h5>NESCAC Soccer Stats</h5>
+                                            <p>Java program that computes NESCAC soccer stats (for all players and teams) from the 21/22 season. Program provides a command line interface for viewing stats. </p>
+                                            <a class="botitem" href="https://github.com/wmccrthy/NESCAC-Soccer-Stats-21-22">
+                                                <i class="fa-brands fa-github fa-xl"> </i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="crd-cont">
+                                <div class="card fade">
+                                    <div class="front">
+                                        <img class ="proj-img" src="GrahamScan/cv.png"> 
+                                        <div class="fack">
+                                            <h5>Graham Scan Visualizer</h5>
+                                            <p>A program to visualize the finding of convex hulls via the Graham scan algorithm; allows user to place points manually or randomly and visualize various steps of the algorithm.</p>
+                                            <!-- <a class="botitem" href="">
+                                                <i class="fa-brands fa-github fa-xl"> </i>
+                                            </a> -->
+                                            <a class="botitem" href="GrahamScan/cv.html">
+                                                <i class="fa-solid fa-play fa-xl"> </i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content fade" id="more">
+                    <div class="prof-para">
+                    	  <div class="vid"> 
+                              <p>Coming Soon!</p>
+                              <!--for this section, embed video w highlights;-->
+                              <!-- is there a cooler way to display such things?? -->
+                          </div>
+                    </div>
+                </div>
+            </section>
             
-    
-    
-        -->
-        <div class="buttons">
-            Set Nodes
-            <div class="dropdown">
-                <div class="dd-head">
-                    <button id="start" class="selected">
-                        Start
-                        <i class="fa-solid fa-caret-down"></i>
-                    </button>
-                </div>
-                <ul class="dd-menu">
-                    <button id="target">Target</button>
-                    <button id="random-start">Randomize</button>
-                </ul>
-            </div>
         </div>
-        <div class="buttons">
-            Modify Walls
-            <div class="dropdown">
-                <div class="dd-head">
-                    <button id="walls" class="selected">Add
-                        <i class="fa-solid fa-caret-down"></i>
-                    </button>
-                </div>
-                <ul class="dd-menu">
-                    <button id="rem-walls">Remove</button>
-                </ul>
-            </div>
-            <button id="rand-walls" class="iso">Randomize</button>
-            <button id="clear-walls" class="iso">Clear Walls</button>
-        </div>
-        <div class="buttons">
-            Modify Weights
-            <div class="dropdown">
-                <div class="dd-head">
-                    <button id="weight" class="selected">Increment
-                        <i class="fa-solid fa-caret-down"></i>
-                    </button>
-                </div>
-                <ul class="dd-menu">
-                    <button id="unweight">Decrease</button>
-                </ul>
-            </div>
-            <button id="rand-weight" class="iso">Randomize</button>
-            <button id="clear-weights" class="iso">Clear Weights</button>
-        </div>
-        <div class="algorithms">
-            Search
-            <div class="dropdown">
-                <div class="dd-head">
-                    <button id="DFS" class="selected">DFS
-                        <i class="fa-solid fa-caret-down"></i>
-                    </button>
-                </div>
-                <ul class="dd-menu">
-                    <button id="BFS">BFS</button>
-                    <button id="Astar">A*</button>
-                    <button id="dijkstra">UCS</button>
-                </ul>
-            </div>
-
-            <button id="clear" class="iso">Clear Search</button>
-        </div>
-        <div class="buttons">
-            Utilities
-            
-            <button id="reset" class='iso'>Reset     
-            </button>
-                
-            <button id="instructions" class="iso">Instructions/Info</button>
-            <button id="maze" class="iso">Maze</button>
-        
-            <div class="speed-slider">Algorithm Speed<input type="range" name="Speed" min=".25" max="10.25" step="2.5"></div>
-        </div>
-        <div class="resTab">
-            Results
-            <div class="result">
-
-            </div>
-        </div>
-    </div>
-    <div class="grid">
-
     </div>
 </body>
 </html>

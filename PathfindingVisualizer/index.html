@@ -19,7 +19,6 @@
             } else {
                 drawGrid();
             }
-            
         }
     </script>
 </head>
@@ -98,39 +97,87 @@
                 Path Node
             </div>
         </div>
+        <!-- want to convert all of these to dropdown menu selector for UX purposes -->
+        <!-- assume i can just make select w options for each button; this should make t
+        the event listening component function the same as well
+        
+    
+    
+            
+    
+    
+        -->
         <div class="buttons">
             Set Nodes
-            <button id="start">Start</button> 
-            <button id="target">Target</button>
-            <button id="random-start">Randomize</button>
+            <div class="dropdown">
+                <div class="dd-head">
+                    <button id="start" class="selected">
+                        Start
+                        <i class="fa-solid fa-caret-down"></i>
+                    </button>
+                </div>
+                <ul class="dd-menu">
+                    <button id="target">Target</button>
+                    <button id="random-start">Randomize</button>
+                </ul>
+            </div>
         </div>
         <div class="buttons">
             Modify Walls
-            <button id="walls">Add</button>
-            <button id="rem-walls">Remove</button>
-            <button id="rand-walls">Randomize</button>
-            <button id="clear-walls">Clear Walls</button>
+            <div class="dropdown">
+                <div class="dd-head">
+                    <button id="walls" class="selected">Add
+                        <i class="fa-solid fa-caret-down"></i>
+                    </button>
+                </div>
+                <ul class="dd-menu">
+                    <button id="rem-walls">Remove</button>
+                </ul>
+            </div>
+            <button id="rand-walls" class="iso">Randomize</button>
+            <button id="clear-walls" class="iso">Clear Walls</button>
         </div>
         <div class="buttons">
             Modify Weights
-            <button id="weight">Increment</button>
-            <button id="unweight">Decrease</button>
-            <button id="rand-weight">Randomize</button>
-            <button id="clear-weights">Clear Weights</button>
+            <div class="dropdown">
+                <div class="dd-head">
+                    <button id="weight" class="selected">Increment
+                        <i class="fa-solid fa-caret-down"></i>
+                    </button>
+                </div>
+                <ul class="dd-menu">
+                    <button id="unweight">Decrease</button>
+                </ul>
+            </div>
+            <button id="rand-weight" class="iso">Randomize</button>
+            <button id="clear-weights" class="iso">Clear Weights</button>
         </div>
         <div class="algorithms">
             Search
-            <button id="DFS">DFS</button>
-            <button id="BFS">BFS</button>
-            <button id="Astar">A*</button>
-            <button id="dijkstra">UCS</button>
-            <button id="clear">Clear Search</button>
+            <div class="dropdown">
+                <div class="dd-head">
+                    <button id="DFS" class="selected">DFS
+                        <i class="fa-solid fa-caret-down"></i>
+                    </button>
+                </div>
+                <ul class="dd-menu">
+                    <button id="BFS">BFS</button>
+                    <button id="Astar">A*</button>
+                    <button id="dijkstra">UCS</button>
+                </ul>
+            </div>
+
+            <button id="clear" class="iso">Clear Search</button>
         </div>
         <div class="buttons">
             Utilities
-            <button id="reset">Reset</button>
-            <button id="instructions">Instructions/Info</button>
-            <button id="maze">Maze</button>
+            
+            <button id="reset" class='iso'>Reset     
+            </button>
+                
+            <button id="instructions" class="iso">Instructions/Info</button>
+            <button id="maze" class="iso">Maze</button>
+        
             <div class="speed-slider">Algorithm Speed<input type="range" name="Speed" min=".25" max="10.25" step="2.5"></div>
         </div>
         <div class="resTab">

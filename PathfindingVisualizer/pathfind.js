@@ -179,8 +179,72 @@ function emptyGrid() {
 }
 
 
-// EVENT LISTENERS AND FUNCTIONALITY FOR BUTTONS 
+// event listener for dropdown menu function 
+let select = document.querySelectorAll(".dropdown");
+for (let el of select) {
+    let hd = el.querySelector(".dd-head");
+    let mnu = el.querySelector(".dd-menu");
+    hd.querySelector("button").style.pointerEvents = "none";
+    mnu.style.pointerEvents = 'none';
+    hd.addEventListener("click", function () {
+        // if algorithm, disable it prompting upon click, only want to do so when we select alg from dropdown menu itself
+        if (mnu.style.opacity != '1') {
+            mnu.style.opacity = "1";
+            // open caret
+            el.style.boxShadow = '0px 3px 3px rgb(180,180,180)'
+            hd.querySelector('button').querySelector('i').classList.toggle('fa-rotate-270')
+            hd.querySelector("button").style.pointerEvents = "auto";
+            mnu.style.pointerEvents = 'auto';
+        } else {
+            mnu.style.opacity = "0";
+            // close caret
+            el.style.boxShadow = ''
+            hd.querySelector('button').querySelector('i').classList.toggle('fa-rotate-270')
+            hd.querySelector("button").style.pointerEvents = "none";
+            // have dropdown automatically scroll to top
+            el.scrollTop = 0;
+            mnu.style.pointerEvents = "none;"
+        }
+        
+    })
+    mnu.addEventListener('click', function (e) {
+        // presuming e.target is the button we want to become select
+        // insert target element into dd head 
+        // insert selected element into dd menu
+        console.log(e.target.tagName)
+        if (e.target.tagName == 'BUTTON') {
+            tmp = hd.querySelector("button")
+            mnu.style.opacity = '0';
+            e.target.classList.toggle('selected')
+            e.target.innerHTML += `<i class="fa-solid fa-caret-down"></i>`
+            tmp.classList.toggle('selected')
+            hd.insertBefore(e.target, tmp)
+            console.log(hd)
+            console.log(hd.children);
+            hd.removeChild(tmp)
+            tmp.removeChild(tmp.querySelector('i'));
+            // mnu.insertBefore(tmp, e.target)
+            mnu.insertBefore(tmp, mnu.lastChild)
+            el.style.boxShadow = ''
+            // e.target = 
+            el.scrollTop = 0;
+            // dropdown automatically scroll to top 
+            e.target.style.pointerEvents = "none";
+            mnu.style.pointerEvents = "None"
+        } else {
+            mnu.style.opacity = '0'
+            mnu.style.pointerEvents = "None"
+            el.style.boxShadow = ''
+            el.scrollTop = 0;
+            hd.querySelector('button').querySelector('i').classList.toggle('fa-rotate-270')
+        }
+    })
+   
+    
 
+}
+
+// EVENT LISTENERS AND FUNCTIONALITY FOR BUTTONS 
 let str = document.querySelector("#start"); 
 str.addEventListener("click", function () {
     remove = false;

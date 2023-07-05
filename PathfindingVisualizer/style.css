@@ -136,7 +136,8 @@ p {
     justify-self: center;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    /* gap: 20px; */
+    gap: 5px;
     justify-content: center;
     /* flex-wrap:wrap; */
     text-align: center;
@@ -161,8 +162,9 @@ button {
     height: 25px;
     /* width: 100px; */
     transition: all .3s ease;
-    box-shadow: 0px 0px 1px rgb(50,50,50);
+    /* box-shadow: 0px 0px 1px rgb(50,50,50); */
     cursor: pointer;
+    border-radius: 5px;
 }
 
 button:hover {
@@ -170,9 +172,70 @@ button:hover {
     box-shadow: 0px 1px 3px rgb(50,50,50);
 }
 
+
 button:active {
     transform: scale(1);
 }
+
+.iso {
+    box-shadow: 0px 2px 3px rgb(180,180,180);
+}
+.dropdown {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    max-height: fit-content;
+    border-radius: 5px;
+    padding: 5px;
+    width: 100px;
+    max-height: 85px;
+    overflow:scroll;
+    /* top: -10%; */
+}
+
+.dd-head {
+    /* position: relative; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    cursor: pointer;
+    transition: .4s ease all;
+    border-radius: 5px;
+}
+
+.dd-head:hover {
+    box-shadow: 0px 2px 3px rgb(180,180,180);
+}
+
+.dd-menu {
+    width: 100px;
+    /* height: ; */
+    /* position: absolute; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 10px;
+    padding: 5px;
+    margin: 0;
+    z-index: 2;
+    opacity: 0;
+}
+
+.selected {
+    position: relative;
+    display: flex;
+    width: 100px;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    align-self: center;
+    text-align: center;
+    padding: 0;
+}
+
 
 .disp {
     display: flex;
@@ -202,6 +265,7 @@ button:active {
     height: 100px;
     transition: all .5s ease;
 }
+
 
 
 
