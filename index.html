@@ -187,17 +187,17 @@
 
             // 
             // add event listener to dark/lightmode toggle 
-            let darkMode = document.querySelector("#darkMode")
-            
-            
+            let darkMode = document.querySelector("#darkMode");
             
             darkMode.addEventListener("click", function () {
                 // rotate image 
                 // 
                 // darkMode.classList.toggle("fa-flip-horizontal");
                 // document.body.style.backgroundColor.toggle();
-                let dark = `rgb(${Math.random()*45}, ${Math.random()*45}, ${Math.random()*45})`
-                let light = `rgb(${Math.random()*45+210}, ${Math.random()*45+210}, ${Math.random()*45+210})`
+                // let dark = `rgb(${Math.random()*45}, ${Math.random()*45}, ${Math.random()*45})`
+                let dark = `rgb(13,15,18)`;
+                // let light = `rgb(${Math.random()*45+210}, ${Math.random()*45+210}, ${Math.random()*45+210})`
+                let light = `rgb(242, 240, 237)`;
                 if (clks % 2==0) {
                     document.body.style.backgroundColor = light;
                     for (let el of document.querySelectorAll(".nav-item")) {
