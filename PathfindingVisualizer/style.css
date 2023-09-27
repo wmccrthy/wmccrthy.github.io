@@ -191,7 +191,8 @@ button:active {
     padding: 5px;
     width: 100px;
     max-height: 85px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     /* top: -10%; */
 }
 
