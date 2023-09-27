@@ -294,6 +294,7 @@ a {
     justify-content: center;
     text-align: center;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 /* this will be used to add new visual effect */
