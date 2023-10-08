@@ -536,6 +536,12 @@ function toggle(cur, rows=windowRs, cols=windowCs) {
                             while (done != "done") {
                                 done = Dijkstras(frontier, target, refID, true);
                             }
+                        } else {
+                            frontier = [start]
+                            frontier2 = [target]
+                            while (done != "done") {
+                                done = Bidirectional(frontier, frontier2, start, target, refID);
+                            }
                         }
                     }, 0);
                 }
@@ -632,6 +638,8 @@ grid.addEventListener("mouseup", function () {
 
 //functions for resetting grid, clearing search and randomizing weight/wall configurations 
 var refID = null; //refID for intervals in which algorithms are called 
+var refID1 = null;
+var refID2 = null;
 var mazeID = null;
 var innerREF = []; //arrays of refIDs for the timeouts used to animate path drawing 
 var innerREF2 = []; 
@@ -658,6 +666,7 @@ function clear() {
         pathFound = false;
         console.log(innerREF);
         clearInterval(refID);
+        clearInterval(refID1); clearInterval(refID2);
         innerREF.forEach(timeout => {
             clearTimeout(timeout);
             // innerREF.splice(innerREF.indexOf(timeout), 1);
@@ -834,6 +843,28 @@ bfsButton.addEventListener("click", function () {
     }
 })
 
+var bidirectionalButton = document.querySelector("#bi");
+bidirectionalButton.addEventListener("click", function () {
+    if (!start | !target) {
+        result.innerHTML = "Please set start and target"
+    } else if (!canSearch) {
+        result.innerHTML = "Please clear search before searching again"
+    } else {
+        chosenAlg = null;
+        canSearch = false;
+        result.innerHTML = "";
+        frontier = [];
+        start.cost = 0;
+        frontier.push(start);
+        frontier2 = [target];
+        timer = Date.now();
+        refID = setInterval(function () {
+            Bidirectional(frontier, frontier2, start, target, refID)
+        }, algInterval)
+        
+    }
+})
+
 var aStarButton = document.querySelector("#Astar");
 aStarButton.addEventListener("click", function () {
     if (!start | !target) {
@@ -892,7 +923,7 @@ function DFS(frontier, target, refID, isBFS, isA, isRecompute = false) {
     // BFS used queue, DFS uses stack, so that is controlled by isBFS variable (if isBFS, use queue, otherwise stack)
     // A* uses priority queue, rather than implementing that DS we simply sort the array on basis of cost before each step such that 
     // the queue essentially functions as priority queue (this is controlled by isA boolean)
-    console.log(speed.value);
+    // console.log(speed.value);
     if (frontier.length > 0) {
         // if frontier not empty 
         if (isBFS) {
@@ -1023,11 +1054,78 @@ function DFS(frontier, target, refID, isBFS, isA, isRecompute = false) {
     }
 }
 
+function retracePath(cur) {
+    // retrace path 
+            // initialize variables for tracking path cost and length
+            var pathCost = cur.cost;
+            var pathLength = -1;
+            let i = 0;
+            //tracing back from the target node
+            while (cur != null) {
+                if (cur == start) { //if at start, end 
+                    cur.div.style.backgroundColor = "white";
+                    cur.div.style.border = "1px solid rgb(238, 250, 255)";
+                } else {
+                    //need to use let variable to represent cur such that setTimeout works properly (niche issue w scope of setTimeout)
+
+                    let scopeTest = cur;
+                    console.log(scopeTest);
+                    innerREF.push(setTimeout(function () {
+                        
+                            scopeTest.div.style.backgroundColor = "red";
+                            scopeTest.div.style.border = "1px solid red";
+                            scopeTest.div.style.transform = "scale(1.5) rotate(360deg)";
+                            scopeTest.div.style.opacity = ".25";
+                         
+                    }, 30 * i))
+                    innerREF2.push(setTimeout(function () {
+                            scopeTest.div.style.opacity = "1";
+                            scopeTest.div.style.transform = "rotate(360deg)";
+                        
+                    }, 45 * i))
+                    // set animations for each cell in traced path such that they animate incrementally based on their position; creates a smooth trace
+                }
+                i += 1; //i is used to enable the proper interval separation of animations for cells in the path (see how timeouts are set for 30ms * i)
+                pathLength += 1; //increment path length
+
+                cur = cur.parent; //until we reach start, set cur to parent node
+            }
+            return (pathCost, pathLength);
+}
+
+// bidirectional search
+function Bidirectional(frontier, frontier2, start ,target, ref) {
+    for (let cell of frontier) {
+        // console.log(cell)
+        // console.log(frontier2.includes(cell))
+        for (let n of cell.getNeighbors()) {
+            if (frontier2.includes(n)) {
+                // merge paths of cell and n 
+                console.log("Merge Here: " + cell);
+                let path1 = retracePath(cell);
+                let path2 = retracePath(n);
+                console.log(path1)
+                console.log(path2)
+                let totalCost = path1 + path2 + 1;
+                result.innerHTML = "BIDIRECTIONAL\n"
+                result.innerHTML += `Path Length: ${totalCost} Path Cost: ${totalCost} Runtime: ${Date.now()-timer}ms`;
+                pathFound = true;
+                clearInterval(ref);
+                return "done";
+            }
+        }
+    }
+   
+    DFS(frontier, target, ref, true, false);
+
+    DFS(frontier2, start, ref, true, false);
+    // need to implement functionality s.t when one DFS frontier meets the other, we form paths by merging those of points that have met 
+}
+
 //THIS FUNCTION IS CALLED DIJKSTRAS BUT IT IMPLEMENTS UNIFORM COST SEARCH (SORRY FOR NAMING CONFUSION)
 function Dijkstras(frontier, target, refID, isRecompute = false) {
     if (frontier.length > 0) {
         // sort frontier based on cost (considers weights) such that it functions like priority queue 
-
         frontier.sort(compareCost);
         cur = frontier.shift();
         cur.visited = true;
@@ -1200,7 +1298,7 @@ function mazeGen(mazeID, i) {
         let neighbs = randWall.getNeighbors();
         // to see if neighbors unconnected, compare their groups 
         if (neighbs.length > 0) {
-            // check if neighbors unconnected 
+            // check if neighbors disconnected 
             let cntrlG = neighbs[0].group;
             let keepWall = true;
             for (let n = 1; n < neighbs.length; n ++) {
@@ -1353,6 +1451,7 @@ function Cell(column, row, element) {
 
         //fully resets cell to blank slate 
     }
+
     this.clear = function () {
         //only clears cell of visited/queued modifications 
 
