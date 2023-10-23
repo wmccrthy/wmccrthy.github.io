@@ -134,7 +134,7 @@
                 crd.addEventListener("mouseover", function() {
                     // crd.style.transform = `translateY(-25px)`;
                     crd.style.transition = "translate .4s ease"
-                    
+                    crd.style.overflow = "scroll";
                     // control for child elements 
                     // let fack = crd.querySelector(".fack");
                     // fack.style.transform = "scale(.85) translateZ(100px)";
@@ -155,6 +155,7 @@
                     crd.style.transition = "all .4s ease";
                     crd.style.boxShadow = `1px 0px 0px rgb(0,0,0)`;
                     crd.style.transform = `rotateY(0deg) rotateX(0deg)`;
+                    crd.style.overflow = "hidden";
                 })
 
                 let cntct = document.querySelector(".prof-button");
