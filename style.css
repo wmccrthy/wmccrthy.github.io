@@ -293,8 +293,7 @@ a {
     align-items: center;
     justify-content: center;
     text-align: center;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 /* this will be used to add new visual effect */
