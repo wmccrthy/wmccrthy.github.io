@@ -61,12 +61,7 @@
                             cards[i].classList.add("fadeIn");
                             mlt += .1;
                         }
-                        // for (var crd of cards) {
-                        //     crd.style.transitionDelay = `${mlt}s`;
-                        //     crd.classList.add("fadeIn");
-                        //     // console.log(crd.style.transitionDelay);
-                        //     mlt += .1;
-                        // }
+                        
                         fades[1].classList.add("fadeIn");
                         let indicP = document.querySelectorAll(".indic")[2];
                         indicP.style.opacity = "1";
@@ -188,19 +183,19 @@
 
             // 
             // add event listener to dark/lightmode toggle 
-            let darkMode = document.querySelector("#darkMode");
+            let darkMode = document.querySelector("#darkMode")
+            
+            
             
             darkMode.addEventListener("click", function () {
                 // rotate image 
                 // 
                 // darkMode.classList.toggle("fa-flip-horizontal");
                 // document.body.style.backgroundColor.toggle();
-                // let dark = `rgb(${Math.random()*45}, ${Math.random()*45}, ${Math.random()*45})`
-                let dark = `rgb(13,15,18)`;
-                // let light = `rgb(${Math.random()*45+210}, ${Math.random()*45+210}, ${Math.random()*45+210})`
-                let light = `rgb(242, 240, 237)`;
+                let dark = `rgb(${Math.random()*45}, ${Math.random()*45}, ${Math.random()*45})`
+                let light = `rgb(${Math.random()*45+210}, ${Math.random()*45+210}, ${Math.random()*45+210})`
                 if (clks % 2==0) {
-                    document.body.style.backgroundColor = 'white';
+                    document.body.style.backgroundColor = light;
                     for (let el of document.querySelectorAll(".nav-item")) {
                         el.style.color = dark;
                     }
@@ -269,7 +264,7 @@
                         <img src="prof.png">
                     </div>
                     <div class="prof-para hP">
-                        <p>I'm Wyatt, a Junior Computer Science major at Amherst College primarily interested in software engineering and development. I am passionate about math and quantitative problem-solving and have found programming to be a truly gratifying means of creatively pursuing that passion.</p>
+                        <p>I'm Wyatt, a Senior Computer Science major at Amherst College primarily interested in software engineering and development. I am passionate about math and quantitative problem-solving and have found programming to be a truly gratifying means of creatively pursuing that passion. Within the programming space, I am particularly interested in AI and ML.</p>
                         <div class="btn-wrap">
                             <a class="prof-button" href="mailto: wmccarthy24@amherst.edu">Contact Me</a>
                         </div>
@@ -280,8 +275,8 @@
             <section>
                 <div class="content fade" id="about">
                     <div class="prof-para">
-                        <p>Hi. My name is Wyatt McCarthy and I'm currently a student at Amherst College in the class of 2024. I am a Computer Science major with extensive coursework in Economics, in which I may double major. At Amherst, I am a member of the men's varsity soccer team. I have played soccer since I was a toddler and probably committed more time to playing than any other activity in my life. In highschool I played in the Development Academy where I spent time with Metropolitan Oval and NYCFC.</p> 
-                        <p class="testFade">In my coursework at Amherst College, I have focused largely on computer science and economics. Throughout, I have completed several courses relevant to software engineering, quantitative problem-solving, and data analysis including data structures, algorithms, artificial intelligence, microeconomics, macroeconomics, and industrial organization, and I will soon (as of Spring 2023) have completed computer systems and algorithm visualization. I have also worked on several projects that have given me practical experience in developing and implementing software solutions. In particular, I have advanced experience programming in Java and Python, as well as experience with HTML, CSS, JavaScript, and C. I have used these skills to develop projects such as a pathfinding algorithm visualizer, a checkers game with a minimax AI that plays against the user, various artificial intelligence agents for Pacman, and a personal website. 
+                        <p>Hi. My name is Wyatt McCarthy and I'm currently a student at Amherst College in the class of 2024. I am a Computer Science major with extensive coursework in Economics and Math. At Amherst, I am a member of the men's varsity soccer team. I have played soccer since I was a toddler and probably committed more time to playing than any other activity in my life. In highschool I played in the Development Academy where I spent time with Metropolitan Oval and NYCFC.</p> 
+                        <p class="testFade">In my coursework at Amherst College, I have focused largely on computer science, economics, and math. Throughout, I have completed several courses relevant to software engineering, quantitative problem-solving, and data analysis including data structures, algorithms, artificial intelligence, microeconomics, macroeconomics, industrial organization, linear algebra, computer systems, algorithm visualization, databases, and networks. I have also worked on several personal projects that have given me practical experience in developing and implementing software solutions. In particular, I have advanced experience programming in Java, Python and JavaScript, as well as experience with HTML, CSS, React, and C. I have used these skills to develop projects such as a pathfinding algorithm visualizer, a checkers game with a minimax AI that plays against the user, a sports analytics interface for Amherst athletes, a personal website and more. Most recently, I sharpened my skillset during Spring of 2024 working as a research assistant in Regina Barzilay's group at MIT. 
                         </p>
                         <p> In the medium term, I hope to use the education I've recieved at Amherst alongside a passion I've gained for coding to become a software engineer. In the long run, I hope to somehow align my interest in programming with my passions for fitness, sport and entrepreneurship.</p>
                         <div class="about-nav"> 
@@ -334,93 +329,6 @@
             </section>
 
             <section>
-                <div class="content fade" id="projects">
-                    <div class="prof-para">
-                        <h3 id="mob-head">Projects</h3>
-                        <div class="grid">
-                            <div class="crd-cont">
-                                <div class="card fade">
-                                    <div class="front">
-                                        <img class ="proj-img" src="path.png">
-                                        <div class="fack">
-                                            <h5>Pathfinding Visualizer</h5>
-                                            <p>My pathfinding visualizer supports breadth-first search, depth-first search, Dijkstra’s algorithm, and A* search; users can run these algorithms on variations of the initial grids, which can be modified by adding walls and weighting nodes.</p>
-                                            <a class="botitem" href="https://github.com/wmccrthy/PathfindingVisualizerPT2">
-                                                <i class="fa-brands fa-github fa-xl"> </i>
-                                            </a>
-                                            <a class="botitem" href="PathfindingVisualizer/index.html">
-                                                <i class="fa-solid fa-play fa-xl"> </i>
-                                            </a>
-                                        </div> 
-                                    </div>
-                                   
-                                </div>
-                            </div>
-
-                            <div class="crd-cont">
-                                <div class="card fade">
-                                    <div class="front">
-                                        <img class ="proj-img" src="sort.png"> 
-                                        <div class="fack">
-                                            <h5>Sorting Visualizer</h5>
-                                            <p>Simple program to visualize how various sorting algorithms sort data on an iterative and/or recursive level.</p>
-                                            <a class="botitem" href="https://github.com/wmccrthy/SortingVisualizer">
-                                                <i class="fa-brands fa-github fa-xl"> </i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                   
-                                </div>
-                            </div>
-                        
-                            <div class="crd-cont">
-                                <div class="card fade">
-                                    <div class="front">
-                                        <img class ="proj-img" src="check.png"> 
-                                        <div class="fack">
-                                            <h5>Checkers AI</h5>
-                                            <p>A checkers game that supports 2 player or 1 player use. The CPU opponent uses the minimax or expectiminimax algorithms. I spent extensive time optimizing the minimax algorithm using various techniques such as alpha-beta pruning and transposition tables.</p>
-                                            <a class="botitem" href="https://github.com/wmccrthy/CheckersAI">
-                                                <i class="fa-brands fa-github fa-xl"> </i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                  
-                                </div>
-                            </div>
-                            <div class="crd-cont">
-                                <div class="card fade">
-                                    <div class="front bot">
-                                        <img class ="proj-img" src="Cellular/cellular.png">
-                                        <div class="fack">
-                                            <h5>Cellular Automata</h5>
-                                            <p>Basic webpage that prompts for user to input a rule and outputs cellular automata simulation of that rule.</p>
-                                            <!-- <a class="botitem" href="">
-                                                <i class="fa-brands fa-github fa-xl"> </i>
-                                            </a> -->
-                                            <a class="botitem" href="Cellular/cell.html">
-                                                <i class="fa-solid fa-play fa-xl"> </i>
-                                            </a> 
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="crd-cont">
-                                <div class="card fade">
-                                    <div class="front">
-                                        <img class ="proj-img" src="nescac.png"> 
-                                        <div class="fack">
-                                            <h5>NESCAC Soccer Stats</h5>
-                                            <p>Java program that computes NESCAC soccer stats (for all players and teams) from the 21/22 season. Program provides a command line interface for viewing stats. </p>
-                                            <a class="botitem" href="https://github.com/wmccrthy/NESCAC-Soccer-Stats-21-22">
-                                                <i class="fa-brands fa-github fa-xl"> </i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                             <div class="crd-cont">
                                 <div class="card fade">
                                     <div class="front">
@@ -439,6 +347,119 @@
                                 </div>
                             </div>
 
+                            <!-- <div class="crd-cont">
+                                <div class="card fade">
+                                    <div class="front">
+                                        <img class ="proj-img" src="sort.png"> 
+                                        <div class="fack">
+                                            <h5>Sorting Visualizer</h5>
+                                            <p>Simple program to visualize how various sorting algorithms sort data on an iterative and/or recursive level.</p>
+                                            <a class="botitem" href="https://github.com/wmccrthy/SortingVisualizer">
+                                                <i class="fa-brands fa-github fa-xl"> </i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                            </div> -->
+                        
+                            <div class="crd-cont">
+                                <div class="card fade">
+                                    <div class="front">
+                                        <img class ="proj-img" src="check.png"> 
+                                        <div class="fack">
+                                            <h5>Checkers AI</h5>
+                                            <p>A checkers game that supports 2 player or 1 player use. The CPU opponent uses the minimax or expectiminimax algorithms. I spent extensive time optimizing the minimax algorithm using various techniques such as alpha-beta pruning and transposition tables.</p>
+                                            <a class="botitem" href="https://github.com/wmccrthy/CheckersAI">
+                                                <i class="fa-brands fa-github fa-xl"> </i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+
+                            <div class="content fade" id="projects">
+                                <div class="prof-para">
+                                    <h3 id="mob-head">Projects</h3>
+                                    <div class="grid">
+                                        <div class="crd-cont">
+                                            <div class="card fade">
+                                                <div class="front">
+                                                    <img class ="proj-img" src="path.png">
+                                                    <div class="fack">
+                                                        <h5>Pathfinding Visualizer</h5>
+                                                        <p>My pathfinding visualizer supports breadth-first search, depth-first search, Dijkstra’s algorithm, and A* search; users can run these algorithms on variations of the initial grids, which can be modified by adding walls and weighting nodes.</p>
+                                                        <a class="botitem" href="https://github.com/wmccrthy/PathfindingVisualizerPT2">
+                                                            <i class="fa-brands fa-github fa-xl"> </i>
+                                                        </a>
+                                                        <a class="botitem" href="PathfindingVisualizer/index.html">
+                                                            <i class="fa-solid fa-play fa-xl"> </i>
+                                                        </a>
+                                                    </div> 
+                                                </div>
+                                               
+                                            </div>
+                            </div>
+
+                            <!-- <div class="crd-cont">
+                                <div class="card fade">
+                                    <div class="front bot">
+                                        <img class ="proj-img" src="Cellular/cellular.png">
+                                        <div class="fack">
+                                            <h5>Cellular Automata</h5>
+                                            <p>Basic webpage that prompts for user to input a rule and outputs cellular automata simulation of that rule.</p>
+                                             <a class="botitem" href="">
+                                                <i class="fa-brands fa-github fa-xl"> </i>
+                                            </a> 
+                                            <a class="botitem" href="Cellular/cell.html">
+                                                <i class="fa-solid fa-play fa-xl"> </i>
+                                            </a> 
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div> -->
+
+                            <div class="crd-cont">
+                                <div class="card fade">
+                                    <div class="front bot">
+                                        <img class ="proj-img" src="chatbot.png">
+                                        <div class="fack">
+                                            <h5>Gemini API Chrome Extension</h5>
+                                            <p>Little chatbot meant to be used as a chrome extension; in early stage right now and only consists of basic interface to prompt and chat with Google's Gemini API while surfing the web.</p>
+                                             <!-- <a class="botitem" href="">
+                                                <i class="fa-brands fa-github fa-xl"> </i>
+                                            </a>  -->
+                                            <a class="botitem" href="Gemini/build/index.html">
+                                                <i class="fa-solid fa-play fa-xl"> </i>
+                                            </a> 
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="crd-cont">
+                                <div class="card fade">
+                                    <div class="front">
+                                        <img class ="proj-img" src="mammoth.png"> 
+                                        <div class="fack">
+                                            <h5>Amherst Athletics Data Interface</h5>
+                                            <p>Full-stack PERN (postgres, express, node, react) app built to interact with and visualize data collected on Amherst College athletes.</p>
+                                            <a class="botitem" href="https://github.com/wmccrthy/https://github.com/wmccrthy/Catapult-Database-Project">
+                                                <i class="fa-brands fa-github fa-xl"> </i>
+                                            </a>
+                                            <a class="botitem" href="https://www.youtube.com/watch?v=_mZWCqqsEX4">
+                                                <i class="fa-solid fa-play fa-xl"> </i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
