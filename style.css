@@ -281,7 +281,7 @@ a {
 .card {
     position: relative;
     width: 250px;
-    height: 250px;
+    height: 300px;
     border-radius: 6px;
     /* box-shadow: 1px 1px 1px 1px rgb(0, 0, 0); */
     /* transition: all .2s ease; */
@@ -316,7 +316,7 @@ a {
 
 .card:hover .proj-img {
     opacity: .02;
-    transform: scale(1.25);
+    transform: scale(1);
 }
 
 .card:hover .fack {
