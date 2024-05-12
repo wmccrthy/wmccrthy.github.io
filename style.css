@@ -316,7 +316,7 @@ a {
 
 .card:hover .proj-img {
     opacity: .02;
-    transform: scale(1);
+    transform: scale(1.15);
 }
 
 .card:hover .fack {
@@ -366,7 +366,7 @@ a {
     width: 100%;
     height: 220px;
     border-radius: 6px;
-    transform: scale(1.2);
+    transform: scale(1.35);
 }
 
 .front, .back {
